@@ -110,14 +110,14 @@ class _MemoryGameState extends State<MemoryGame> {
             if (mounted) {
               showDialog(
                 context: context,
-                builder: (ctx) => AlertDialog(
+                builder: (context) => AlertDialog(
                   title: const Text('Gratulacje!'),
                   content: const Text('Znalazłeś wszystkie pary!'),
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(ctx);
-                        _initializeGame();
+                        Navigator.of(context).pop();
+                        Future.microtask(() => _initializeGame());
                       },
                       child: const Text('Zagraj ponownie'),
                     )
