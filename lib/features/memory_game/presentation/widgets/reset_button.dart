@@ -12,7 +12,7 @@ class ResetButton extends ConsumerWidget {
       child: ElevatedButton.icon(
         onPressed: () => ref.read(memoryGameProvider.notifier).resetGame(),
         icon: const Icon(Icons.refresh),
-        label: const Text('Resetuj grę'),
+        label: const Text('Reset Game'),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
         ),

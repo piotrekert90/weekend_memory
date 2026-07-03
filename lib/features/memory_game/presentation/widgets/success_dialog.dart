@@ -8,15 +8,15 @@ class SuccessDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
-      title: const Text('Gratulacje!'),
-      content: const Text('Znalazłeś wszystkie pary!'),
+      title: const Text('Congratulations!'),
+      content: const Text('You found all matching pairs!'),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
             Future.microtask(() => ref.read(memoryGameProvider.notifier).resetGame());
           },
-          child: const Text('Zagraj ponownie'),
+          child: const Text('Play Again'),
         )
       ],
     );
