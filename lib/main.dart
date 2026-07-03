@@ -48,7 +48,9 @@ class MemoryGame extends ConsumerWidget {
       appBar: AppBar(title: const Text('Memory 4x4')),
       body: Column(
         children: const [
-          GameBoard(),
+        Expanded(
+          child:GameBoard(),
+        ),
           ResetButton(),
         ],
       ),

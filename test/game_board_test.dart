@@ -11,8 +11,10 @@ void main() {
         child: MaterialApp(
           home: Scaffold(
             body: Column(
-              children: const [
-                GameBoard(),
+              children: [
+                Expanded(
+                  child: GameBoard(),
+                ),
                 ResetButton(),
               ],
             ),
