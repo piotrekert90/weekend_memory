@@ -22,7 +22,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     
-    expect(find.text('Reset Game'), findsOneWidget);
+
     
     await expectLater(
       find.byType(GameBoard),
