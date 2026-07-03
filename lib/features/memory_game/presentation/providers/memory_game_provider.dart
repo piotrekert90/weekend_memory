@@ -68,12 +68,12 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
         );
       } else {
         Future.delayed(const Duration(seconds: 1), () {
-          final hiddenCards = List<MemoryCard>.from(state.cards);
-          hiddenCards[firstIndex] = hiddenCards[firstIndex].copyWith(isFaceUp: false);
-          hiddenCards[index] = hiddenCards[index].copyWith(isFaceUp: false);
+          final currentCards = List<MemoryCard>.from(state.cards);
+          currentCards[firstIndex] = currentCards[firstIndex].copyWith(isFaceUp: false);
+          currentCards[index] = currentCards[index].copyWith(isFaceUp: false);
           
           state = state.copyWith(
-            cards: hiddenCards,
+            cards: currentCards,
             firstSelectedCardIndex: null,
             isProcessing: false,
           );
