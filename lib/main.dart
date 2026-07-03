@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -7,115 +8,282 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Memory Game',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MemoryGame(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// Enum definiujący możliwe stany karty
+enum CardState { hidden, revealed, matched }
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+// Model karty przechowujący identyfikator pary, ikonę i aktualny stan
+class Card {
+  final int id;
+  final IconData icon;
+  CardState state;
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Card({required this.id, required this.icon, this.state = CardState.hidden});
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class MemoryGame extends StatefulWidget {
+  const MemoryGame({super.key});
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  State<MemoryGame> createState() => _MemoryGameState();
+}
+
+class _MemoryGameState extends State<MemoryGame> {
+  List<Card> cards = [];
+  int? firstIndex;
+  int? secondIndex;
+  bool isProcessing = false;
+  int matchesFound = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeGame();
+  }
+
+  // Inicjalizacja gry: tworzenie par, mieszanie, reset stanów
+  void _initializeGame() {
+    final icons = [
+      Icons.star, Icons.favorite, Icons.flare, Icons.bolt,
+      Icons.cloud, Icons.beach_access, Icons.pets, Icons.music_note
+    ];
+    final shuffledIcons = icons..shuffle(Random());
+    
+    cards = [];
+    for (int i = 0; i < 8; i++) {
+      cards.add(Card(id: i, icon: shuffledIcons[i]));
+      cards.add(Card(id: i, icon: shuffledIcons[i]));
+    }
+    cards.shuffle(Random());
+    
+    firstIndex = null;
+    secondIndex = null;
+    isProcessing = false;
+    matchesFound = 0;
+    setState(() {});
+  }
+
+  // Obsługa kliknięcia w kartę
+  void _handleCardTap(int index) {
+    // Blokada podczas animacji błędu lub jeśli karta jest już dopasowana
+    if (isProcessing) return;
+    if (cards[index].state == CardState.matched) return;
+    if (firstIndex == index) return; // Kliknięto tę samą kartę dwukrotnie
+
+    // Odkryj kartę
+    cards[index].state = CardState.revealed;
+    setState(() {});
+
+    if (firstIndex == null) {
+      // Pierwsza odkryta karta
+      firstIndex = index;
+    } else {
+      // Druga odkryta karta - sprawdzamy dopasowanie
+      secondIndex = index;
+      isProcessing = true;
+      
+      if (cards[firstIndex!].id == cards[secondIndex!].id) {
+        // Dopasowanie znalezione
+        cards[firstIndex!].state = CardState.matched;
+        cards[secondIndex!].state = CardState.matched;
+        matchesFound += 2;
+        firstIndex = null;
+        secondIndex = null;
+        isProcessing = false;
+        setState(() {});
+        
+        // Sprawdzenie wygranej
+        if (matchesFound == cards.length) {
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Gratulacje!'),
+                  content: const Text('Znalazłeś wszystkie pary!'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        _initializeGame();
+                      },
+                      child: const Text('Zagraj ponownie'),
+                    )
+                  ],
+                ),
+              );
+            }
+          });
+        }
+      } else {
+        // Błędne dopasowanie - po 1 sekundzie ukrywamy karty
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            cards[firstIndex!].state = CardState.hidden;
+            cards[secondIndex!].state = CardState.hidden;
+            firstIndex = null;
+            secondIndex = null;
+            isProcessing = false;
+            setState(() {});
+          }
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      appBar: AppBar(title: const Text('Memory 4x4')),
+      body: Column(
+        children: [
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                childAspectRatio: 0.75,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: cards.length,
+              itemBuilder: (context, index) {
+                return MemoryCard(
+                  card: cards[index],
+                  onTap: () => _handleCardTap(index),
+                );
+              },
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton.icon(
+              onPressed: _initializeGame,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Resetuj grę'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Widget karty z animacją obracania
+class MemoryCard extends StatefulWidget {
+  final Card card;
+  final VoidCallback onTap;
+
+  const MemoryCard({
+    super.key,
+    required this.card,
+    required this.onTap,
+  });
+
+  @override
+  State<MemoryCard> createState() => _MemoryCardState();
+}
+
+class _MemoryCardState extends State<MemoryCard> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    // Animacja od 0.0 do 1.0 odpowiadająca obrotowi 0-180 stopni
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+  }
+
+  @override
+  void didUpdateWidget(MemoryCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Uruchamiamy animację przy zmianie stanu karty
+    if (widget.card.state != oldWidget.card.state) {
+      if (widget.card.state != CardState.hidden) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isRevealed = widget.card.state != CardState.hidden;
+    
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        // Tworzenie macierzy transformacji 3D z efektem perspektywy
+        final transform = Matrix4.identity()
+          ..setEntry(3, 2, 0.001) // Dodaje głębię dla realistycznego obrotu
+          ..rotateY(_animation.value * 3.14159); // Obrót wokół osi Y (0 do 180 stopni)
+        
+        return Transform(
+          transform: transform,
+          alignment: Alignment.center,
+          // W zależności od postępu animacji pokazujemy przód lub tył
+          child: isRevealed ? _buildFront() : _buildBack(),
+        );
+      },
+    );
+  }
+
+  Widget _buildFront() {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.deepPurple, width: 2),
+          boxShadow: [
+            BoxShadow(color: Colors.black26, blurRadius: 4, offset: const Offset(0, 2))
           ],
         ),
+        child: Icon(widget.card.icon, size: 48, color: Colors.deepPurple),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+
+  Widget _buildBack() {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.deepPurple,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(color: Colors.black26, blurRadius: 4, offset: const Offset(0, 2))
+          ],
+        ),
+        child: const Icon(Icons.help_outline, size: 48, color: Colors.white),
       ),
     );
   }
