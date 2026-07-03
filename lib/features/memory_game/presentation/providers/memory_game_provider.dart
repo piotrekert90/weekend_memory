@@ -1,4 +1,4 @@
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math';
 import '../../domain/models/memory_card.dart';
 import '../../domain/models/memory_game_state.dart';
@@ -68,17 +68,15 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
         );
       } else {
         Future.delayed(const Duration(seconds: 1), () {
-          if (!isClosed) {
-            final hiddenCards = List<MemoryCard>.from(state.cards);
-            hiddenCards[firstIndex] = hiddenCards[firstIndex].copyWith(isFaceUp: false);
-            hiddenCards[index] = hiddenCards[index].copyWith(isFaceUp: false);
-            
-            state = state.copyWith(
-              cards: hiddenCards,
-              firstSelectedCardIndex: null,
-              isProcessing: false,
-            );
-          }
+          final hiddenCards = List<MemoryCard>.from(state.cards);
+          hiddenCards[firstIndex] = hiddenCards[firstIndex].copyWith(isFaceUp: false);
+          hiddenCards[index] = hiddenCards[index].copyWith(isFaceUp: false);
+          
+          state = state.copyWith(
+            cards: hiddenCards,
+            firstSelectedCardIndex: null,
+            isProcessing: false,
+          );
         });
       }
     }
