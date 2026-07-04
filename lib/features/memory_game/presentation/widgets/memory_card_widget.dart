@@ -81,7 +81,7 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerPr
         final transform = Matrix4.identity()
           ..setEntry(3, 2, 0.001)
           ..rotateY(_animation.value * 3.14159);
-        
+
         return Transform(
           transform: transform,
           alignment: Alignment.center,
@@ -92,21 +92,40 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerPr
   }
 
   Widget _buildFront() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final backgroundColor = widget.card.isMatched
+        ? colorScheme.tertiaryContainer
+        : colorScheme.surfaceContainerHighest;
+
+    final borderColor = widget.card.isMatched
+        ? colorScheme.tertiary
+        : colorScheme.primary;
+
     return GestureDetector(
       onTap: widget.onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: widget.card.isMatched ? Colors.green[100] : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.deepPurple, width: 2),
-          boxShadow: [
-            BoxShadow(color: Colors.black26, blurRadius: 4, offset: const Offset(0, 2))
-          ],
-        ),
-        child: Center(
-          child: Text(
-            widget.card.content,
-            style: const TextStyle(fontSize: 32),
+      child: Transform(
+        alignment: Alignment.center,
+        transform: Matrix4.identity()..rotateY(3.14159), // Prevents text mirroring after rotation
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: borderColor, width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: theme.brightness == Brightness.dark ? Colors.black45 : Colors.black12,
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              )
+            ],
+          ),
+          child: Center(
+            child: Text(
+              widget.card.content,
+              style: const TextStyle(fontSize: 32),
+            ),
           ),
         ),
       ),
@@ -114,17 +133,28 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerPr
   }
 
   Widget _buildBack() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.deepPurple,
+          color: colorScheme.primary,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            BoxShadow(color: Colors.black26, blurRadius: 4, offset: const Offset(0, 2))
+            BoxShadow(
+              color: theme.brightness == Brightness.dark ? Colors.black45 : Colors.black12,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            )
           ],
         ),
-        child: const Icon(Icons.help_outline, size: 48, color: Colors.white),
+        child: Icon(
+          Icons.help_outline,
+          size: 48,
+          color: colorScheme.onPrimary,
+        ),
       ),
     );
   }

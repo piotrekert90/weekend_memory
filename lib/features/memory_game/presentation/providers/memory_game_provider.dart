@@ -28,7 +28,6 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
   void flipCard(int index) {
     final currentState = state;
 
-    // ZABEZPIECZENIE: Dodany warunek isFaceUp, żeby nie klikać ponownie w tę samą, już odkrytą kartę
     if (currentState.isProcessing) return;
     if (currentState.cards[index].isMatched || currentState.cards[index].isFaceUp) return;
     if (currentState.firstSelectedCardIndex == index) return;
@@ -61,7 +60,6 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
 
         final isFinished = matchedCards.every((c) => c.isMatched);
 
-        // NAPRAWA: Zamiast copyWith, generujemy czysty stan, aby na pewno wymusić null dla indeksu
         state = MemoryGameState(
           cards: matchedCards,
           firstSelectedCardIndex: null,
@@ -75,13 +73,12 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
           currentCards[firstIndex] = currentCards[firstIndex].copyWith(isFaceUp: false);
           currentCards[index] = currentCards[index].copyWith(isFaceUp: false);
 
-          // NAPRAWA: Podobnie jak wyżej, gwarantujemy null
           state = MemoryGameState(
             cards: currentCards,
             firstSelectedCardIndex: null,
             isProcessing: false,
             moveCount: state.moveCount,
-            isGameFinished: state.isGameFinished, // Zachowujemy obecny stan gry (chociaż defaultowo jest false)
+            isGameFinished: state.isGameFinished,
           );
         });
       }
