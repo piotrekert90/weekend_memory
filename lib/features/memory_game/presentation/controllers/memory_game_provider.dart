@@ -15,7 +15,6 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
   @override
   MemoryGameState build() {
-    // Registers a cleanup listener inside Riverpod's lifecycle instead of overriding dispose()
     ref.onDispose(() {
       _timer?.cancel();
     });
@@ -88,21 +87,16 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
             playedAt: DateTime.now(),
           );
 
-          // Execute asynchronous save operation and invalidate the history provider upon completion
           ref.read(gameHistoryRepositoryProvider).saveResult(result).then((_) {
-            // Invalidating the provider forces any active listeners (UI)
-            // to smoothly transition through loading/data states with the updated list
             ref.invalidate(gameHistoryProvider);
           });
         }
 
-        state = MemoryGameState(
+        state = state.copyWith(
           cards: matchedCards,
           firstSelectedCardIndex: null,
           isProcessing: false,
-          moveCount: state.moveCount,
           isGameFinished: isFinished,
-          durationInSeconds: state.durationInSeconds,
         );
       } else {
         Future.delayed(const Duration(seconds: 1), () {
@@ -110,15 +104,10 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
           currentCards[firstIndex] = currentCards[firstIndex].copyWith(isFaceUp: false);
           currentCards[index] = currentCards[index].copyWith(isFaceUp: false);
 
-          // FIX: Access 'state.durationInSeconds' dynamically here to prevent resetting the timer progress
-          // made during the 1-second delay.
-          state = MemoryGameState(
+          state = state.copyWith(
             cards: currentCards,
             firstSelectedCardIndex: null,
             isProcessing: false,
-            moveCount: state.moveCount,
-            isGameFinished: state.isGameFinished,
-            durationInSeconds: state.durationInSeconds,
           );
         });
       }
