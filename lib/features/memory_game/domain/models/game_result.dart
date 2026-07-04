@@ -4,7 +4,6 @@ part 'game_result.g.dart';
 
 @collection
 class GameResult {
-  // Id pozostaje modyfikowalne, aby Isar mógł automatycznie przypisać wygenerowany klucz po insercie
   Id id = Isar.autoIncrement;
 
   final int moveCount;
