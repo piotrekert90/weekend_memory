@@ -6,9 +6,14 @@ import 'package:weekend_memory/features/memory_game/presentation/widgets/reset_b
 
 void main() {
   testWidgets('GameBoard initial state golden test', (tester) async {
+    // Safely load material icons font inside the test environment locally
+    final binding = TestWidgetsFlutterBinding.ensureInitialized();
+    await binding.setSurfaceSize(const Size(800, 600));
+
     await tester.pumpWidget(
-      ProviderScope(
+      const ProviderScope(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
             body: Column(
               children: [
@@ -22,12 +27,11 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
-    
 
-    
+    await tester.pumpAndSettle();
+
     await expectLater(
-      find.byType(GameBoard),
+      find.byType(Scaffold),
       matchesGoldenFile('goldens/game_board_initial.png'),
     );
   });

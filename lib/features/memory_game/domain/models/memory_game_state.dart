@@ -1,6 +1,7 @@
 import 'memory_card.dart';
 
 class MemoryGameState {
+  static const _unset = Object();
   final List<MemoryCard> cards;
   final int? firstSelectedCardIndex;
   final bool isProcessing;
@@ -9,7 +10,7 @@ class MemoryGameState {
   final int durationInSeconds;
 
   const MemoryGameState({
-    required this.cards,
+  required this.cards,
     this.firstSelectedCardIndex,
     this.isProcessing = false,
     this.moveCount = 0,
@@ -19,7 +20,7 @@ class MemoryGameState {
 
   MemoryGameState copyWith({
     List<MemoryCard>? cards,
-    int? firstSelectedCardIndex,
+    Object? firstSelectedCardIndex = _unset,
     bool? isProcessing,
     int? moveCount,
     bool? isGameFinished,
@@ -27,7 +28,10 @@ class MemoryGameState {
   }) {
     return MemoryGameState(
       cards: cards ?? this.cards,
-      firstSelectedCardIndex: firstSelectedCardIndex ?? this.firstSelectedCardIndex,
+      firstSelectedCardIndex:
+      identical(firstSelectedCardIndex, _unset)
+          ? this.firstSelectedCardIndex
+          : firstSelectedCardIndex as int?,
       isProcessing: isProcessing ?? this.isProcessing,
       moveCount: moveCount ?? this.moveCount,
       isGameFinished: isGameFinished ?? this.isGameFinished,

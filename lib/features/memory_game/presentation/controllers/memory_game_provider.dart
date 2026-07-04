@@ -39,32 +39,34 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   }
 
   void flipCard(int index) {
-    final currentState = state;
+    // 1. Zabezpieczenia na świeżym stanie
+    if (state.isProcessing) return;
+    if (state.cards[index].isMatched || state.cards[index].isFaceUp) return;
+    if (state.firstSelectedCardIndex == index) return;
 
-    if (currentState.isProcessing) return;
-    if (currentState.cards[index].isMatched || currentState.cards[index].isFaceUp) return;
-    if (currentState.firstSelectedCardIndex == index) return;
-
-    if (currentState.moveCount == 0 && currentState.firstSelectedCardIndex == null) {
+    if (state.moveCount == 0 && state.firstSelectedCardIndex == null) {
       _startTimer();
     }
 
-    final updatedCards = List<MemoryCard>.from(currentState.cards);
+    final updatedCards = List<MemoryCard>.from(state.cards);
     updatedCards[index] = updatedCards[index].copyWith(isFaceUp: true);
 
-    if (currentState.firstSelectedCardIndex == null) {
-      state = currentState.copyWith(
+    if (state.firstSelectedCardIndex == null) {
+      // Pierwsza karta
+      state = state.copyWith(
         cards: updatedCards,
         firstSelectedCardIndex: index,
       );
     } else {
-      final firstIndex = currentState.firstSelectedCardIndex!;
+      // Druga karta - pobieramy indeks z aktualnego stanu
+      final firstIndex = state.firstSelectedCardIndex!;
+
       updatedCards[firstIndex] = updatedCards[firstIndex].copyWith(isFaceUp: true);
 
-      state = currentState.copyWith(
+      state = state.copyWith(
         cards: updatedCards,
         isProcessing: true,
-        moveCount: currentState.moveCount + 1,
+        moveCount: state.moveCount + 1,
       );
 
       final firstCard = updatedCards[firstIndex];
@@ -100,8 +102,9 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
         );
       } else {
         Future.delayed(const Duration(seconds: 1), () {
+          if (!ref.mounted) return;
           final currentCards = List<MemoryCard>.from(state.cards);
-          currentCards[firstIndex] = currentCards[firstIndex].copyWith(isFaceUp: false);
+          currentCards[firstIndex] = currentCards[currentCards.indexWhere((c) => c.id == firstCard.id)].copyWith(isFaceUp: false);
           currentCards[index] = currentCards[index].copyWith(isFaceUp: false);
 
           state = state.copyWith(
