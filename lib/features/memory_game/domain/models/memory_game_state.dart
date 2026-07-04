@@ -6,6 +6,7 @@ class MemoryGameState {
   final bool isProcessing;
   final int moveCount;
   final bool isGameFinished;
+  final int durationInSeconds;
 
   const MemoryGameState({
     required this.cards,
@@ -13,6 +14,7 @@ class MemoryGameState {
     this.isProcessing = false,
     this.moveCount = 0,
     this.isGameFinished = false,
+    this.durationInSeconds = 0,
   });
 
   MemoryGameState copyWith({
@@ -21,6 +23,7 @@ class MemoryGameState {
     bool? isProcessing,
     int? moveCount,
     bool? isGameFinished,
+    int? durationInSeconds,
   }) {
     return MemoryGameState(
       cards: cards ?? this.cards,
@@ -28,6 +31,7 @@ class MemoryGameState {
       isProcessing: isProcessing ?? this.isProcessing,
       moveCount: moveCount ?? this.moveCount,
       isGameFinished: isGameFinished ?? this.isGameFinished,
+      durationInSeconds: durationInSeconds ?? this.durationInSeconds,
     );
   }
 }

@@ -51,8 +51,50 @@ class MemoryGame extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memory 4x4'),
+        title: Consumer(
+          builder: (context, ref, child) {
+            final gameState = ref.watch(memoryGameProvider);
+
+            // Format duration into MM:SS
+            final minutes = (gameState.durationInSeconds ~/ 60).toString().padLeft(2, '0');
+            final seconds = (gameState.durationInSeconds % 60).toString().padLeft(2, '0');
+
+            return Row(
+              children: [
+                const Text('Memory'),
+                const Spacer(),
+                // Timer Badge
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.timer_outlined, size: 18),
+                    const SizedBox(width: 4),
+                    Text(
+                      '$minutes:$seconds',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 16),
+                // Moves Badge
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.polyline_outlined, size: 18),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${gameState.moveCount}',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+              ],
+            );
+          },
+        ),
         actions: [
+          // Theme Switcher
           Consumer(
             builder: (context, ref, child) {
               final themeMode = ref.watch(themeProvider);
@@ -68,7 +110,7 @@ class MemoryGame extends ConsumerWidget {
                 },
               );
             },
-          )
+          ),
         ],
       ),
       body: Column(
