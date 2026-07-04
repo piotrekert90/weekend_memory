@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/memory_game_provider.dart';
+
+import '../controllers/memory_game_provider.dart';
 
 class ResetButton extends ConsumerWidget {
   const ResetButton({super.key});

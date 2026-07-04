@@ -6,12 +6,12 @@ import 'package:path_provider/path_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'features/memory_game/data/repositories/game_history_repository.dart';
 import 'features/memory_game/domain/models/game_result.dart';
-import 'features/memory_game/presentation/providers/memory_game_provider.dart';
-import 'features/memory_game/presentation/providers/theme_provider.dart';
+import 'features/memory_game/presentation/controllers/memory_game_provider.dart';
+import 'features/memory_game/presentation/views/game_history_screen.dart';
 import 'features/memory_game/presentation/widgets/game_board.dart';
-import 'features/memory_game/presentation/widgets/game_history_screen.dart';
 import 'features/memory_game/presentation/widgets/reset_button.dart';
 import 'features/memory_game/presentation/widgets/success_dialog.dart';
+import 'core/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

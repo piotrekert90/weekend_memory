@@ -1,12 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:math';
 import 'dart:async';
+import 'dart:math';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../data/repositories/game_history_repository.dart';
+import '../../domain/models/game_result.dart';
 import '../../domain/models/memory_card.dart';
 import '../../domain/models/memory_game_state.dart';
-import '../../domain/models/game_result.dart';
-import '../../data/repositories/game_history_repository.dart';
 
-class MemoryGameNotifier extends Notifier<MemoryGameState> {
+part 'memory_game_provider.g.dart';
+
+@riverpod
+class MemoryGameNotifier extends _$MemoryGameNotifier {
   final _random = Random();
   Timer? _timer;
 
@@ -135,7 +138,3 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
     state = _initializeGame();
   }
 }
-
-final memoryGameProvider = NotifierProvider<MemoryGameNotifier, MemoryGameState>(() {
-  return MemoryGameNotifier();
-});

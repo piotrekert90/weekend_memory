@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/memory_card.dart';
-import '../providers/memory_game_provider.dart';
+import '../controllers/memory_game_provider.dart';
 
 class MemoryCardWidget extends ConsumerWidget {
   final int index;
