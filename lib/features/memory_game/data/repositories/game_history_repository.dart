@@ -31,6 +31,10 @@ class GameHistoryRepository {
   Future<List<GameResult>> fetchAllResults() async {
     final results = await isar.collection<GameResult>().where().anyId().findAll();
 
+    return sortResults(results);
+  }
+
+  List<GameResult> sortResults(List<GameResult> results) {
     results.sort((a, b) {
       final durationCompare = a.durationInSeconds.compareTo(b.durationInSeconds);
       if (durationCompare != 0) {

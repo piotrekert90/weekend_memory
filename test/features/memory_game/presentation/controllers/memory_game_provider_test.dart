@@ -1,7 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:riverpod/riverpod.dart';
-import 'package:isar_community/isar.dart';
 import 'package:fake_async/fake_async.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:isar_community/isar.dart';
 import 'package:weekend_memory/features/memory_game/data/repositories/game_history_repository.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/game_result.dart';
 import 'package:weekend_memory/features/memory_game/presentation/controllers/memory_game_provider.dart';
@@ -23,23 +23,32 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
   Future<List<GameResult>> fetchAllResults() async {
     return [];
   }
+
+  @override
+  List<GameResult> sortResults(List<GameResult> results) {
+    return results;
+  }
 }
 
 void main() {
   group('MemoryGameNotifier Tests', () {
     // Helper to abstract container setup within fakeAsync context
-    void runWithContainer(void Function(ProviderContainer container, FakeGameHistoryRepository repo, FakeAsync async) body) {
+    void runWithContainer(
+      void Function(
+        ProviderContainer container,
+        FakeGameHistoryRepository repo,
+        FakeAsync async,
+      )
+      body,
+    ) {
       fakeAsync((async) {
         final repo = FakeGameHistoryRepository();
         final container = ProviderContainer(
-          overrides: [
-            gameHistoryRepositoryProvider.overrideWithValue(repo),
-          ],
+          overrides: [gameHistoryRepositoryProvider.overrideWithValue(repo)],
         );
 
         // KLUCZ DLA RIVERPOD 3.x: Wymuszenie subskrypcji, aby stan aktualizował się natychmiast
-        final subscription = container.listen(memoryGameProvider, (_, __) {});
-
+        final subscription = container.listen(memoryGameProvider, (previous, next) {});
         try {
           body(container, repo, async);
           async.flushMicrotasks();
@@ -101,7 +110,8 @@ void main() {
         async.flushMicrotasks();
 
         notifier.flipCard(matchingCardIndex);
-        async.flushMicrotasks(); // Riverpod aktualizuje stan synchronicznie dla dopasowania
+        async
+            .flushMicrotasks(); // Riverpod aktualizuje stan synchronicznie dla dopasowania
 
         final finalState = container.read(memoryGameProvider);
         expect(finalState.firstSelectedCardIndex, isNull);
@@ -195,7 +205,9 @@ void main() {
         final initialCards = container.read(memoryGameProvider).cards;
 
         const firstCardIndex = 0;
-        final secondCardIndex = initialCards.indexWhere((c) => c.id != initialCards[firstCardIndex].id);
+        final secondCardIndex = initialCards.indexWhere(
+          (c) => c.id != initialCards[firstCardIndex].id,
+        );
 
         notifier.flipCard(firstCardIndex);
         notifier.flipCard(secondCardIndex);
@@ -203,7 +215,10 @@ void main() {
         final currentState = container.read(memoryGameProvider);
 
         final thirdCardIndex = currentState.cards.indexWhere(
-              (c) => !c.isFaceUp && c.id != initialCards[firstCardIndex].id && c.id != initialCards[secondCardIndex].id,
+          (c) =>
+              !c.isFaceUp &&
+              c.id != initialCards[firstCardIndex].id &&
+              c.id != initialCards[secondCardIndex].id,
         );
 
         notifier.flipCard(thirdCardIndex);
@@ -275,7 +290,10 @@ void main() {
         async.flushMicrotasks();
 
         final stateAfterReset = container.read(memoryGameProvider);
-        expect(stateAfterReset.cards.every((c) => !c.isFaceUp && !c.isMatched), isTrue);
+        expect(
+          stateAfterReset.cards.every((c) => !c.isFaceUp && !c.isMatched),
+          isTrue,
+        );
         expect(stateAfterReset.firstSelectedCardIndex, isNull);
         expect(stateAfterReset.isProcessing, isFalse);
         expect(stateAfterReset.moveCount, 0);
@@ -350,15 +368,11 @@ void main() {
           notifier.flipCard(pair[1]);
         }
 
-        final duration =
-            container.read(memoryGameProvider).durationInSeconds;
+        final duration = container.read(memoryGameProvider).durationInSeconds;
 
         async.elapse(const Duration(seconds: 5));
 
-        expect(
-          container.read(memoryGameProvider).durationInSeconds,
-          duration,
-        );
+        expect(container.read(memoryGameProvider).durationInSeconds, duration);
       });
     });
 
@@ -449,10 +463,7 @@ void main() {
           notifier.flipCard(pair[1]);
           async.flushMicrotasks();
 
-          expect(
-            container.read(memoryGameProvider).isGameFinished,
-            isFalse,
-          );
+          expect(container.read(memoryGameProvider).isGameFinished, isFalse);
         }
 
         // Ostatnia para
@@ -462,10 +473,7 @@ void main() {
         notifier.flipCard(lastPair[1]);
         async.flushMicrotasks();
 
-        expect(
-          container.read(memoryGameProvider).isGameFinished,
-          isTrue,
-        );
+        expect(container.read(memoryGameProvider).isGameFinished, isTrue);
       });
     });
 
@@ -513,9 +521,7 @@ void main() {
         // Niedopasowana para
         notifier.flipCard(0);
 
-        final mismatch = cards.indexWhere(
-              (c) => c.id != cards[0].id,
-        );
+        final mismatch = cards.indexWhere((c) => c.id != cards[0].id);
 
         notifier.flipCard(mismatch);
 
@@ -525,7 +531,7 @@ void main() {
 
         // Dopasowana para
         int match = cards.indexWhere(
-              (c) => c.id == cards[0].id && cards.indexOf(c) != 0,
+          (c) => c.id == cards[0].id && cards.indexOf(c) != 0,
         );
 
         notifier.flipCard(0);
@@ -545,8 +551,9 @@ void main() {
 
         const firstIndex = 0;
 
-        final secondIndex =
-        cards.indexWhere((c) => c.id != cards[firstIndex].id);
+        final secondIndex = cards.indexWhere(
+          (c) => c.id != cards[firstIndex].id,
+        );
 
         notifier.flipCard(firstIndex);
         notifier.flipCard(secondIndex);
@@ -558,8 +565,8 @@ void main() {
         final currentState = container.read(memoryGameProvider);
 
         final thirdIndex = currentState.cards.indexWhere(
-              (c) =>
-          !c.isFaceUp &&
+          (c) =>
+              !c.isFaceUp &&
               c.id != currentState.cards[firstIndex].id &&
               c.id != currentState.cards[secondIndex].id,
         );
@@ -587,11 +594,7 @@ void main() {
         final counts = <String, int>{};
 
         for (final card in state.cards) {
-          counts.update(
-            card.content,
-                (value) => value + 1,
-            ifAbsent: () => 1,
-          );
+          counts.update(card.content, (value) => value + 1, ifAbsent: () => 1);
         }
 
         expect(counts.length, 8);
@@ -609,11 +612,7 @@ void main() {
         final counts = <int, int>{};
 
         for (final card in state.cards) {
-          counts.update(
-            card.id,
-                (value) => value + 1,
-            ifAbsent: () => 1,
-          );
+          counts.update(card.id, (value) => value + 1, ifAbsent: () => 1);
         }
 
         expect(counts.length, 8);
@@ -624,6 +623,4 @@ void main() {
       });
     });
   });
-
-
 }
