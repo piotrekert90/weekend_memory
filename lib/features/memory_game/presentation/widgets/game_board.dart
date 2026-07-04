@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../controllers/memory_game_provider.dart';
 import 'memory_card_widget.dart';
-
 
 class GameBoard extends ConsumerWidget {
   const GameBoard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cardsCount = ref.watch(
+      memoryGameProvider.select((state) => state.cards.length),
+    );
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Używamy faktycznych wymiarów kontenera dostarczonych przez LayoutBuilder
         final maxWidth = constraints.maxWidth;
         final maxHeight = constraints.maxHeight;
-
-        // Określamy orientację na podstawie dostępnej przestrzeni roboczej
         final isLandscape = maxWidth > maxHeight;
-
         final crossAxisCount = isLandscape ? 8 : 4;
 
-        // Dynamicznie wyliczamy idealne childAspectRatio,
-        // biorąc pod uwagę liczbę kolumn/wierszy oraz odstępy (spacing = 8)
         final double childAspectRatio;
         if (isLandscape) {
-          // 8 kolumn, 2 wiersze
           final itemWidth = (maxWidth - (7 * 8) - 16) / 8;
           final itemHeight = (maxHeight - (1 * 8) - 16) / 2;
           childAspectRatio = itemWidth / itemHeight;
         } else {
-          // 4 kolumny, 4 wiersze
           final itemWidth = (maxWidth - (3 * 8) - 16) / 4;
           final itemHeight = (maxHeight - (3 * 8) - 16) / 4;
           childAspectRatio = itemWidth / itemHeight;
@@ -43,7 +39,7 @@ class GameBoard extends ConsumerWidget {
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
-          itemCount: 16,
+          itemCount: cardsCount,
           itemBuilder: (context, index) {
             return MemoryCardWidget(index: index);
           },

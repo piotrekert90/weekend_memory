@@ -14,11 +14,12 @@ class SuccessDialog extends ConsumerWidget {
       actions: [
         TextButton(
           onPressed: () {
+            final gameNotifier = ref.read(memoryGameProvider.notifier);
             Navigator.of(context).pop();
-            Future.microtask(() => ref.read(memoryGameProvider.notifier).resetGame());
+            Future.microtask(() => gameNotifier.resetGame());
           },
           child: const Text('Play Again'),
-        )
+        ),
       ],
     );
   }

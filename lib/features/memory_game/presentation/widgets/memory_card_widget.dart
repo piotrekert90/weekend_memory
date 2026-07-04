@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../domain/models/memory_card.dart';
 import '../controllers/memory_game_provider.dart';
 
@@ -10,8 +11,9 @@ class MemoryCardWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(memoryGameProvider);
-    final card = state.cards[index];
+    final card = ref.watch(
+      memoryGameProvider.select((state) => state.cards[index]),
+    );
     final isRevealed = card.isFaceUp || card.isMatched;
 
     return AnimatedFlipCard(
@@ -38,7 +40,8 @@ class AnimatedFlipCard extends StatefulWidget {
   State<AnimatedFlipCard> createState() => _AnimatedFlipCardState();
 }
 
-class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerProviderStateMixin {
+class _AnimatedFlipCardState extends State<AnimatedFlipCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -107,7 +110,7 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerPr
       onTap: widget.onTap,
       child: Transform(
         alignment: Alignment.center,
-        transform: Matrix4.identity()..rotateY(3.14159), // Prevents text mirroring after rotation
+        transform: Matrix4.identity()..rotateY(3.14159),
         child: Container(
           decoration: BoxDecoration(
             color: backgroundColor,
@@ -115,10 +118,12 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerPr
             border: Border.all(color: borderColor, width: 2),
             boxShadow: [
               BoxShadow(
-                color: theme.brightness == Brightness.dark ? Colors.black45 : Colors.black12,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.black45
+                    : Colors.black12,
                 blurRadius: 4,
                 offset: const Offset(0, 2),
-              )
+              ),
             ],
           ),
           child: Center(
@@ -144,17 +149,15 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard> with SingleTickerPr
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: theme.brightness == Brightness.dark ? Colors.black45 : Colors.black12,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.black45
+                  : Colors.black12,
               blurRadius: 4,
               offset: const Offset(0, 2),
-            )
+            ),
           ],
         ),
-        child: Icon(
-          Icons.help_outline,
-          size: 48,
-          color: colorScheme.onPrimary,
-        ),
+        child: Icon(Icons.help_outline, size: 48, color: colorScheme.onPrimary),
       ),
     );
   }
