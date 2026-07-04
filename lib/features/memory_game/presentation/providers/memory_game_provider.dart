@@ -3,6 +3,8 @@ import 'dart:math';
 import 'dart:async';
 import '../../domain/models/memory_card.dart';
 import '../../domain/models/memory_game_state.dart';
+import '../../domain/models/game_result.dart';
+import '../../data/repositories/game_history_repository.dart';
 
 class MemoryGameNotifier extends Notifier<MemoryGameState> {
   final _random = Random();
@@ -76,6 +78,19 @@ class MemoryGameNotifier extends Notifier<MemoryGameState> {
         if (isFinished) {
           _timer?.cancel();
           _timer = null;
+
+          final result = GameResult(
+            moveCount: state.moveCount,
+            durationInSeconds: state.durationInSeconds,
+            playedAt: DateTime.now(),
+          );
+
+          // Execute asynchronous save operation and invalidate the history provider upon completion
+          ref.read(gameHistoryRepositoryProvider).saveResult(result).then((_) {
+            // Invalidating the provider forces any active listeners (UI)
+            // to smoothly transition through loading/data states with the updated list
+            ref.invalidate(gameHistoryProvider);
+          });
         }
 
         state = MemoryGameState(

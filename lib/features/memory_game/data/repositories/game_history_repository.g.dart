@@ -96,3 +96,42 @@ final class GameHistoryRepositoryProvider
 
 String _$gameHistoryRepositoryHash() =>
     r'b73cc5b17e29caa617fa6981ed21322033ab7f99';
+
+@ProviderFor(gameHistory)
+final gameHistoryProvider = GameHistoryProvider._();
+
+final class GameHistoryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<GameResult>>,
+          List<GameResult>,
+          FutureOr<List<GameResult>>
+        >
+    with $FutureModifier<List<GameResult>>, $FutureProvider<List<GameResult>> {
+  GameHistoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'gameHistoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$gameHistoryHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<GameResult>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<GameResult>> create(Ref ref) {
+    return gameHistory(ref);
+  }
+}
+
+String _$gameHistoryHash() => r'f5d90d5d0ac478de4bc7db1b12144e6b30a5f3d8';

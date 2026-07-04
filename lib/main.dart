@@ -9,6 +9,7 @@ import 'features/memory_game/domain/models/game_result.dart';
 import 'features/memory_game/presentation/providers/memory_game_provider.dart';
 import 'features/memory_game/presentation/providers/theme_provider.dart';
 import 'features/memory_game/presentation/widgets/game_board.dart';
+import 'features/memory_game/presentation/widgets/game_history_screen.dart';
 import 'features/memory_game/presentation/widgets/reset_button.dart';
 import 'features/memory_game/presentation/widgets/success_dialog.dart';
 
@@ -119,6 +120,17 @@ class MemoryGame extends ConsumerWidget {
           },
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            tooltip: 'View Game History',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const GameHistoryScreen(),
+                ),
+              );
+            },
+          ),
           // Theme Switcher
           Consumer(
             builder: (context, ref, child) {

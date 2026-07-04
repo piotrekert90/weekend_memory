@@ -24,17 +24,27 @@ class GameHistoryRepository {
 
   Future<void> saveResult(GameResult result) async {
     await isar.writeTxn(() async {
-      await isar.gameResults.put(result);
+      await isar.collection<GameResult>().put(result);
     });
   }
 
   Future<List<GameResult>> fetchAllResults() async {
-    // 1. Pobieramy całą kolekcję na surowo, omijając generowane extensions sortowania
-    final results = await isar.gameResults.where().anyId().findAll();
+    final results = await isar.collection<GameResult>().where().anyId().findAll();
 
-    // 2. Sortujemy w Darcie (najnowsze gry na samej górze)
-    results.sort((a, b) => b.playedAt.compareTo(a.playedAt));
+    results.sort((a, b) {
+      final durationCompare = a.durationInSeconds.compareTo(b.durationInSeconds);
+      if (durationCompare != 0) {
+        return durationCompare;
+      }
+      return a.moveCount.compareTo(b.moveCount);
+    });
 
     return results;
   }
+}
+
+@riverpod
+Future<List<GameResult>> gameHistory(Ref ref) async {
+  final repository = ref.watch(gameHistoryRepositoryProvider);
+  return repository.fetchAllResults();
 }
