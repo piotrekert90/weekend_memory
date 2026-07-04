@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'memory_card_widget.dart';
 
+
 class GameBoard extends ConsumerWidget {
   const GameBoard({super.key});
 
@@ -10,12 +11,29 @@ class GameBoard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final size = MediaQuery.of(context).size;
-        final aspectRatio = size.height / size.width;
+        // Używamy faktycznych wymiarów kontenera dostarczonych przez LayoutBuilder
+        final maxWidth = constraints.maxWidth;
+        final maxHeight = constraints.maxHeight;
 
-        final isLandscape = aspectRatio < 0.7;
+        // Określamy orientację na podstawie dostępnej przestrzeni roboczej
+        final isLandscape = maxWidth > maxHeight;
+
         final crossAxisCount = isLandscape ? 8 : 4;
-        final childAspectRatio = isLandscape ? 0.8 : 1.0;
+
+        // Dynamicznie wyliczamy idealne childAspectRatio,
+        // biorąc pod uwagę liczbę kolumn/wierszy oraz odstępy (spacing = 8)
+        final double childAspectRatio;
+        if (isLandscape) {
+          // 8 kolumn, 2 wiersze
+          final itemWidth = (maxWidth - (7 * 8) - 16) / 8;
+          final itemHeight = (maxHeight - (1 * 8) - 16) / 2;
+          childAspectRatio = itemWidth / itemHeight;
+        } else {
+          // 4 kolumny, 4 wiersze
+          final itemWidth = (maxWidth - (3 * 8) - 16) / 4;
+          final itemHeight = (maxHeight - (3 * 8) - 16) / 4;
+          childAspectRatio = itemWidth / itemHeight;
+        }
 
         return GridView.builder(
           padding: const EdgeInsets.all(8),
