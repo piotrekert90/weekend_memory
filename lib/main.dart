@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isar_community/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'core/theme/app_theme.dart';
+import 'features/memory_game/data/repositories/game_history_repository.dart';
+import 'features/memory_game/domain/models/game_result.dart';
 import 'features/memory_game/presentation/providers/memory_game_provider.dart';
 import 'features/memory_game/presentation/providers/theme_provider.dart';
 import 'features/memory_game/presentation/widgets/game_board.dart';
 import 'features/memory_game/presentation/widgets/reset_button.dart';
 import 'features/memory_game/presentation/widgets/success_dialog.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final directory = await getApplicationDocumentsDirectory();
+
+  final isar = await Isar.open([GameResultSchema], directory: directory.path);
+
+  runApp(
+    ProviderScope(
+      overrides: [isarProvider.overrideWithValue(isar)],
+      child: const MyApp(), // Twoja główna klasa aplikacji
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
@@ -56,8 +71,12 @@ class MemoryGame extends ConsumerWidget {
             final gameState = ref.watch(memoryGameProvider);
 
             // Format duration into MM:SS
-            final minutes = (gameState.durationInSeconds ~/ 60).toString().padLeft(2, '0');
-            final seconds = (gameState.durationInSeconds % 60).toString().padLeft(2, '0');
+            final minutes = (gameState.durationInSeconds ~/ 60)
+                .toString()
+                .padLeft(2, '0');
+            final seconds = (gameState.durationInSeconds % 60)
+                .toString()
+                .padLeft(2, '0');
 
             return Row(
               children: [
@@ -71,7 +90,10 @@ class MemoryGame extends ConsumerWidget {
                     const SizedBox(width: 4),
                     Text(
                       '$minutes:$seconds',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
@@ -84,7 +106,10 @@ class MemoryGame extends ConsumerWidget {
                     const SizedBox(width: 4),
                     Text(
                       '${gameState.moveCount}',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
@@ -98,15 +123,21 @@ class MemoryGame extends ConsumerWidget {
           Consumer(
             builder: (context, ref, child) {
               final themeMode = ref.watch(themeProvider);
-              final platformBrightness = MediaQuery.of(context).platformBrightness;
+              final platformBrightness = MediaQuery.of(
+                context,
+              ).platformBrightness;
 
-              final isDark = themeMode == ThemeMode.dark ||
-                  (themeMode == ThemeMode.system && platformBrightness == Brightness.dark);
+              final isDark =
+                  themeMode == ThemeMode.dark ||
+                  (themeMode == ThemeMode.system &&
+                      platformBrightness == Brightness.dark);
 
               return IconButton(
                 icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
                 onPressed: () {
-                  ref.read(themeProvider.notifier).toggleTheme(platformBrightness);
+                  ref
+                      .read(themeProvider.notifier)
+                      .toggleTheme(platformBrightness);
                 },
               );
             },
