@@ -1,0 +1,12 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Pamięć",
+  "timerLabel": "Czas",
+  "movesLabel": "Ruchy",
+  "durationLabel": "Czas trwania",
+  "viewHistory": "Zobacz historię gier",
+  "playAgain": "Graj ponownie",
+  "congratulationsTitle": "Gratulacje!",
+  "successMessage": "Znalazłeś wszystkie pary!",
+  "noGamesPlayed": "Nie rozegrałeś jeszcze żadnej gry. Zaczynaj!"
+}

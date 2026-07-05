@@ -8,6 +8,7 @@ import 'core/theme/theme_provider.dart';
 import 'features/memory_game/data/repositories/game_history_repository.dart';
 import 'features/memory_game/domain/models/game_result.dart';
 import 'features/memory_game/presentation/screens/memory_game_screen.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,8 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Memory Game',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,

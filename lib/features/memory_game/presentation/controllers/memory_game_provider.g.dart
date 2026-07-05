@@ -42,7 +42,7 @@ final class MemoryGameNotifierProvider
 }
 
 String _$memoryGameNotifierHash() =>
-    r'eb76e22a59099107f7576c352cf23cd79f1c719b';
+    r'2cce3a227ec4813f8ba1724d96d87475f0ac9617';
 
 abstract class _$MemoryGameNotifier extends $Notifier<MemoryGameState> {
   MemoryGameState build();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../data/repositories/game_history_repository.dart';
 
 class GameHistoryScreen extends ConsumerWidget {
@@ -8,17 +9,16 @@ class GameHistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context)!;
     final historyAsync = ref.watch(gameHistoryProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Game History')),
+      appBar: AppBar(title: Text(localizations.viewHistory)),
       body: historyAsync.when(
         data: (results) {
           if (results.isEmpty) {
-            return const Center(
-              child: Text('No games played yet. Go win some!'),
-            );
+            return Center(child: Text(localizations.noGamesPlayed));
           }
 
           return ListView.builder(
@@ -35,8 +35,8 @@ class GameHistoryScreen extends ConsumerWidget {
                   backgroundColor: theme.colorScheme.primaryContainer,
                   child: Text('${index + 1}'),
                 ),
-                title: Text('Moves: ${result.moveCount}'),
-                subtitle: Text('Duration: $timeString'),
+                title: Text('${localizations.movesLabel}: ${result.moveCount}'),
+                subtitle: Text('${localizations.durationLabel}: $timeString'),
                 trailing: Text(
                   _formatDateTime(result.playedAt),
                   style: theme.textTheme.bodySmall,
