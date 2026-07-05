@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../data/repositories/game_history_repository.dart';
 import '../../domain/models/game_result.dart';
 import '../../domain/models/memory_card.dart';
@@ -39,7 +41,6 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   }
 
   void flipCard(int index) {
-    // 1. Zabezpieczenia na świeżym stanie
     if (state.isProcessing) return;
     if (state.cards[index].isMatched || state.cards[index].isFaceUp) return;
     if (state.firstSelectedCardIndex == index) return;
@@ -52,16 +53,15 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     updatedCards[index] = updatedCards[index].copyWith(isFaceUp: true);
 
     if (state.firstSelectedCardIndex == null) {
-      // Pierwsza karta
       state = state.copyWith(
         cards: updatedCards,
         firstSelectedCardIndex: index,
       );
     } else {
-      // Druga karta - pobieramy indeks z aktualnego stanu
       final firstIndex = state.firstSelectedCardIndex!;
-
-      updatedCards[firstIndex] = updatedCards[firstIndex].copyWith(isFaceUp: true);
+      updatedCards[firstIndex] = updatedCards[firstIndex].copyWith(
+        isFaceUp: true,
+      );
 
       state = state.copyWith(
         cards: updatedCards,
@@ -74,7 +74,9 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
       if (firstCard.id == secondCard.id) {
         final matchedCards = List<MemoryCard>.from(updatedCards);
-        matchedCards[firstIndex] = matchedCards[firstIndex].copyWith(isMatched: true);
+        matchedCards[firstIndex] = matchedCards[firstIndex].copyWith(
+          isMatched: true,
+        );
         matchedCards[index] = matchedCards[index].copyWith(isMatched: true);
 
         final isFinished = matchedCards.every((c) => c.isMatched);
@@ -103,8 +105,11 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       } else {
         Future.delayed(const Duration(seconds: 1), () {
           if (!ref.mounted) return;
+
           final currentCards = List<MemoryCard>.from(state.cards);
-          currentCards[firstIndex] = currentCards[currentCards.indexWhere((c) => c.id == firstCard.id)].copyWith(isFaceUp: false);
+          currentCards[firstIndex] = currentCards[firstIndex].copyWith(
+            isFaceUp: false,
+          );
           currentCards[index] = currentCards[index].copyWith(isFaceUp: false);
 
           state = state.copyWith(

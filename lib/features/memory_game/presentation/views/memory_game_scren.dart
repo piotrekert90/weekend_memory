@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/theme/theme_provider.dart';
 import '../controllers/memory_game_provider.dart';
 import '../widgets/game_board.dart';
@@ -12,19 +13,18 @@ class MemoryGameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Reactive dialog trigger without causing widget rebuilds
-    ref.listen(
-      memoryGameProvider.select((state) => state.isGameFinished),
-          (previous, next) {
-        if (next && context.mounted) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const SuccessDialog(),
-          );
-        }
-      },
-    );
+    ref.listen(memoryGameProvider.select((state) => state.isGameFinished), (
+      previous,
+      next,
+    ) {
+      if (next && context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const SuccessDialog(),
+        );
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -59,8 +59,12 @@ class _GameAppBarTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final duration = ref.watch(memoryGameProvider.select((state) => state.durationInSeconds));
-    final moves = ref.watch(memoryGameProvider.select((state) => state.moveCount));
+    final duration = ref.watch(
+      memoryGameProvider.select((state) => state.durationInSeconds),
+    );
+    final moves = ref.watch(
+      memoryGameProvider.select((state) => state.moveCount),
+    );
 
     final minutes = (duration ~/ 60).toString().padLeft(2, '0');
     final seconds = (duration % 60).toString().padLeft(2, '0');
@@ -103,12 +107,13 @@ class _ThemeToggleButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // FIX: Using the correct generated provider name 'themeProvider'
     final themeMode = ref.watch(themeProvider);
     final platformBrightness = MediaQuery.of(context).platformBrightness;
 
-    final isDark = themeMode == ThemeMode.dark ||
-        (themeMode == ThemeMode.system && platformBrightness == Brightness.dark);
+    final isDark =
+        themeMode == ThemeMode.dark ||
+        (themeMode == ThemeMode.system &&
+            platformBrightness == Brightness.dark);
 
     return IconButton(
       icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
