@@ -7,7 +7,7 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'features/memory_game/data/repositories/game_history_repository.dart';
 import 'features/memory_game/domain/models/game_result.dart';
-import 'features/memory_game/presentation/views/memory_game_scren.dart';
+import 'features/memory_game/presentation/screens/memory_game_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
