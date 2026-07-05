@@ -32,28 +32,25 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
 
 void main() {
   group('MemoryGameNotifier Tests', () {
-    // Helper to abstract container setup within fakeAsync context
     void runWithContainer(
-      void Function(
-        ProviderContainer container,
-        FakeGameHistoryRepository repo,
-        FakeAsync async,
-      )
-      body,
-    ) {
+        void Function(
+            ProviderContainer container,
+            FakeGameHistoryRepository repo,
+            FakeAsync async,
+            ) body,
+        ) {
       fakeAsync((async) {
         final repo = FakeGameHistoryRepository();
         final container = ProviderContainer(
           overrides: [gameHistoryRepositoryProvider.overrideWithValue(repo)],
         );
 
-        // KLUCZ DLA RIVERPOD 3.x: Wymuszenie subskrypcji, aby stan aktualizował się natychmiast
         final subscription = container.listen(memoryGameProvider, (previous, next) {});
         try {
           body(container, repo, async);
           async.flushMicrotasks();
         } finally {
-          subscription.close(); // Zamykamy subskrypcję przed czyszczeniem
+          subscription.close();
           async.flushTimers();
           container.dispose();
         }
@@ -110,8 +107,7 @@ void main() {
         async.flushMicrotasks();
 
         notifier.flipCard(matchingCardIndex);
-        async
-            .flushMicrotasks(); // Riverpod aktualizuje stan synchronicznie dla dopasowania
+        async.flushMicrotasks();
 
         final finalState = container.read(memoryGameProvider);
         expect(finalState.firstSelectedCardIndex, isNull);
@@ -142,10 +138,8 @@ void main() {
         notifier.flipCard(nonMatchingCardIndex);
         async.flushMicrotasks();
 
-        // W tym momencie isProcessing MUSI być true, czekamy na zamkcie kart
         expect(container.read(memoryGameProvider).isProcessing, isTrue);
 
-        // KLUCZ: Przesuwamy wirtualny zegar o 1 sekundę, aby Future.delayed się wykonał
         async.elapse(const Duration(seconds: 1));
 
         final finalState = container.read(memoryGameProvider);
@@ -163,7 +157,6 @@ void main() {
         notifier.flipCard(0);
         async.flushMicrotasks();
 
-        // Fast-forward 2 periodic timer ticks
         async.elapse(const Duration(seconds: 2));
         async.flushMicrotasks();
 
@@ -184,7 +177,7 @@ void main() {
 
         for (final pair in cardToIndices.values) {
           notifier.flipCard(pair[0]);
-          async.flushMicrotasks(); // <-- DODAJ TO TUTAJ
+          async.flushMicrotasks();
 
           notifier.flipCard(pair[1]);
           async.flushMicrotasks();
@@ -206,7 +199,7 @@ void main() {
 
         const firstCardIndex = 0;
         final secondCardIndex = initialCards.indexWhere(
-          (c) => c.id != initialCards[firstCardIndex].id,
+              (c) => c.id != initialCards[firstCardIndex].id,
         );
 
         notifier.flipCard(firstCardIndex);
@@ -215,8 +208,8 @@ void main() {
         final currentState = container.read(memoryGameProvider);
 
         final thirdCardIndex = currentState.cards.indexWhere(
-          (c) =>
-              !c.isFaceUp &&
+              (c) =>
+          !c.isFaceUp &&
               c.id != initialCards[firstCardIndex].id &&
               c.id != initialCards[secondCardIndex].id,
         );
@@ -423,16 +416,13 @@ void main() {
           pairs.putIfAbsent(cards[i].id, () => []).add(i);
         }
 
-        // Start timera
         notifier.flipCard(pairs.values.first[0]);
 
         async.elapse(const Duration(seconds: 3));
 
-        // Dobierz pierwszą parę
         notifier.flipCard(pairs.values.first[1]);
         async.flushMicrotasks();
 
-        // Dobierz pozostałe pary
         for (final pair in pairs.values.skip(1)) {
           notifier.flipCard(pair[0]);
           notifier.flipCard(pair[1]);
@@ -457,7 +447,6 @@ void main() {
 
         final allPairs = pairs.values.toList();
 
-        // Dobierz wszystkie oprócz ostatniej
         for (final pair in allPairs.take(allPairs.length - 1)) {
           notifier.flipCard(pair[0]);
           notifier.flipCard(pair[1]);
@@ -466,7 +455,6 @@ void main() {
           expect(container.read(memoryGameProvider).isGameFinished, isFalse);
         }
 
-        // Ostatnia para
         final lastPair = allPairs.last;
 
         notifier.flipCard(lastPair[0]);
@@ -488,7 +476,6 @@ void main() {
           pairs.putIfAbsent(cards[i].id, () => []).add(i);
         }
 
-        // Ukończ grę
         for (final pair in pairs.values) {
           notifier.flipCard(pair[0]);
           notifier.flipCard(pair[1]);
@@ -518,7 +505,6 @@ void main() {
 
         final cards = container.read(memoryGameProvider).cards;
 
-        // Niedopasowana para
         notifier.flipCard(0);
 
         final mismatch = cards.indexWhere((c) => c.id != cards[0].id);
@@ -529,9 +515,8 @@ void main() {
 
         expect(container.read(memoryGameProvider).moveCount, 1);
 
-        // Dopasowana para
         int match = cards.indexWhere(
-          (c) => c.id == cards[0].id && cards.indexOf(c) != 0,
+              (c) => c.id == cards[0].id && cards.indexOf(c) != 0,
         );
 
         notifier.flipCard(0);
@@ -552,7 +537,7 @@ void main() {
         const firstIndex = 0;
 
         final secondIndex = cards.indexWhere(
-          (c) => c.id != cards[firstIndex].id,
+              (c) => c.id != cards[firstIndex].id,
         );
 
         notifier.flipCard(firstIndex);
@@ -565,8 +550,8 @@ void main() {
         final currentState = container.read(memoryGameProvider);
 
         final thirdIndex = currentState.cards.indexWhere(
-          (c) =>
-              !c.isFaceUp &&
+              (c) =>
+          !c.isFaceUp &&
               c.id != currentState.cards[firstIndex].id &&
               c.id != currentState.cards[secondIndex].id,
         );

@@ -6,7 +6,6 @@ import 'package:weekend_memory/features/memory_game/presentation/widgets/reset_b
 
 void main() {
   testWidgets('GameBoard initial state golden test', (tester) async {
-    // Safely load material icons font inside the test environment locally
     final binding = TestWidgetsFlutterBinding.ensureInitialized();
     await binding.setSurfaceSize(const Size(800, 600));
 
