@@ -33,19 +33,23 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
 void main() {
   group('MemoryGameNotifier Tests', () {
     void runWithContainer(
-        void Function(
-            ProviderContainer container,
-            FakeGameHistoryRepository repo,
-            FakeAsync async,
-            ) body,
-        ) {
+      void Function(
+        ProviderContainer container,
+        FakeGameHistoryRepository repo,
+        FakeAsync async,
+      )
+      body,
+    ) {
       fakeAsync((async) {
         final repo = FakeGameHistoryRepository();
         final container = ProviderContainer(
           overrides: [gameHistoryRepositoryProvider.overrideWithValue(repo)],
         );
 
-        final subscription = container.listen(memoryGameProvider, (previous, next) {});
+        final subscription = container.listen(
+          memoryGameProvider,
+          (previous, next) {},
+        );
         try {
           body(container, repo, async);
           async.flushMicrotasks();
@@ -199,7 +203,7 @@ void main() {
 
         const firstCardIndex = 0;
         final secondCardIndex = initialCards.indexWhere(
-              (c) => c.id != initialCards[firstCardIndex].id,
+          (c) => c.id != initialCards[firstCardIndex].id,
         );
 
         notifier.flipCard(firstCardIndex);
@@ -208,8 +212,8 @@ void main() {
         final currentState = container.read(memoryGameProvider);
 
         final thirdCardIndex = currentState.cards.indexWhere(
-              (c) =>
-          !c.isFaceUp &&
+          (c) =>
+              !c.isFaceUp &&
               c.id != initialCards[firstCardIndex].id &&
               c.id != initialCards[secondCardIndex].id,
         );
@@ -516,7 +520,7 @@ void main() {
         expect(container.read(memoryGameProvider).moveCount, 1);
 
         int match = cards.indexWhere(
-              (c) => c.id == cards[0].id && cards.indexOf(c) != 0,
+          (c) => c.id == cards[0].id && cards.indexOf(c) != 0,
         );
 
         notifier.flipCard(0);
@@ -537,7 +541,7 @@ void main() {
         const firstIndex = 0;
 
         final secondIndex = cards.indexWhere(
-              (c) => c.id != cards[firstIndex].id,
+          (c) => c.id != cards[firstIndex].id,
         );
 
         notifier.flipCard(firstIndex);
@@ -550,8 +554,8 @@ void main() {
         final currentState = container.read(memoryGameProvider);
 
         final thirdIndex = currentState.cards.indexWhere(
-              (c) =>
-          !c.isFaceUp &&
+          (c) =>
+              !c.isFaceUp &&
               c.id != currentState.cards[firstIndex].id &&
               c.id != currentState.cards[secondIndex].id,
         );

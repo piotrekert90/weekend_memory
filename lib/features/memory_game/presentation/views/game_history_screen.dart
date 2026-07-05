@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../data/repositories/game_history_repository.dart';
 
 class GameHistoryScreen extends ConsumerWidget {
@@ -11,9 +12,7 @@ class GameHistoryScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game History'),
-      ),
+      appBar: AppBar(title: const Text('Game History')),
       body: historyAsync.when(
         data: (results) {
           if (results.isEmpty) {
@@ -28,7 +27,8 @@ class GameHistoryScreen extends ConsumerWidget {
               final result = results[index];
               final minutes = result.durationInSeconds ~/ 60;
               final seconds = result.durationInSeconds % 60;
-              final timeString = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+              final timeString =
+                  '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
               return ListTile(
                 leading: CircleAvatar(
@@ -46,9 +46,8 @@ class GameHistoryScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Text('Failed to load history: $error'),
-        ),
+        error: (error, stack) =>
+            Center(child: Text('Failed to load history: $error')),
       ),
     );
   }

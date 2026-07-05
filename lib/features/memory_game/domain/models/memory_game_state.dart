@@ -10,7 +10,7 @@ class MemoryGameState {
   final int durationInSeconds;
 
   const MemoryGameState({
-  required this.cards,
+    required this.cards,
     this.firstSelectedCardIndex,
     this.isProcessing = false,
     this.moveCount = 0,
@@ -28,8 +28,7 @@ class MemoryGameState {
   }) {
     return MemoryGameState(
       cards: cards ?? this.cards,
-      firstSelectedCardIndex:
-      identical(firstSelectedCardIndex, _unset)
+      firstSelectedCardIndex: identical(firstSelectedCardIndex, _unset)
           ? this.firstSelectedCardIndex
           : firstSelectedCardIndex as int?,
       isProcessing: isProcessing ?? this.isProcessing,

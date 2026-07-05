@@ -1,14 +1,13 @@
 import 'package:isar_community/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../domain/models/game_result.dart';
 
 part 'game_history_repository.g.dart';
 
 @riverpod
 Isar isar(Ref ref) {
-  throw UnimplementedError(
-    'Isar provider must be overridden in ProviderScope',
-  );
+  throw UnimplementedError('Isar provider must be overridden in ProviderScope');
 }
 
 @riverpod
@@ -29,14 +28,20 @@ class GameHistoryRepository {
   }
 
   Future<List<GameResult>> fetchAllResults() async {
-    final results = await isar.collection<GameResult>().where().anyId().findAll();
+    final results = await isar
+        .collection<GameResult>()
+        .where()
+        .anyId()
+        .findAll();
 
     return sortResults(results);
   }
 
   List<GameResult> sortResults(List<GameResult> results) {
     results.sort((a, b) {
-      final durationCompare = a.durationInSeconds.compareTo(b.durationInSeconds);
+      final durationCompare = a.durationInSeconds.compareTo(
+        b.durationInSeconds,
+      );
       if (durationCompare != 0) {
         return durationCompare;
       }
