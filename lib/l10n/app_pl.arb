@@ -14,5 +14,18 @@
   "clearHistoryTitle": "Wyczyszczenie historii",
   "clearHistoryConfirm": "Czy na pewno chcesz bezpowrotnie usunąć wszystkie wyniki gier?",
   "cancelLabel": "Anuluj",
-  "deleteLabel": "Usuń"
+  "deleteLabel": "Usuń",
+  "successMoves": "Ruchy: {count}",
+    "@successMoves": {
+      "placeholders": {
+        "count": { "type": "int" }
+      }
+    },
+    "successDuration": "Czas: {time}",
+    "@successDuration": {
+      "placeholders": {
+        "time": { "type": "String" }
+      }
+    },
+    "viewHistoryButton": "Zobacz historię"
 }

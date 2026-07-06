@@ -14,5 +14,18 @@
   "clearHistoryTitle": "Clear History",
   "clearHistoryConfirm": "Are you sure you want to permanently delete all game results?",
   "cancelLabel": "Cancel",
-  "deleteLabel": "Delete"
+  "deleteLabel": "Delete",
+  "successMoves": "Moves: {count}",
+    "@successMoves": {
+      "placeholders": {
+        "count": { "type": "int" }
+      }
+    },
+    "successDuration": "Time: {time}",
+    "@successDuration": {
+      "placeholders": {
+        "time": { "type": "String" }
+      }
+    },
+    "viewHistoryButton": "View History"
 }

@@ -184,6 +184,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get deleteLabel;
+
+  /// No description provided for @successMoves.
+  ///
+  /// In en, this message translates to:
+  /// **'Moves: {count}'**
+  String successMoves(int count);
+
+  /// No description provided for @successDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Time: {time}'**
+  String successDuration(String time);
+
+  /// No description provided for @viewHistoryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View History'**
+  String get viewHistoryButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

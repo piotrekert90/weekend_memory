@@ -52,4 +52,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get deleteLabel => 'Usuń';
+
+  @override
+  String successMoves(int count) {
+    return 'Ruchy: $count';
+  }
+
+  @override
+  String successDuration(String time) {
+    return 'Czas: $time';
+  }
+
+  @override
+  String get viewHistoryButton => 'Zobacz historię';
 }
