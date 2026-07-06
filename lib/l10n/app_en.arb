@@ -8,5 +8,6 @@
   "playAgain": "Play Again",
   "congratulationsTitle": "Congratulations!",
   "successMessage": "You found all matching pairs!",
-  "noGamesPlayed": "No games played yet. Go win some!"
+  "noGamesPlayed": "No games played yet. Go win some!",
+  "resetGameButton": "Reset Game"
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../controllers/memory_game_provider.dart';
 
 class ResetButton extends ConsumerWidget {
@@ -8,12 +9,14 @@ class ResetButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ElevatedButton.icon(
         onPressed: () => ref.read(memoryGameProvider.notifier).resetGame(),
         icon: const Icon(Icons.refresh),
-        label: const Text('Reset Game'),
+        label: Text(localizations.resetGameButton),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
         ),

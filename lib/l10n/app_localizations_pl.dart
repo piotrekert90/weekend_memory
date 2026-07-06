@@ -34,4 +34,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get noGamesPlayed => 'Nie rozegrałeś jeszcze żadnej gry. Zaczynaj!';
+
+  @override
+  String get resetGameButton => 'Resetuj grę';
 }

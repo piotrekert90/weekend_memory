@@ -8,5 +8,6 @@
   "playAgain": "Graj ponownie",
   "congratulationsTitle": "Gratulacje!",
   "successMessage": "Znalazłeś wszystkie pary!",
-  "noGamesPlayed": "Nie rozegrałeś jeszcze żadnej gry. Zaczynaj!"
+  "noGamesPlayed": "Nie rozegrałeś jeszcze żadnej gry. Zaczynaj!",
+  "resetGameButton": "Resetuj grę"
 }

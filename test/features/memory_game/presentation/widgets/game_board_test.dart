@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/game_board.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/reset_button.dart';
+import 'package:weekend_memory/l10n/app_localizations.dart';
 
 void main() {
   testWidgets('GameBoard initial state golden test', (tester) async {
@@ -13,6 +14,9 @@ void main() {
       const ProviderScope(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('en'),
           home: Scaffold(
             body: Column(
               children: [

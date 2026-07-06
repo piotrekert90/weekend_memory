@@ -148,6 +148,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No games played yet. Go win some!'**
   String get noGamesPlayed;
+
+  /// No description provided for @resetGameButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Game'**
+  String get resetGameButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

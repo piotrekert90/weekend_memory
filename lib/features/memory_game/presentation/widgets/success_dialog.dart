@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../controllers/memory_game_provider.dart';
 
 class SuccessDialog extends ConsumerWidget {
@@ -8,9 +9,11 @@ class SuccessDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context)!;
+
     return AlertDialog(
-      title: const Text('Congratulations!'),
-      content: const Text('You found all matching pairs!'),
+      title: Text(localizations.congratulationsTitle),
+      content: Text(localizations.successMessage),
       actions: [
         TextButton(
           onPressed: () {
@@ -18,7 +21,7 @@ class SuccessDialog extends ConsumerWidget {
             Navigator.of(context).pop();
             Future.microtask(() => gameNotifier.resetGame());
           },
-          child: const Text('Play Again'),
+          child: Text(localizations.playAgain),
         ),
       ],
     );
