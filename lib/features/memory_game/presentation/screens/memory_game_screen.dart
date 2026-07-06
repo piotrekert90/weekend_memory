@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/theme_provider.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../controllers/memory_game_provider.dart';
 import '../widgets/game_board.dart';
 import '../widgets/reset_button.dart';
@@ -13,6 +14,8 @@ class MemoryGameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context)!;
+
     ref.listen(memoryGameProvider.select((state) => state.isGameFinished), (
       previous,
       next,
@@ -32,7 +35,7 @@ class MemoryGameScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.history),
-            tooltip: 'View Game History',
+            tooltip: localizations.viewHistory,
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -59,6 +62,7 @@ class _GameAppBarTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context)!;
     final duration = ref.watch(
       memoryGameProvider.select((state) => state.durationInSeconds),
     );
@@ -71,7 +75,7 @@ class _GameAppBarTitle extends ConsumerWidget {
 
     return Row(
       children: [
-        const Text('Memory'),
+        Text(localizations.appTitle),
         const Spacer(),
         Row(
           mainAxisSize: MainAxisSize.min,
