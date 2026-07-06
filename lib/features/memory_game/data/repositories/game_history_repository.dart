@@ -37,6 +37,12 @@ class GameHistoryRepository {
     return sortResults(results);
   }
 
+  Future<void> clearHistory() async {
+    await isar.writeTxn(() async {
+      await isar.collection<GameResult>().clear();
+    });
+  }
+
   List<GameResult> sortResults(List<GameResult> results) {
     results.sort((a, b) {
       final durationCompare = a.durationInSeconds.compareTo(

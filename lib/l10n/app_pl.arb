@@ -9,5 +9,10 @@
   "congratulationsTitle": "Gratulacje!",
   "successMessage": "Znalazłeś wszystkie pary!",
   "noGamesPlayed": "Nie rozegrałeś jeszcze żadnej gry. Zaczynaj!",
-  "resetGameButton": "Resetuj grę"
+  "resetGameButton": "Resetuj grę",
+  "clearHistoryTooltip": "Wyczyść historię gier",
+  "clearHistoryTitle": "Wyczyszczenie historii",
+  "clearHistoryConfirm": "Czy na pewno chcesz bezpowrotnie usunąć wszystkie wyniki gier?",
+  "cancelLabel": "Anuluj",
+  "deleteLabel": "Usuń"
 }

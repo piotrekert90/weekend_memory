@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../data/repositories/game_history_repository.dart';
@@ -14,12 +15,28 @@ class GameHistoryScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(localizations.viewHistory)),
+      appBar: AppBar(
+        title: Text(localizations.viewHistory),
+        actions: [
+          historyAsync.maybeWhen(
+            data: (results) => results.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.delete_sweep),
+                    tooltip: localizations.clearHistoryTooltip,
+                    onPressed: () => _showClearHistoryDialog(context, ref),
+                  )
+                : const SizedBox.shrink(),
+            orElse: () => const SizedBox.shrink(),
+          ),
+        ],
+      ),
       body: historyAsync.when(
         data: (results) {
           if (results.isEmpty) {
             return Center(child: Text(localizations.noGamesPlayed));
           }
+
+          final currentLocale = Localizations.localeOf(context).toString();
 
           return ListView.builder(
             itemCount: results.length,
@@ -38,7 +55,9 @@ class GameHistoryScreen extends ConsumerWidget {
                 title: Text('${localizations.movesLabel}: ${result.moveCount}'),
                 subtitle: Text('${localizations.durationLabel}: $timeString'),
                 trailing: Text(
-                  _formatDateTime(result.playedAt),
+                  DateFormat.yMd(
+                    currentLocale,
+                  ).add_Hm().format(result.playedAt),
                   style: theme.textTheme.bodySmall,
                 ),
               );
@@ -52,13 +71,38 @@ class GameHistoryScreen extends ConsumerWidget {
     );
   }
 
-  String _formatDateTime(DateTime dateTime) {
-    final year = dateTime.year;
-    final month = dateTime.month.toString().padLeft(2, '0');
-    final day = dateTime.day.toString().padLeft(2, '0');
-    final hour = dateTime.hour.toString().padLeft(2, '0');
-    final minute = dateTime.minute.toString().padLeft(2, '0');
+  Future<void> _showClearHistoryDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final localizations = AppLocalizations.of(context)!;
 
-    return '$year-$month-$day $hour:$minute';
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(localizations.clearHistoryTitle),
+          content: Text(localizations.clearHistoryConfirm),
+          actions: <Widget>[
+            TextButton(
+              child: Text(localizations.cancelLabel),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
+              ),
+              child: Text(localizations.deleteLabel),
+              onPressed: () async {
+                final repo = ref.read(gameHistoryRepositoryProvider);
+                Navigator.of(context).pop();
+                await repo.clearHistory();
+                ref.invalidate(gameHistoryProvider);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

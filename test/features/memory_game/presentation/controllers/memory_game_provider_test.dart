@@ -12,6 +12,7 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
 
   GameResult? savedResult;
   int saveCallCount = 0;
+  int clearCallCount = 0;
 
   @override
   Future<void> saveResult(GameResult result) async {
@@ -22,6 +23,11 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
   @override
   Future<List<GameResult>> fetchAllResults() async {
     return [];
+  }
+
+  @override
+  Future<void> clearHistory() async {
+    clearCallCount++;
   }
 
   @override

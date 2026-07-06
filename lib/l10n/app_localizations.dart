@@ -154,6 +154,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset Game'**
   String get resetGameButton;
+
+  /// No description provided for @clearHistoryTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear game history'**
+  String get clearHistoryTooltip;
+
+  /// No description provided for @clearHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear History'**
+  String get clearHistoryTitle;
+
+  /// No description provided for @clearHistoryConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to permanently delete all game results?'**
+  String get clearHistoryConfirm;
+
+  /// No description provided for @cancelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelLabel;
+
+  /// No description provided for @deleteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

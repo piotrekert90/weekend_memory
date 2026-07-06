@@ -9,5 +9,10 @@
   "congratulationsTitle": "Congratulations!",
   "successMessage": "You found all matching pairs!",
   "noGamesPlayed": "No games played yet. Go win some!",
-  "resetGameButton": "Reset Game"
+  "resetGameButton": "Reset Game",
+  "clearHistoryTooltip": "Clear game history",
+  "clearHistoryTitle": "Clear History",
+  "clearHistoryConfirm": "Are you sure you want to permanently delete all game results?",
+  "cancelLabel": "Cancel",
+  "deleteLabel": "Delete"
 }

@@ -37,4 +37,19 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get resetGameButton => 'Resetuj grę';
+
+  @override
+  String get clearHistoryTooltip => 'Wyczyść historię gier';
+
+  @override
+  String get clearHistoryTitle => 'Wyczyszczenie historii';
+
+  @override
+  String get clearHistoryConfirm => 'Czy na pewno chcesz bezpowrotnie usunąć wszystkie wyniki gier?';
+
+  @override
+  String get cancelLabel => 'Anuluj';
+
+  @override
+  String get deleteLabel => 'Usuń';
 }

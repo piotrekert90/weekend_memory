@@ -37,4 +37,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetGameButton => 'Reset Game';
+
+  @override
+  String get clearHistoryTooltip => 'Clear game history';
+
+  @override
+  String get clearHistoryTitle => 'Clear History';
+
+  @override
+  String get clearHistoryConfirm => 'Are you sure you want to permanently delete all game results?';
+
+  @override
+  String get cancelLabel => 'Cancel';
+
+  @override
+  String get deleteLabel => 'Delete';
 }
