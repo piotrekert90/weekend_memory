@@ -29,4 +29,29 @@ void main() {
     expect(find.byIcon(Icons.polyline_outlined), findsOneWidget);
     expect(find.byIcon(Icons.timer_outlined), findsOneWidget);
   });
+
+  testWidgets('SuccessDialog golden test', (tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('en'),
+          home: Scaffold(
+            body: SuccessDialog(),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    await expectLater(
+      find.byType(Scaffold),
+      matchesGoldenFile(
+        'goldens/success_dialog.png',
+      ),
+    );
+  });
 }
