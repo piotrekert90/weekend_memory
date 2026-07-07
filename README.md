@@ -3,6 +3,19 @@
 ## Overview
 
 A native Memory Game engine built in Flutter. This implementation explores complex game mechanics without external game engines, leveraging pure Dart and Flutter widgets. It serves as a technical proof-of-concept for mastering AI-native engineering workflows, specifically utilizing **Aider** coupled with the **Qwen** LLM to drive development.
+## Screenshots
+
+### Gameplay & Layout Adaptive
+
+| Portrait Mode | Landscape Mode |
+| :---: | :---: |
+| <img src=".github/assets/gameplay_portrait.png" width="300" /> | <img src=".github/assets/gameplay_landscape.png" width="500" /> |
+
+### Game Completion & Persistence (Local-First)
+
+| Success Dialog | Game History |
+| :---: | :---: |
+| <img src=".github/assets/success_dialog.png" width="350" /> | <img src=".github/assets/game_history.png" width="350" /> |
 
 ## Tech Stack & Architecture
 
