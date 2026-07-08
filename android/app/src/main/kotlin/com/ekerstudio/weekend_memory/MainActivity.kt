@@ -1,4 +1,4 @@
-package com.example.weekend_memory
+package com.ekerstudio.weekend_memory
 
 import io.flutter.embedding.android.FlutterActivity
 
