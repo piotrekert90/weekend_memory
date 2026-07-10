@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/success_dialog.dart';
-import 'package:weekend_memory/l10n/app_localizations.dart';
+
+import '../../../../helpers/pump_app.dart';
 
 void main() {
   testWidgets('SuccessDialog displays all static elements', (tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: Locale('en'),
-          home: Scaffold(body: SuccessDialog()),
-        ),
-      ),
-    );
-
-    await tester.pumpAndSettle();
+    await tester.pumpWidgetWithDependencies(const SuccessDialog());
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.byIcon(Icons.emoji_events), findsOneWidget);
@@ -31,27 +19,11 @@ void main() {
   });
 
   testWidgets('SuccessDialog golden test', (tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: Locale('en'),
-          home: Scaffold(
-            body: SuccessDialog(),
-          ),
-        ),
-      ),
-    );
-
-    await tester.pumpAndSettle();
+    await tester.pumpWidgetWithDependencies(const SuccessDialog());
 
     await expectLater(
       find.byType(Scaffold),
-      matchesGoldenFile(
-        'goldens/success_dialog.png',
-      ),
+      matchesGoldenFile('goldens/success_dialog.png'),
     );
   });
 }
