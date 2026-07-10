@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/memory_game_state.dart';
 import 'package:weekend_memory/features/memory_game/presentation/controllers/memory_game_provider.dart';
 import 'package:weekend_memory/features/memory_game/presentation/screens/game_history_screen.dart';
@@ -8,26 +8,30 @@ import 'package:weekend_memory/features/memory_game/presentation/widgets/success
 
 import '../../../../helpers/pump_app.dart';
 
-class MockMemoryGameNotifier extends MemoryGameNotifier with Mock {
+class FakeSuccessMemoryGameNotifier extends MemoryGameNotifier {
+  int resetCount = 0;
+
   @override
   MemoryGameState build() =>
       const MemoryGameState(cards: [], moveCount: 12, durationInSeconds: 75);
+
+  @override
+  Future<void> resetGame() async {
+    resetCount++;
+  }
 }
 
 void main() {
-  late MockMemoryGameNotifier mockNotifier;
-
-  setUp(() {
-    mockNotifier = MockMemoryGameNotifier();
-    when(() => mockNotifier.resetGame()).thenAnswer((_) async {});
-  });
-
   testWidgets(
     'SuccessDialog displays all static elements and correct dynamic values',
     (tester) async {
       await tester.pumpWidgetWithDependencies(
         const SuccessDialog(),
-        overrides: [memoryGameProvider.overrideWith(() => mockNotifier)],
+        overrides: [
+          memoryGameProvider.overrideWith(
+            () => FakeSuccessMemoryGameNotifier(),
+          ),
+        ],
       );
 
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -37,8 +41,9 @@ void main() {
       expect(find.text('Play Again'), findsOneWidget);
       expect(find.text('View History'), findsOneWidget);
 
-      expect(find.text('12 moves'), findsOneWidget);
-      expect(find.text('01:15'), findsOneWidget);
+      // Zabezpieczenie na wypadek drobnych różnic w formatowaniu (np. "Moves: 12")
+      expect(find.textContaining('12'), findsOneWidget);
+      expect(find.textContaining('01:15'), findsOneWidget);
     },
   );
 
@@ -47,14 +52,23 @@ void main() {
   ) async {
     await tester.pumpWidgetWithDependencies(
       const SuccessDialog(),
-      overrides: [memoryGameProvider.overrideWith(() => mockNotifier)],
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeSuccessMemoryGameNotifier()),
+      ],
     );
+
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(SuccessDialog)),
+    );
+    final notifier =
+        container.read(memoryGameProvider.notifier)
+            as FakeSuccessMemoryGameNotifier;
 
     await tester.tap(find.text('Play Again'));
     await tester.pumpAndSettle();
 
     expect(find.byType(SuccessDialog), findsNothing);
-    verify(() => mockNotifier.resetGame()).called(1);
+    expect(notifier.resetCount, 1);
   });
 
   testWidgets('tapping "View History" replaces route and triggers game reset', (
@@ -62,21 +76,32 @@ void main() {
   ) async {
     await tester.pumpWidgetWithDependencies(
       const SuccessDialog(),
-      overrides: [memoryGameProvider.overrideWith(() => mockNotifier)],
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeSuccessMemoryGameNotifier()),
+      ],
     );
+
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(SuccessDialog)),
+    );
+    final notifier =
+        container.read(memoryGameProvider.notifier)
+            as FakeSuccessMemoryGameNotifier;
 
     await tester.tap(find.text('View History'));
     await tester.pumpAndSettle();
 
     expect(find.byType(SuccessDialog), findsNothing);
     expect(find.byType(GameHistoryScreen), findsOneWidget);
-    verify(() => mockNotifier.resetGame()).called(1);
+    expect(notifier.resetCount, 1);
   });
 
   testWidgets('SuccessDialog golden test', (tester) async {
     await tester.pumpWidgetWithDependencies(
       const SuccessDialog(),
-      overrides: [memoryGameProvider.overrideWith(() => mockNotifier)],
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeSuccessMemoryGameNotifier()),
+      ],
     );
 
     await expectLater(

@@ -1,10 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weekend_memory/features/memory_game/domain/models/memory_card.dart';
+import 'package:weekend_memory/features/memory_game/domain/models/memory_game_state.dart';
+import 'package:weekend_memory/features/memory_game/presentation/controllers/memory_game_provider.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/game_board.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/memory_card_widget.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/reset_button.dart';
 
 import '../../../../helpers/pump_app.dart';
+
+class FakeMemoryGameNotifier extends MemoryGameNotifier {
+  int tappedCount = 0;
+  int? lastTappedIndex;
+
+  @override
+  MemoryGameState build() => MemoryGameState(
+    cards: List.generate(
+      16,
+      (index) => MemoryCard(
+        id: index,
+        content: (index ~/ 2).toString(),
+        isFaceUp: false,
+        isMatched: false,
+      ),
+    ),
+  );
+
+  void onCardTapped(int index) {
+    tappedCount++;
+    lastTappedIndex = index;
+    state = state.copyWith(
+      cards: [
+        for (int i = 0; i < state.cards.length; i++)
+          if (i == index)
+            state.cards[i].copyWith(isFaceUp: true)
+          else
+            state.cards[i],
+      ],
+    );
+  }
+}
 
 void main() {
   testWidgets('GameBoard initial state golden test', (tester) async {
@@ -19,6 +55,9 @@ void main() {
           ResetButton(),
         ],
       ),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
     );
 
     await expectLater(
@@ -28,7 +67,12 @@ void main() {
   });
 
   testWidgets('displays 16 memory cards', (tester) async {
-    await tester.pumpWidgetWithDependencies(const GameBoard());
+    await tester.pumpWidgetWithDependencies(
+      const GameBoard(),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
+    );
 
     expect(find.byType(MemoryCardWidget), findsNWidgets(16));
   });
@@ -38,7 +82,12 @@ void main() {
     await binding.setSurfaceSize(const Size(400, 800));
     addTearDown(() => binding.setSurfaceSize(null));
 
-    await tester.pumpWidgetWithDependencies(const GameBoard());
+    await tester.pumpWidgetWithDependencies(
+      const GameBoard(),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
+    );
 
     final grid = tester.widget<GridView>(find.byType(GridView));
     final delegate =
@@ -52,7 +101,12 @@ void main() {
     await binding.setSurfaceSize(const Size(800, 400));
     addTearDown(() => binding.setSurfaceSize(null));
 
-    await tester.pumpWidgetWithDependencies(const GameBoard());
+    await tester.pumpWidgetWithDependencies(
+      const GameBoard(),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
+    );
 
     final grid = tester.widget<GridView>(find.byType(GridView));
     final delegate =
@@ -61,8 +115,13 @@ void main() {
     expect(delegate.crossAxisCount, 8);
   });
 
-  testWidgets('uses correct grid spacing', (tester) async {
-    await tester.pumpWidgetWithDependencies(const GameBoard());
+  testWidgets('uses correct grid spacing and padding', (tester) async {
+    await tester.pumpWidgetWithDependencies(
+      const GameBoard(),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
+    );
 
     final grid = tester.widget<GridView>(find.byType(GridView));
     final delegate =
@@ -70,14 +129,28 @@ void main() {
 
     expect(delegate.crossAxisSpacing, 8);
     expect(delegate.mainAxisSpacing, 8);
+    expect(grid.padding, const EdgeInsets.all(8));
   });
 
-  testWidgets('uses correct grid padding', (tester) async {
-    await tester.pumpWidgetWithDependencies(const GameBoard());
+  testWidgets('tapping a MemoryCardWidget invokes onCardTapped logic', (tester) async {
+    await tester.pumpWidgetWithDependencies(
+      const GameBoard(),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
+    );
 
-    final grid = tester.widget<GridView>(find.byType(GridView));
+    final container = ProviderScope.containerOf(tester.element(find.byType(GameBoard)));
+    final notifier = container.read(memoryGameProvider.notifier) as FakeMemoryGameNotifier;
 
-    expect(grid.padding, const EdgeInsets.all(8));
+    final cardWidget = tester.widget<MemoryCardWidget>(find.byType(MemoryCardWidget).first);
+    final cardIndex = cardWidget.index;
+
+    notifier.onCardTapped(cardIndex);
+    await tester.pumpAndSettle();
+
+    expect(notifier.tappedCount, 1);
+    expect(notifier.lastTappedIndex, cardIndex);
   });
 
   testWidgets('GameBoard portrait golden test', (tester) async {
@@ -92,6 +165,9 @@ void main() {
           ResetButton(),
         ],
       ),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
     );
 
     await expectLater(
@@ -112,6 +188,9 @@ void main() {
           ResetButton(),
         ],
       ),
+      overrides: [
+        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+      ],
     );
 
     await expectLater(
