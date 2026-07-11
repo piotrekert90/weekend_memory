@@ -65,4 +65,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewHistoryButton => 'View History';
+
+  @override
+  String get historyLoadError => 'Unable to load game history. Please try again later.';
 }

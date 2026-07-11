@@ -65,4 +65,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get viewHistoryButton => 'Zobacz historię';
+
+  @override
+  String get historyLoadError => 'Nie można załadować historii gier. Spróbuj ponownie później.';
 }

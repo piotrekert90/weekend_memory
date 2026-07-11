@@ -67,7 +67,7 @@ class GameHistoryScreen extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) =>
-            Center(child: Text('Failed to load history: $error')),
+            Center(child: Text(localizations.historyLoadError)),
       ),
     );
   }

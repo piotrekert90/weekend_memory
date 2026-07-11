@@ -27,5 +27,6 @@
         "time": { "type": "String" }
       }
     },
-    "viewHistoryButton": "Zobacz historię"
+    "viewHistoryButton": "Zobacz historię",
+    "historyLoadError": "Nie można załadować historii gier. Spróbuj ponownie później."
 }

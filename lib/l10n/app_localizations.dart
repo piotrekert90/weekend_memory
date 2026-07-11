@@ -202,6 +202,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View History'**
   String get viewHistoryButton;
+
+  /// No description provided for @historyLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load game history. Please try again later.'**
+  String get historyLoadError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

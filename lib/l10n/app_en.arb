@@ -27,5 +27,6 @@
         "time": { "type": "String" }
       }
     },
-    "viewHistoryButton": "View History"
+    "viewHistoryButton": "View History",
+    "historyLoadError": "Unable to load game history. Please try again later."
 }
