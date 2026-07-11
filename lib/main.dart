@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'features/memory_game/data/repositories/game_history_repository.dart';
 import 'features/memory_game/domain/models/game_result.dart';
-import 'features/memory_game/presentation/screens/memory_game_screen.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
@@ -30,6 +30,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
+    final navigatorKey = ref.watch(appRouterProvider);
 
     return MaterialApp(
       title: 'Memory Game',
@@ -39,7 +40,13 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
-      home: const MemoryGameScreen(),
+      navigatorKey: navigatorKey,
+      initialRoute: AppRoutePath.game,
+      onGenerateRoute: (RouteSettings settings) {
+        final route = parseRoute(settings.name ?? AppRoutePath.game);
+        final pageRoute = buildRoute(route);
+        return pageRoute;
+      },
     );
   }
 }
