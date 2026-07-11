@@ -95,7 +95,7 @@ final class GameHistoryRepositoryProvider
 }
 
 String _$gameHistoryRepositoryHash() =>
-    r'b73cc5b17e29caa617fa6981ed21322033ab7f99';
+    r'2101c0e84d23d8d32f2a4adfa51aee6faefdc8d5';
 
 @ProviderFor(gameHistory)
 final gameHistoryProvider = GameHistoryProvider._();

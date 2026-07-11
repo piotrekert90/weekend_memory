@@ -1,15 +1,12 @@
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:isar_community/isar.dart';
-import 'package:weekend_memory/features/memory_game/data/repositories/game_history_repository.dart';
+import 'package:weekend_memory/features/memory_game/domain/repositories/game_history_repository.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/game_result.dart';
 import 'package:weekend_memory/features/memory_game/presentation/memory_game_provider.dart';
+import 'package:weekend_memory/features/memory_game/data/repositories/game_history_repository.dart';
 
 class FakeGameHistoryRepository implements GameHistoryRepository {
-  @override
-  Isar get isar => throw UnimplementedError();
-
   GameResult? savedResult;
   int saveCallCount = 0;
   int clearCallCount = 0;
@@ -28,11 +25,6 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
   @override
   Future<void> clearHistory() async {
     clearCallCount++;
-  }
-
-  @override
-  List<GameResult> sortResults(List<GameResult> results) {
-    return results;
   }
 }
 
