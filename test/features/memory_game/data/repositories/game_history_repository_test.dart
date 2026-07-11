@@ -8,7 +8,7 @@ import 'package:weekend_memory/features/memory_game/domain/models/game_result.da
 void main() {
   final hasIsar = File('libisar.dylib').existsSync();
 
-  group('GameHistoryRepositoryImpl.sortResults', () {
+  group('GameHistoryRepositoryImpl', () {
     if (hasIsar) {
       late Isar isar;
       late Directory tempDir;
@@ -28,46 +28,40 @@ void main() {
         tempDir.deleteSync(recursive: true);
       });
 
-      test('returns empty list when input is empty', () {
+      test('fetchAllResults returns empty list when no data exists', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        final results = repository.sortResults([]);
+        final results = await repository.fetchAllResults();
         expect(results, isEmpty);
       });
 
-      test('sorts results by duration', () {
+      test('fetchAllResults sorts results by duration', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        final results = [
-          GameResult(moveCount: 20, durationInSeconds: 30, playedAt: DateTime.now()),
-          GameResult(moveCount: 10, durationInSeconds: 10, playedAt: DateTime.now()),
-          GameResult(moveCount: 15, durationInSeconds: 20, playedAt: DateTime.now()),
-        ];
-        final sorted = repository.sortResults(results);
+        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 30, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 10, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 15, durationInSeconds: 20, playedAt: DateTime.now()));
+        final sorted = await repository.fetchAllResults();
         expect(sorted[0].durationInSeconds, 10);
         expect(sorted[1].durationInSeconds, 20);
         expect(sorted[2].durationInSeconds, 30);
       });
 
-      test('sorts equal durations by move count', () {
+      test('fetchAllResults sorts equal durations by move count', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        final results = [
-          GameResult(moveCount: 30, durationInSeconds: 20, playedAt: DateTime.now()),
-          GameResult(moveCount: 10, durationInSeconds: 20, playedAt: DateTime.now()),
-          GameResult(moveCount: 20, durationInSeconds: 20, playedAt: DateTime.now()),
-        ];
-        final sorted = repository.sortResults(results);
+        await repository.saveResult(GameResult(moveCount: 30, durationInSeconds: 20, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 20, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 20, playedAt: DateTime.now()));
+        final sorted = await repository.fetchAllResults();
         expect(sorted[0].moveCount, 10);
         expect(sorted[1].moveCount, 20);
         expect(sorted[2].moveCount, 30);
       });
 
-      test('keeps already sorted list unchanged', () {
+      test('fetchAllResults keeps already sorted list unchanged', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        final results = [
-          GameResult(moveCount: 10, durationInSeconds: 10, playedAt: DateTime.now()),
-          GameResult(moveCount: 20, durationInSeconds: 20, playedAt: DateTime.now()),
-          GameResult(moveCount: 30, durationInSeconds: 30, playedAt: DateTime.now()),
-        ];
-        final sorted = repository.sortResults(results);
+        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 10, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 20, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 30, durationInSeconds: 30, playedAt: DateTime.now()));
+        final sorted = await repository.fetchAllResults();
         expect(sorted[0].durationInSeconds, 10);
         expect(sorted[1].durationInSeconds, 20);
         expect(sorted[2].durationInSeconds, 30);

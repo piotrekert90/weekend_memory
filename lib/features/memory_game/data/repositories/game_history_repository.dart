@@ -1,6 +1,7 @@
 import 'package:isar_community/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/errors/exception.dart';
 import '../../domain/models/game_result.dart';
 import '../../domain/repositories/game_history_repository.dart';
 
@@ -26,32 +27,44 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   /// Persists a completed game result to the local database.
   @override
   Future<void> saveResult(GameResult result) async {
-    await isar.writeTxn(() async {
-      await isar.collection<GameResult>().put(result);
-    });
+    try {
+      await isar.writeTxn(() async {
+        await isar.collection<GameResult>().put(result);
+      });
+    } catch (e) {
+      throw DatabaseException(message: e.toString());
+    }
   }
 
   /// Retrieves all saved game results sorted by duration and move count.
   @override
   Future<List<GameResult>> fetchAllResults() async {
-    final results = await isar
-        .collection<GameResult>()
-        .where()
-        .anyId()
-        .findAll();
+    try {
+      final results = await isar
+          .collection<GameResult>()
+          .where()
+          .anyId()
+          .findAll();
 
-    return sortResults(results);
+      return _sortResults(results);
+    } catch (e) {
+      throw DatabaseException(message: e.toString());
+    }
   }
 
   /// Clears all saved game history from the local database.
   @override
   Future<void> clearHistory() async {
-    await isar.writeTxn(() async {
-      await isar.collection<GameResult>().clear();
-    });
+    try {
+      await isar.writeTxn(() async {
+        await isar.collection<GameResult>().clear();
+      });
+    } catch (e) {
+      throw DatabaseException(message: e.toString());
+    }
   }
 
-  List<GameResult> sortResults(List<GameResult> results) {
+  List<GameResult> _sortResults(List<GameResult> results) {
     results.sort((a, b) {
       final durationCompare = a.durationInSeconds.compareTo(
         b.durationInSeconds,
