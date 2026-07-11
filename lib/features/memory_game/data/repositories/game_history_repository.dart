@@ -16,6 +16,7 @@ GameHistoryRepository gameHistoryRepository(Ref ref) {
   return GameHistoryRepository(isarInstance);
 }
 
+/// Persists and retrieves game history results via Isar.
 class GameHistoryRepository {
   final Isar isar;
 

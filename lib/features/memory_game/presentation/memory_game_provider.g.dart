@@ -8,12 +8,15 @@ part of 'memory_game_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Manages the active memory game session state and game logic.
 
 @ProviderFor(MemoryGameNotifier)
 final memoryGameProvider = MemoryGameNotifierProvider._();
 
+/// Manages the active memory game session state and game logic.
 final class MemoryGameNotifierProvider
     extends $NotifierProvider<MemoryGameNotifier, MemoryGameState> {
+  /// Manages the active memory game session state and game logic.
   MemoryGameNotifierProvider._()
     : super(
         from: null,
@@ -43,6 +46,8 @@ final class MemoryGameNotifierProvider
 
 String _$memoryGameNotifierHash() =>
     r'2cce3a227ec4813f8ba1724d96d87475f0ac9617';
+
+/// Manages the active memory game session state and game logic.
 
 abstract class _$MemoryGameNotifier extends $Notifier<MemoryGameState> {
   MemoryGameState build();

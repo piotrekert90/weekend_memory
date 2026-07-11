@@ -5,6 +5,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../memory_game_provider.dart';
 import '../screens/game_history_screen.dart';
 
+/// Shows game completion stats with play again and history navigation options.
 class SuccessDialog extends ConsumerWidget {
   const SuccessDialog({super.key});
 

@@ -1,5 +1,6 @@
 import 'memory_card.dart';
 
+/// Immutable state holder for the active memory game session.
 class MemoryGameState {
   static const _unset = Object();
   final List<MemoryCard> cards;

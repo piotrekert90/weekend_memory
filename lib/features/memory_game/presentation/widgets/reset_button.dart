@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../memory_game_provider.dart';
 
+/// Button that resets the current game to its initial state.
 class ResetButton extends ConsumerWidget {
   const ResetButton({super.key});
 

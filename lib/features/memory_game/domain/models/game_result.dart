@@ -2,6 +2,7 @@ import 'package:isar_community/isar.dart';
 
 part 'game_result.g.dart';
 
+/// Stores a completed game result for history tracking.
 @collection
 class GameResult {
   Id id = Isar.autoIncrement;

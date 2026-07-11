@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/memory_card.dart';
 import '../memory_game_provider.dart';
 
+/// Displays a single memory card with flip animation and tap handling.
 class MemoryCardWidget extends ConsumerWidget {
   final int index;
 
@@ -24,6 +25,7 @@ class MemoryCardWidget extends ConsumerWidget {
   }
 }
 
+/// Animates a card flip between front and back faces.
 class AnimatedFlipCard extends StatefulWidget {
   final bool isRevealed;
   final MemoryCard card;

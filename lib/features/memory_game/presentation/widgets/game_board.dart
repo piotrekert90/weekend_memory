@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../memory_game_provider.dart';
 import 'memory_card_widget.dart';
 
+/// Renders the memory game card grid with adaptive layout.
 class GameBoard extends ConsumerWidget {
   const GameBoard({super.key});
 

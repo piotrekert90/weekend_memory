@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/repositories/game_history_repository.dart';
 
+/// Displays a ranked list of past game results with clear history option.
 class GameHistoryScreen extends ConsumerWidget {
   const GameHistoryScreen({super.key});
 

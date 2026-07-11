@@ -1,3 +1,4 @@
+/// Represents a single card in the memory game with face state tracking.
 class MemoryCard {
   final int id;
   final String content;

@@ -10,11 +10,13 @@ import '../domain/models/memory_game_state.dart';
 
 part 'memory_game_provider.g.dart';
 
+/// Manages the active memory game session state and game logic.
 @riverpod
 class MemoryGameNotifier extends _$MemoryGameNotifier {
   final _random = Random();
   Timer? _timer;
 
+  /// Initializes the game with a shuffled deck and default settings.
   @override
   MemoryGameState build() {
     ref.onDispose(() {
@@ -129,6 +131,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     });
   }
 
+  /// Resets the game to its initial state.
   void resetGame() {
     _timer?.cancel();
     _timer = null;
