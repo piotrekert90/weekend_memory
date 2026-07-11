@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:isar_community/isar.dart';
 import 'package:weekend_memory/features/memory_game/data/repositories/game_history_repository.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/game_result.dart';
-import 'package:weekend_memory/features/memory_game/presentation/controllers/memory_game_provider.dart';
+import 'package:weekend_memory/features/memory_game/presentation/memory_game_provider.dart';
 
 class FakeGameHistoryRepository implements GameHistoryRepository {
   @override

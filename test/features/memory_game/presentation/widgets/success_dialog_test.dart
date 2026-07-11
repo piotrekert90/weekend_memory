@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/memory_game_state.dart';
-import 'package:weekend_memory/features/memory_game/presentation/controllers/memory_game_provider.dart';
+import 'package:weekend_memory/features/memory_game/presentation/memory_game_provider.dart';
 import 'package:weekend_memory/features/memory_game/presentation/screens/game_history_screen.dart';
 import 'package:weekend_memory/features/memory_game/presentation/widgets/success_dialog.dart';
 

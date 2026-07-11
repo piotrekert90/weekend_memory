@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/repositories/game_history_repository.dart';
-import '../../domain/models/game_result.dart';
-import '../../domain/models/memory_card.dart';
-import '../../domain/models/memory_game_state.dart';
+import '../data/repositories/game_history_repository.dart';
+import '../domain/models/game_result.dart';
+import '../domain/models/memory_card.dart';
+import '../domain/models/memory_game_state.dart';
 
 part 'memory_game_provider.g.dart';
 

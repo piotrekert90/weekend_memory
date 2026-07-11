@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../controllers/memory_game_provider.dart';
+import '../memory_game_provider.dart';
 import '../widgets/game_board.dart';
 import '../widgets/reset_button.dart';
 import '../widgets/success_dialog.dart';

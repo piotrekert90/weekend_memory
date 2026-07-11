@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../controllers/memory_game_provider.dart';
+import '../memory_game_provider.dart';
 import '../screens/game_history_screen.dart';
 
 class SuccessDialog extends ConsumerWidget {
