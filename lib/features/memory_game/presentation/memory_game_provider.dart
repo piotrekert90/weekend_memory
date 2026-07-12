@@ -51,6 +51,12 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       '🐱',
       '🎃',
       '🎄',
+      '🌻',
+      '🐸',
+      '🦄',
+      '🐝',
+      '🍉',
+      '🧩',
     ];
     final shuffledSymbols = symbols..shuffle(_random);
 
