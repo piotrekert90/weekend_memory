@@ -122,7 +122,7 @@ abstract class AppLocalizations {
   /// No description provided for @viewHistory.
   ///
   /// In en, this message translates to:
-  /// **'View Game History'**
+  /// **'Results'**
   String get viewHistory;
 
   /// No description provided for @playAgain.
@@ -146,7 +146,7 @@ abstract class AppLocalizations {
   /// No description provided for @noGamesPlayed.
   ///
   /// In en, this message translates to:
-  /// **'No games played yet. Go win some!'**
+  /// **'No rounds played yet. Start a game!'**
   String get noGamesPlayed;
 
   /// No description provided for @resetGameButton.

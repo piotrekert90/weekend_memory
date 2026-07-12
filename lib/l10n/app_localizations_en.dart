@@ -21,7 +21,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get durationLabel => 'Duration';
 
   @override
-  String get viewHistory => 'View Game History';
+  String get viewHistory => 'Results';
 
   @override
   String get playAgain => 'Play Again';
@@ -33,7 +33,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get successMessage => 'You found all matching pairs!';
 
   @override
-  String get noGamesPlayed => 'No games played yet. Go win some!';
+  String get noGamesPlayed => 'No rounds played yet. Start a game!';
 
   @override
   String get resetGameButton => 'Reset Game';

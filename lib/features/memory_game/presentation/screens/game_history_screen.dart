@@ -7,7 +7,6 @@ import 'package:weekend_memory/features/memory_game/presentation/widgets/game_hi
 
 /// Main screen for viewing game history with grid size filtering.
 class GameHistoryScreen extends ConsumerStatefulWidget {
-  /// Creates a new [GameHistoryScreen].
   const GameHistoryScreen({super.key});
 
   @override
@@ -46,6 +45,10 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(l10n.viewHistory),
         centerTitle: true,
         actions: [
@@ -60,59 +63,21 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
         data: (results) {
           return Column(
             children: [
+              // SegmentedButton filter row
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Text(
-                  l10n.gridSizeLabel,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 48,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: _gridSizes.length,
-                  itemBuilder: (context, index) {
-                    final gridSize = _gridSizes[index];
-                    final isSelected = _selectedGridIndex == index;
-                    final label = '${gridSize.rows}x${gridSize.columns}';
-
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Material(
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(16),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () => _onGridSelected(index),
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Text(
-                              label,
-                              style: TextStyle(
-                                color: isSelected
-                                    ? Theme.of(context).colorScheme.onPrimary
-                                    : Theme.of(context).colorScheme.onSurface,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                child: SegmentedButton<int>(
+                  segments: GridSize.values
+                      .map((g) => ButtonSegment<int>(
+                            value: g.index,
+                            label: Text('${g.columns}x${g.rows}'),
+                          ))
+                      .toList(),
+                  selected: {_selectedGridIndex},
+                  onSelectionChanged: (Set<int> newSelection) {
+                    if (newSelection.isNotEmpty) {
+                      _onGridSelected(newSelection.first);
+                    }
                   },
                 ),
               ),
@@ -144,7 +109,7 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              l10n.noGamesPlayed,
+                              l10n.noGamesForGrid,
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.outline,
                                 fontSize: 16,

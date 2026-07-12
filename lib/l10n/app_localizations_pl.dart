@@ -21,7 +21,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get durationLabel => 'Czas trwania';
 
   @override
-  String get viewHistory => 'Zobacz historię gier';
+  String get viewHistory => 'Wyniki';
 
   @override
   String get playAgain => 'Graj ponownie';
@@ -33,7 +33,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get successMessage => 'Znalazłeś wszystkie pary!';
 
   @override
-  String get noGamesPlayed => 'Nie rozegrałeś jeszcze żadnej gry. Zaczynaj!';
+  String get noGamesPlayed => 'Nie rozegrałeś jeszcze żadnej rundy.';
 
   @override
   String get resetGameButton => 'Resetuj grę';
