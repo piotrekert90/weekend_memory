@@ -9,6 +9,9 @@ import 'package:weekend_memory/features/memory_game/presentation/widgets/memory_
 import 'package:weekend_memory/features/memory_game/presentation/widgets/reset_button.dart';
 
 import '../../../../helpers/pump_app.dart';
+import 'package:weekend_memory/features/memory_game/domain/models/game_config.dart';
+import 'package:weekend_memory/features/memory_game/domain/models/grid_size.dart';
+import 'package:weekend_memory/features/memory_game/presentation/game_config_provider.dart';
 
 class FakeMemoryGameNotifier extends MemoryGameNotifier {
   int tappedCount = 0;
@@ -77,7 +80,7 @@ void main() {
     expect(find.byType(MemoryCardWidget), findsNWidgets(16));
   });
 
-  testWidgets('uses 4 columns in portrait mode', (tester) async {
+  testWidgets('uses configured columns in portrait mode', (tester) async {
     final binding = TestWidgetsFlutterBinding.ensureInitialized();
     await binding.setSurfaceSize(const Size(400, 800));
     addTearDown(() => binding.setSurfaceSize(null));
@@ -85,6 +88,7 @@ void main() {
     await tester.pumpWidgetWithDependencies(
       const GameBoard(),
       overrides: [
+        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.grid4x4)),
         memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
       ],
     );
@@ -96,7 +100,7 @@ void main() {
     expect(delegate.crossAxisCount, 4);
   });
 
-  testWidgets('uses 8 columns in landscape mode', (tester) async {
+  testWidgets('uses configured rows as crossAxisCount in landscape mode', (tester) async {
     final binding = TestWidgetsFlutterBinding.ensureInitialized();
     await binding.setSurfaceSize(const Size(800, 400));
     addTearDown(() => binding.setSurfaceSize(null));
@@ -104,6 +108,7 @@ void main() {
     await tester.pumpWidgetWithDependencies(
       const GameBoard(),
       overrides: [
+        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.grid4x4)),
         memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
       ],
     );
@@ -112,7 +117,7 @@ void main() {
     final delegate =
         grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
 
-    expect(delegate.crossAxisCount, 8);
+    expect(delegate.crossAxisCount, 4);
   });
 
   testWidgets('uses correct grid spacing and padding', (tester) async {

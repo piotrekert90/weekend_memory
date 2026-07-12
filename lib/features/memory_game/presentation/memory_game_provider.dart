@@ -8,6 +8,8 @@ import '../domain/models/game_result.dart';
 import '../domain/models/memory_card.dart';
 import '../domain/models/memory_game_state.dart';
 
+import 'game_config_provider.dart';
+
 part 'memory_game_provider.g.dart';
 
 /// Manages the active memory game session state and game logic.
@@ -19,21 +21,41 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   /// Initializes the game with a shuffled deck and default settings.
   @override
   MemoryGameState build() {
+    final config = ref.watch(gameConfigProvider);
     ref.onDispose(() {
       _timer?.cancel();
     });
-    return _initializeGame();
+    return _initializeGame(config.gridSize.pairCount);
   }
 
-  MemoryGameState _initializeGame() {
+  MemoryGameState _initializeGame(int pairCount) {
     _timer?.cancel();
     _timer = null;
 
-    final symbols = ['🌟', '❤️', '🔥', '⚡', '☁️', '🏖️', '🐾', '🎵'];
+    final symbols = [
+      '🌟',
+      '❤️',
+      '🔥',
+      '⚡',
+      '☁️',
+      '🏖️',
+      '🐾',
+      '🎵',
+      '🌈',
+      '🦋',
+      '🍀',
+      '🌺',
+      '🍄',
+      '🐬',
+      '🦊',
+      '🐱',
+      '🎃',
+      '🎄',
+    ];
     final shuffledSymbols = symbols..shuffle(_random);
 
     final cards = <MemoryCard>[];
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < pairCount; i++) {
       cards.add(MemoryCard(id: i, content: shuffledSymbols[i]));
       cards.add(MemoryCard(id: i, content: shuffledSymbols[i]));
     }
@@ -135,6 +157,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   void resetGame() {
     _timer?.cancel();
     _timer = null;
-    state = _initializeGame();
+    final config = ref.read(gameConfigProvider);
+    state = _initializeGame(config.gridSize.pairCount);
   }
 }
