@@ -48,35 +48,44 @@ class HomeScreen extends ConsumerWidget {
     AppLocalizations localizations,
   ) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          localizations.appTitle,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                localizations.appTitle,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 48),
+              _buildSection(
+                context,
+                localizations.gridSizeLabel,
+                _buildGridSizeSelector(context, ref),
+              ),
+              const SizedBox(height: 32),
+              _buildSection(
+                context,
+                localizations.gameModeLabel,
+                _buildCountdownToggle(context, ref, localizations),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 48),
-        _buildSection(
-          context,
-          localizations.gridSizeLabel,
-          _buildGridSizeSelector(context, ref),
-        ),
-        const SizedBox(height: 32),
-        _buildSection(
-          context,
-          localizations.gameModeLabel,
-          _buildCountdownToggle(context, ref, localizations),
-        ),
-        const SizedBox(height: 48),
-        SizedBox(
-          width: double.infinity,
-          height: 56,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/game');
-            },
-            child: Text(localizations.startGame),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/game');
+              },
+              child: Text(localizations.startGame),
+            ),
           ),
         ),
       ],
