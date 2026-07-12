@@ -13,6 +13,17 @@ class HomeScreen extends ConsumerWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            tooltip: localizations.viewHistory,
+            onPressed: () {
+              Navigator.of(context).pushNamed('/history');
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
