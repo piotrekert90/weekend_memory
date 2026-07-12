@@ -33,5 +33,9 @@
     "gameModeLabel": "Tryb gry",
     "countdownModeLabel": "Tryb odliczania",
     "countdownModeDescription": "Odliczanie czasu od ustawionej wartości",
-    "startGame": "Rozpocznij grę"
+    "startGame": "Rozpocznij grę",
+    "gridSizeFilter": "Rozmiar siatki",
+    "noGamesForGrid": "Brak gier dla tego rozmiaru siatki",
+    "todayLabel": "Dzisiaj",
+    "yesterdayLabel": "Wczoraj"
 }

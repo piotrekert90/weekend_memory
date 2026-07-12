@@ -83,4 +83,16 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get startGame => 'Rozpocznij grę';
+
+  @override
+  String get gridSizeFilter => 'Rozmiar siatki';
+
+  @override
+  String get noGamesForGrid => 'Brak gier dla tego rozmiaru siatki';
+
+  @override
+  String get todayLabel => 'Dzisiaj';
+
+  @override
+  String get yesterdayLabel => 'Wczoraj';
 }

@@ -36,9 +36,9 @@ void main() {
 
       test('fetchAllResults sorts results by duration', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 30, playedAt: DateTime.now()));
-        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 10, playedAt: DateTime.now()));
-        await repository.saveResult(GameResult(moveCount: 15, durationInSeconds: 20, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 30, gridSize: 0, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 10, gridSize: 0, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 15, durationInSeconds: 20, gridSize: 0, playedAt: DateTime.now()));
         final sorted = await repository.fetchAllResults();
         expect(sorted[0].durationInSeconds, 10);
         expect(sorted[1].durationInSeconds, 20);
@@ -47,9 +47,9 @@ void main() {
 
       test('fetchAllResults sorts equal durations by move count', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        await repository.saveResult(GameResult(moveCount: 30, durationInSeconds: 20, playedAt: DateTime.now()));
-        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 20, playedAt: DateTime.now()));
-        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 20, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 30, durationInSeconds: 20, gridSize: 0, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 20, gridSize: 0, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 20, gridSize: 0, playedAt: DateTime.now()));
         final sorted = await repository.fetchAllResults();
         expect(sorted[0].moveCount, 10);
         expect(sorted[1].moveCount, 20);
@@ -58,9 +58,9 @@ void main() {
 
       test('fetchAllResults keeps already sorted list unchanged', () async {
         final repository = GameHistoryRepositoryImpl(isar);
-        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 10, playedAt: DateTime.now()));
-        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 20, playedAt: DateTime.now()));
-        await repository.saveResult(GameResult(moveCount: 30, durationInSeconds: 30, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 10, durationInSeconds: 10, gridSize: 0, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 20, durationInSeconds: 20, gridSize: 0, playedAt: DateTime.now()));
+        await repository.saveResult(GameResult(moveCount: 30, durationInSeconds: 30, gridSize: 0, playedAt: DateTime.now()));
         final sorted = await repository.fetchAllResults();
         expect(sorted[0].durationInSeconds, 10);
         expect(sorted[1].durationInSeconds, 20);

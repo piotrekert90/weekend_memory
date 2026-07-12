@@ -22,13 +22,14 @@ const GameResultSchema = CollectionSchema(
       name: r'durationInSeconds',
       type: IsarType.long,
     ),
+    r'gridSize': PropertySchema(id: 1, name: r'gridSize', type: IsarType.long),
     r'moveCount': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'moveCount',
       type: IsarType.long,
     ),
     r'playedAt': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'playedAt',
       type: IsarType.dateTime,
     ),
@@ -65,8 +66,9 @@ void _gameResultSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.durationInSeconds);
-  writer.writeLong(offsets[1], object.moveCount);
-  writer.writeDateTime(offsets[2], object.playedAt);
+  writer.writeLong(offsets[1], object.gridSize);
+  writer.writeLong(offsets[2], object.moveCount);
+  writer.writeDateTime(offsets[3], object.playedAt);
 }
 
 GameResult _gameResultDeserialize(
@@ -77,9 +79,10 @@ GameResult _gameResultDeserialize(
 ) {
   final object = GameResult(
     durationInSeconds: reader.readLong(offsets[0]),
+    gridSize: reader.readLong(offsets[1]),
     id: id,
-    moveCount: reader.readLong(offsets[1]),
-    playedAt: reader.readDateTime(offsets[2]),
+    moveCount: reader.readLong(offsets[2]),
+    playedAt: reader.readDateTime(offsets[3]),
   );
   return object;
 }
@@ -96,6 +99,8 @@ P _gameResultDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -242,6 +247,63 @@ extension GameResultQueryFilter
       return query.addFilterCondition(
         FilterCondition.between(
           property: r'durationInSeconds',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gridSizeEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'gridSize', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  gridSizeGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'gridSize',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gridSizeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'gridSize',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gridSizeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'gridSize',
           lower: lower,
           includeLower: includeLower,
           upper: upper,
@@ -446,6 +508,18 @@ extension GameResultQuerySortBy
     });
   }
 
+  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByGridSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'gridSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByGridSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'gridSize', Sort.desc);
+    });
+  }
+
   QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByMoveCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'moveCount', Sort.asc);
@@ -483,6 +557,18 @@ extension GameResultQuerySortThenBy
   thenByDurationInSecondsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationInSeconds', Sort.desc);
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByGridSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'gridSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByGridSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'gridSize', Sort.desc);
     });
   }
 
@@ -532,6 +618,12 @@ extension GameResultQueryWhereDistinct
     });
   }
 
+  QueryBuilder<GameResult, GameResult, QDistinct> distinctByGridSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'gridSize');
+    });
+  }
+
   QueryBuilder<GameResult, GameResult, QDistinct> distinctByMoveCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'moveCount');
@@ -556,6 +648,12 @@ extension GameResultQueryProperty
   QueryBuilder<GameResult, int, QQueryOperations> durationInSecondsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'durationInSeconds');
+    });
+  }
+
+  QueryBuilder<GameResult, int, QQueryOperations> gridSizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'gridSize');
     });
   }
 

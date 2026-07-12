@@ -33,5 +33,9 @@
     "gameModeLabel": "Game Mode",
     "countdownModeLabel": "Countdown Mode",
     "countdownModeDescription": "Timer counts down from a set duration",
-    "startGame": "Start Game"
+    "startGame": "Start Game",
+    "gridSizeFilter": "Grid Size",
+    "noGamesForGrid": "No games for this grid size yet",
+    "todayLabel": "Today",
+    "yesterdayLabel": "Yesterday"
 }

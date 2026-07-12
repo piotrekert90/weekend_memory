@@ -115,9 +115,11 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
           _timer?.cancel();
           _timer = null;
 
+          final config = ref.read(gameConfigProvider);
           final result = GameResult(
             moveCount: state.moveCount,
             durationInSeconds: state.durationInSeconds,
+            gridSize: config.gridSize.index,
             playedAt: DateTime.now(),
           );
 

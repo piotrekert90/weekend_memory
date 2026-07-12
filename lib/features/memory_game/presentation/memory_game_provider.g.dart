@@ -45,7 +45,7 @@ final class MemoryGameNotifierProvider
 }
 
 String _$memoryGameNotifierHash() =>
-    r'c9056364ab8830350f1fb555689a6111d1dcc0d5';
+    r'67750a9f34ebb98d0e0f525f55799cbc84f34842';
 
 /// Manages the active memory game session state and game logic.
 

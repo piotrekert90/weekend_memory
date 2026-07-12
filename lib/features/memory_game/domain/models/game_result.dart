@@ -9,12 +9,14 @@ class GameResult {
 
   final int moveCount;
   final int durationInSeconds;
+  final int gridSize;
   final DateTime playedAt;
 
   GameResult({
     this.id = Isar.autoIncrement,
     required this.moveCount,
     required this.durationInSeconds,
+    required this.gridSize,
     required this.playedAt,
   });
 }

@@ -83,4 +83,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startGame => 'Start Game';
+
+  @override
+  String get gridSizeFilter => 'Grid Size';
+
+  @override
+  String get noGamesForGrid => 'No games for this grid size yet';
+
+  @override
+  String get todayLabel => 'Today';
+
+  @override
+  String get yesterdayLabel => 'Yesterday';
 }
