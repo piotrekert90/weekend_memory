@@ -68,4 +68,19 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get historyLoadError => 'Nie można załadować historii gier. Spróbuj ponownie później.';
+
+  @override
+  String get gridSizeLabel => 'Rozmiar siatki';
+
+  @override
+  String get gameModeLabel => 'Tryb gry';
+
+  @override
+  String get countdownModeLabel => 'Tryb odliczania';
+
+  @override
+  String get countdownModeDescription => 'Odliczanie czasu od ustawionej wartości';
+
+  @override
+  String get startGame => 'Rozpocznij grę';
 }

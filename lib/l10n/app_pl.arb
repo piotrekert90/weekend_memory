@@ -28,5 +28,10 @@
       }
     },
     "viewHistoryButton": "Zobacz historię",
-    "historyLoadError": "Nie można załadować historii gier. Spróbuj ponownie później."
+    "historyLoadError": "Nie można załadować historii gier. Spróbuj ponownie później.",
+    "gridSizeLabel": "Rozmiar siatki",
+    "gameModeLabel": "Tryb gry",
+    "countdownModeLabel": "Tryb odliczania",
+    "countdownModeDescription": "Odliczanie czasu od ustawionej wartości",
+    "startGame": "Rozpocznij grę"
 }

@@ -28,5 +28,10 @@
       }
     },
     "viewHistoryButton": "View History",
-    "historyLoadError": "Unable to load game history. Please try again later."
+    "historyLoadError": "Unable to load game history. Please try again later.",
+    "gridSizeLabel": "Grid Size",
+    "gameModeLabel": "Game Mode",
+    "countdownModeLabel": "Countdown Mode",
+    "countdownModeDescription": "Timer counts down from a set duration",
+    "startGame": "Start Game"
 }

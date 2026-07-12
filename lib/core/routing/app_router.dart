@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/memory_game/presentation/screens/game_history_screen.dart';
 import '../../features/memory_game/presentation/screens/memory_game_screen.dart';
+import '../../features/memory_game/presentation/screens/home_screen.dart';
 
 /// Declarative route paths used across the application.
 abstract final class AppRoutePath {
+  static const home = '/home';
   static const game = '/';
   static const history = '/history';
 }
@@ -26,12 +28,19 @@ final class AppRouteHistory extends AppRoute {
   const AppRouteHistory() : super(AppRoutePath.history);
 }
 
+/// Home route — launches the game configuration screen.
+final class AppRouteHome extends AppRoute {
+  const AppRouteHome() : super(AppRoutePath.home);
+}
+
 /// Parses a [location] string into a concrete [AppRoute].
 ///
-/// Returns [AppRouteGame] for the root path and [AppRouteHistory] for the
-/// history path. Unknown paths default to the game route.
+/// Returns [AppRouteHome] for the home path, [AppRouteGame] for the root
+/// path, and [AppRouteHistory] for the history path. Unknown paths default
+/// to the game route.
 AppRoute parseRoute(String location) {
   return switch (location) {
+    AppRoutePath.home => const AppRouteHome(),
     AppRoutePath.history => const AppRouteHistory(),
     _ => const AppRouteGame(),
   };
@@ -43,6 +52,9 @@ AppRoute parseRoute(String location) {
 /// [MaterialPageRoute].
 PageRoute<void> buildRoute(AppRoute route) {
   return switch (route) {
+    AppRouteHome() => MaterialPageRoute(
+        builder: (_) => const HomeScreen(),
+      ),
     AppRouteGame() => MaterialPageRoute(
         builder: (_) => const MemoryGameScreen(),
       ),

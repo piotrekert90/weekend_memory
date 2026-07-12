@@ -41,7 +41,7 @@ class MyApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       navigatorKey: navigatorKey,
-      initialRoute: AppRoutePath.game,
+      initialRoute: AppRoutePath.home,
       onGenerateRoute: (RouteSettings settings) {
         final route = parseRoute(settings.name ?? AppRoutePath.game);
         final pageRoute = buildRoute(route);

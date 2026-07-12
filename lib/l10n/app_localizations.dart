@@ -208,6 +208,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to load game history. Please try again later.'**
   String get historyLoadError;
+
+  /// No description provided for @gridSizeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid Size'**
+  String get gridSizeLabel;
+
+  /// No description provided for @gameModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Mode'**
+  String get gameModeLabel;
+
+  /// No description provided for @countdownModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown Mode'**
+  String get countdownModeLabel;
+
+  /// No description provided for @countdownModeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer counts down from a set duration'**
+  String get countdownModeDescription;
+
+  /// No description provided for @startGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Game'**
+  String get startGame;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

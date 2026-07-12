@@ -68,4 +68,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyLoadError => 'Unable to load game history. Please try again later.';
+
+  @override
+  String get gridSizeLabel => 'Grid Size';
+
+  @override
+  String get gameModeLabel => 'Game Mode';
+
+  @override
+  String get countdownModeLabel => 'Countdown Mode';
+
+  @override
+  String get countdownModeDescription => 'Timer counts down from a set duration';
+
+  @override
+  String get startGame => 'Start Game';
 }
