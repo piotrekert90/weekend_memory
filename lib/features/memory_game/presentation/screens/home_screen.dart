@@ -12,8 +12,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
 
+    final isPhoneLandscape = MediaQuery.of(context).orientation ==
+        Orientation.landscape &&
+        MediaQuery.of(context).size.height < 550;
+
     return Scaffold(
       appBar: AppBar(
+        title: isPhoneLandscape
+            ? Text(localizations.appTitle)
+            : null,
         actions: [
           IconButton(
             icon: const Icon(Icons.history),
@@ -27,42 +34,110 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: isPhoneLandscape
+              ? _buildPhoneLandscapeLayout(context, ref, localizations)
+              : _buildStandardLayout(context, ref, localizations),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStandardLayout(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          localizations.appTitle,
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 48),
+        _buildSection(
+          context,
+          localizations.gridSizeLabel,
+          _buildGridSizeSelector(context, ref),
+        ),
+        const SizedBox(height: 32),
+        _buildSection(
+          context,
+          localizations.gameModeLabel,
+          _buildCountdownToggle(context, ref, localizations),
+        ),
+        const SizedBox(height: 48),
+        SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/game');
+            },
+            child: Text(localizations.startGame),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPhoneLandscapeLayout(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      children: [
+        Expanded(
+          child: Row(
             children: [
-              Text(
-                localizations.appTitle,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      localizations.gridSizeLabel,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildGridSizeSelector(context, ref),
+                  ],
                 ),
               ),
-              const SizedBox(height: 48),
-              _buildSection(
-                context,
-                localizations.gridSizeLabel,
-                _buildGridSizeSelector(context, ref),
-              ),
-              const SizedBox(height: 32),
-              _buildSection(
-                context,
-                localizations.gameModeLabel,
-                _buildCountdownToggle(context, ref, localizations),
-              ),
-              const SizedBox(height: 48),
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/game');
-                  },
-                  child: Text(localizations.startGame),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      localizations.gameModeLabel,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildCountdownToggle(context, ref, localizations),
+                  ],
                 ),
               ),
             ],
           ),
         ),
-      ),
+        const SizedBox(height: 16),
+        SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/game');
+            },
+            child: Text(localizations.startGame),
+          ),
+        ),
+      ],
     );
   }
 
