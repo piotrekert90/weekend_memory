@@ -41,6 +41,7 @@ final class AppRouteHome extends AppRoute {
 AppRoute parseRoute(String location) {
   return switch (location) {
     AppRoutePath.home => const AppRouteHome(),
+    AppRoutePath.game => const AppRouteGame(),
     AppRoutePath.history => const AppRouteHistory(),
     _ => const AppRouteHome(),
   };
