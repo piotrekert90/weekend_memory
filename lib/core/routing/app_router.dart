@@ -7,8 +7,8 @@ import '../../features/memory_game/presentation/screens/home_screen.dart';
 
 /// Declarative route paths used across the application.
 abstract final class AppRoutePath {
-  static const home = '/home';
-  static const game = '/';
+  static const home = '/';
+  static const game = '/game';
   static const history = '/history';
 }
 
@@ -42,7 +42,7 @@ AppRoute parseRoute(String location) {
   return switch (location) {
     AppRoutePath.home => const AppRouteHome(),
     AppRoutePath.history => const AppRouteHistory(),
-    _ => const AppRouteGame(),
+    _ => const AppRouteHome(),
   };
 }
 

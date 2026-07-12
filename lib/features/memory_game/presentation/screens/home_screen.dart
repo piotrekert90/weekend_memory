@@ -43,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/');
+                    Navigator.of(context).pushNamed('/game');
                   },
                   child: Text(localizations.startGame),
                 ),
