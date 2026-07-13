@@ -30,6 +30,7 @@ Originally developed as a weekend challenge, the project evolved into a technica
 - Reactive state management with Riverpod 3.x
 - Material 3 design with full Light & Dark theme support
 - Adaptive layout columns based on device orientation
+- Multiple game modes (Classic timer & Countdown)
 - Production-grade test suite (Unit, Widget, and Golden tests)
 
 ## Core Technologies
@@ -49,11 +50,21 @@ lib/
 │   └── theme/
 ├── features/
 │   └── memory_game/
-│       ├── data/          # Isar Repositories implementation
-│       ├── domain/        # Immutable Models (MemoryCard, MemoryGameState, GameResult)
-│       └── presentation/  # Riverpod Notifiers & Component Widgets
+│       ├── data/          # Isar Repositories implementation & generated adapters
+│       ├── domain/        # Pure Dart models & services (MemoryCard, GameResult, GameEngine)
+│       └── presentation/  # Riverpod Notifiers & responsive UI layouts
 └── l10n/                  # ARB Localization files (EN/PL)
 ```
+
+### Architecture Blueprint
+
+| Layer | Responsibility | Key Artifacts |
+|-------|---------------|---------------|
+| **Domain** | Pure Dart business logic with zero Flutter or Riverpod dependencies | `MemoryCard`, `GameResult`, `GameMode`, `GameEngine` |
+| **Data** | Isar database entities, repositories, and generated adapters | `GameHistoryRepository`, `GameResult.g.dart` |
+| **Presentation** | Riverpod state notifiers, responsive layouts, and component widgets | `MemoryGameProvider`, `GameBoard`, `GameHistoryCard` |
+
+The domain layer is intentionally framework-agnostic, enabling pure Dart unit testing and straightforward reuse across platforms. The data layer bridges Isar's reactive streams to the domain via repository interfaces. The presentation layer consumes domain state through Riverpod providers and renders responsive Material 3 UI.
 
 ## Why no Game Engine?
 
@@ -108,17 +119,49 @@ The game board automatically adapts to the available screen space. The layout dy
 | Landscape | 8 × 2       | 8 columns       |
 
 
+## New Feature Infrastructure
+
+### Game Mode Support
+
+The project now supports two distinct game modes defined by the `GameMode` enum:
+
+| Mode | Behavior |
+|------|----------|
+| `classic` | Standard timer that counts up from zero |
+| `countdown` | Reverse timer that counts down from a configurable duration |
+
+The `GameEngine` domain service encapsulates all pure game logic (shuffling, matching, win conditions) with zero Flutter or Riverpod dependencies, making it trivially testable and platform-agnostic.
+
+### Game History with Mode-Aware Persistence
+
+Game results now automatically persist the active game mode alongside traditional metrics (move count, duration, grid size). The `GameHistoryCard` widget visually distinguishes modes using context-aware indicators:
+
+- **Stopwatch icon** — Classic mode (counting up)
+- **Hourglass icon** — Countdown mode (counting down)
+
+This allows players to quickly identify their previous session type at a glance.
+
+
 ## Quality Assurance & Testing
 
 The codebase includes multiple layers of automated testing protecting against logic bugs, UI misbehavior, and visual regression.
-```text
-test/
-└── features/
-    └── memory_game/
-        ├── data/            # Repository persistence & sorting tests
-        └── presentation/
-            ├── controllers/ # Provider & asynchronous game logic tests (fakeAsync)
-            └── widgets/     # Component rendering & orientation Golden tests
+
+### Verification Standards
+
+| Metric | Target | Current |
+|--------|--------|---------|
+| Linter warnings (`dart custom_lint`) | 0 | 0 |
+| Analyzer errors (`flutter analyze`) | 0 | 0 |
+| Active tests | — | 48 |
+| Test health | 100% | 100% |
+
+All code changes must pass the full verification pipeline before merging:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+flutter analyze
+dart run custom_lint
+flutter test
 ```
 
 ### Test Suite Highlights
