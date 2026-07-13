@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weekend_memory/features/memory_game/domain/models/game_mode.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/game_result.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/grid_size.dart';
 import 'package:weekend_memory/l10n/app_localizations.dart';
@@ -57,6 +58,8 @@ class GameHistoryCard extends StatelessWidget {
           const SizedBox(height: 12),
           Row(
             children: [
+              _buildModeIndicator(context, result.gameMode),
+              const SizedBox(width: 16),
               _buildStatItem(
                 context,
                 label:       localization.movesLabel,
@@ -94,6 +97,27 @@ class GameHistoryCard extends StatelessWidget {
     final minutes = seconds ~/ 60;
     final remainingSeconds = seconds % 60;
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  Widget _buildModeIndicator(BuildContext context, GameMode gameMode) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Icon(
+          gameMode == GameMode.classic ? Icons.timer : Icons.hourglass_bottom,
+          size: 24,
+          color: theme.colorScheme.primary,
+        ),
+        const SizedBox(height: 2),
+        Text(
+          gameMode == GameMode.classic ? 'Classic' : 'Countdown',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildStatItem(

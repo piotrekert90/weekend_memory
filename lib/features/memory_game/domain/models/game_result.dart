@@ -1,5 +1,7 @@
 import 'package:isar_community/isar.dart';
 
+import 'game_mode.dart';
+
 part 'game_result.g.dart';
 
 /// Stores a completed game result for history tracking.
@@ -20,11 +22,16 @@ class GameResult {
   /// Timestamp when the game was completed.
   final DateTime playedAt;
 
+  /// The game mode that was played (classic or countdown).
+  @enumerated
+  final GameMode gameMode;
+
   GameResult({
     this.id = Isar.autoIncrement,
     required this.moveCount,
     required this.durationInSeconds,
     required this.gridSize,
     required this.playedAt,
+    this.gameMode = GameMode.classic,
   });
 }

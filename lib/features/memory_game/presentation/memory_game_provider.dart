@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/repositories/game_history_repository.dart';
+import '../domain/models/game_mode.dart';
 import '../domain/models/game_result.dart';
 import '../domain/models/memory_game_state.dart';
 import '../domain/services/game_engine.dart';
@@ -102,11 +103,13 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
           _timer = null;
 
           final config = ref.read(gameConfigProvider);
+          final gameMode = config.isCountdownMode ? GameMode.countdown : GameMode.classic;
           final result = GameResult(
             moveCount: state.moveCount,
             durationInSeconds: state.durationInSeconds,
             gridSize: config.gridSize.index,
             playedAt: DateTime.now(),
+            gameMode: gameMode,
           );
 
           ref.read(gameHistoryRepositoryProvider).saveResult(result).then((_) {
