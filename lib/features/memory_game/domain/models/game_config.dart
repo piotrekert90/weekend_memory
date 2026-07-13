@@ -6,7 +6,7 @@ class GameConfig {
   final bool isCountdownMode;
 
   const GameConfig({
-    this.gridSize = GridSize.grid4x4,
+    this.gridSize = GridSize.easy,
     this.isCountdownMode = false,
   });
 

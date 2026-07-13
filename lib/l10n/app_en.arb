@@ -35,7 +35,10 @@
     "countdownModeDescription": "Timer counts down from a set duration",
     "startGame": "Start Game",
     "gridSizeFilter": "Grid Size",
-    "noGamesForGrid": "No games for this grid size yet",
+    "noGamesForGrid": "No games for this difficulty yet",
     "todayLabel": "Today",
-    "yesterdayLabel": "Yesterday"
+    "yesterdayLabel": "Yesterday",
+    "easy": "Easy (16 cards)",
+    "medium": "Medium (24 cards)",
+    "hard": "Hard (36 cards)"
 }

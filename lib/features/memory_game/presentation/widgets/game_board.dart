@@ -53,9 +53,9 @@ class GameBoard extends ConsumerWidget {
 
   int _resolveCrossAxisCount(Orientation orientation, GridSize gridSize) {
     if (orientation == Orientation.landscape) {
-      return gridSize.rows;
+      return gridSize.getLandscapeColumns();
     }
-    return gridSize.columns;
+    return gridSize.getPortraitColumns();
   }
 
   double _resolveChildAspectRatio(
@@ -73,11 +73,14 @@ class GameBoard extends ConsumerWidget {
 
     final itemWidth = (maxWidth - (crossAxisSpacing * (crossAxisCount - 1)) - (2 * padding)) / crossAxisCount;
 
+    final totalCards = gridSize.totalCards;
     final effectiveRowCount = (orientation == Orientation.landscape)
-        ? gridSize.columns
-        : gridSize.rows;
+        ? (totalCards / crossAxisCount).ceil()
+        : (totalCards / crossAxisCount).ceil();
     final itemHeight = (maxHeight - (mainAxisSpacing * (effectiveRowCount - 1)) - (2 * padding)) / effectiveRowCount;
 
-    return itemWidth / itemHeight;
+    // Clamp to reasonable card shape ratios to prevent awkward strips
+    final ratio = itemWidth / itemHeight;
+    return ratio.clamp(0.5, 2.0);
   }
 }

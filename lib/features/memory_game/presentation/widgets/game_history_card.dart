@@ -34,7 +34,11 @@ class GameHistoryCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '${gridSize.columns}x${gridSize.rows}',
+                  switch (gridSize) {
+                    GridSize.easy => localization.easy,
+                    GridSize.medium => localization.medium,
+                    GridSize.hard => localization.hard,
+                  },
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.w600,

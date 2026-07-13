@@ -170,14 +170,20 @@ class HomeScreen extends ConsumerWidget {
     final currentGridSize = ref.watch(
       gameConfigProvider.select((config) => config.gridSize),
     );
+    final l10n = AppLocalizations.of(context)!;
 
     return Wrap(
       spacing: 12,
       runSpacing: 12,
       children: GridSize.values.map((grid) {
         final isSelected = grid == currentGridSize;
+        final label = switch (grid) {
+          GridSize.easy => l10n.easy,
+          GridSize.medium => l10n.medium,
+          GridSize.hard => l10n.hard,
+        };
         return ChoiceChip(
-          label: Text('${grid.columns}x${grid.rows}'),
+          label: Text(label),
           selected: isSelected,
           onSelected: (_) {
             ref.read(gameConfigProvider.notifier).setGridSize(grid);

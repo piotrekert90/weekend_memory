@@ -35,7 +35,10 @@
     "countdownModeDescription": "Odliczanie czasu od ustawionej wartości",
     "startGame": "Rozpocznij grę",
     "gridSizeFilter": "Rozmiar siatki",
-    "noGamesForGrid": "Brak gier dla tego rozmiaru siatki",
+    "noGamesForGrid": "Brak gier dla tego poziomu trudności",
     "todayLabel": "Dzisiaj",
-    "yesterdayLabel": "Wczoraj"
+    "yesterdayLabel": "Wczoraj",
+    "easy": "Łatwy (16 kart)",
+    "medium": "Średni (24 karty)",
+    "hard": "Trudny (36 kart)"
 }

@@ -70,7 +70,13 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
                   segments: GridSize.values
                       .map((g) => ButtonSegment<int>(
                             value: g.index,
-                            label: Text('${g.columns}x${g.rows}'),
+                            label: Text(
+                              switch (g) {
+                                GridSize.easy => l10n.easy,
+                                GridSize.medium => l10n.medium,
+                                GridSize.hard => l10n.hard,
+                              },
+                            ),
                           ))
                       .toList(),
                   selected: {_selectedGridIndex},

@@ -248,7 +248,7 @@ abstract class AppLocalizations {
   /// No description provided for @noGamesForGrid.
   ///
   /// In en, this message translates to:
-  /// **'No games for this grid size yet'**
+  /// **'No games for this difficulty yet'**
   String get noGamesForGrid;
 
   /// No description provided for @todayLabel.
@@ -262,6 +262,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yesterday'**
   String get yesterdayLabel;
+
+  /// No description provided for @easy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy (16 cards)'**
+  String get easy;
+
+  /// No description provided for @medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium (24 cards)'**
+  String get medium;
+
+  /// No description provided for @hard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard (36 cards)'**
+  String get hard;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

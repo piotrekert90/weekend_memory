@@ -1,23 +1,36 @@
 /// Defines the available grid configurations for the memory game.
+///
+/// Each difficulty level maps to a portrait layout and a dynamic landscape
+/// layout that keeps the total card count identical while adapting to screen
+/// orientation for better card aspect ratios.
 enum GridSize {
-  grid4x4(columns: 4, rows: 4),
-  grid6x4(columns: 6, rows: 4),
-  grid6x6(columns: 6, rows: 6);
+  easy(totalCards: 16),
+  medium(totalCards: 24),
+  hard(totalCards: 36);
 
-  const GridSize({
-    required this.columns,
-    required this.rows,
-  });
-
-  /// Number of columns in the grid.
-  final int columns;
-
-  /// Number of rows in the grid.
-  final int rows;
+  const GridSize({required this.totalCards});
 
   /// Total number of cards for this grid size.
-  int get totalCards => columns * rows;
+  final int totalCards;
 
   /// Number of unique symbol pairs needed for this grid size.
   int get pairCount => totalCards ~/ 2;
+
+  /// Number of columns to use in portrait orientation.
+  int getPortraitColumns() {
+    return switch (this) {
+      easy => 4,
+      medium => 4,
+      hard => 6,
+    };
+  }
+
+  /// Number of columns to use in landscape orientation.
+  int getLandscapeColumns() {
+    return switch (this) {
+      easy => 8,
+      medium => 8,
+      hard => 9,
+    };
+  }
 }

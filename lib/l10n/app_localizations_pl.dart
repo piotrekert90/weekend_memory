@@ -88,11 +88,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get gridSizeFilter => 'Rozmiar siatki';
 
   @override
-  String get noGamesForGrid => 'Brak gier dla tego rozmiaru siatki';
+  String get noGamesForGrid => 'Brak gier dla tego poziomu trudności';
 
   @override
   String get todayLabel => 'Dzisiaj';
 
   @override
   String get yesterdayLabel => 'Wczoraj';
+
+  @override
+  String get easy => 'Łatwy (16 kart)';
+
+  @override
+  String get medium => 'Średni (24 karty)';
+
+  @override
+  String get hard => 'Trudny (36 kart)';
 }

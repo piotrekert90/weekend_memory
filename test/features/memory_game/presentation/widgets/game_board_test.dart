@@ -88,7 +88,7 @@ void main() {
     await tester.pumpWidgetWithDependencies(
       const GameBoard(),
       overrides: [
-        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.grid4x4)),
+        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.easy)),
         memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
       ],
     );
@@ -100,7 +100,7 @@ void main() {
     expect(delegate.crossAxisCount, 4);
   });
 
-  testWidgets('uses configured rows as crossAxisCount in landscape mode', (tester) async {
+  testWidgets('uses configured landscape columns as crossAxisCount in landscape mode', (tester) async {
     final binding = TestWidgetsFlutterBinding.ensureInitialized();
     await binding.setSurfaceSize(const Size(800, 400));
     addTearDown(() => binding.setSurfaceSize(null));
@@ -108,7 +108,7 @@ void main() {
     await tester.pumpWidgetWithDependencies(
       const GameBoard(),
       overrides: [
-        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.grid4x4)),
+        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.easy)),
         memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
       ],
     );
@@ -117,7 +117,7 @@ void main() {
     final delegate =
         grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
 
-    expect(delegate.crossAxisCount, 4);
+    expect(delegate.crossAxisCount, 8);
   });
 
   testWidgets('uses correct grid spacing and padding', (tester) async {
