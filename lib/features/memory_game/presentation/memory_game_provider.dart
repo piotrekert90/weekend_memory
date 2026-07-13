@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/repositories/game_history_repository.dart';
 import '../domain/models/game_result.dart';
-import '../domain/models/memory_card.dart';
 import '../domain/models/memory_game_state.dart';
+import '../domain/services/game_engine.dart';
 
 import 'game_config_provider.dart';
 
@@ -15,8 +14,35 @@ part 'memory_game_provider.g.dart';
 /// Manages the active memory game session state and game logic.
 @riverpod
 class MemoryGameNotifier extends _$MemoryGameNotifier {
-  final _random = Random();
+  final _engine = GameEngine();
   Timer? _timer;
+
+  static const _symbols = [
+    '🌟',
+    '❤️',
+    '🔥',
+    '⚡',
+    '☁️',
+    '🏖️',
+    '🐾',
+    '🎵',
+    '🌈',
+    '🦋',
+    '🍀',
+    '🌺',
+    '🍄',
+    '🐬',
+    '🦊',
+    '🐱',
+    '🎃',
+    '🎄',
+    '🌻',
+    '🐸',
+    '🦄',
+    '🐝',
+    '🍉',
+    '🧩',
+  ];
 
   /// Initializes the game with a shuffled deck and default settings.
   @override
@@ -32,40 +58,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     _timer?.cancel();
     _timer = null;
 
-    final symbols = [
-      '🌟',
-      '❤️',
-      '🔥',
-      '⚡',
-      '☁️',
-      '🏖️',
-      '🐾',
-      '🎵',
-      '🌈',
-      '🦋',
-      '🍀',
-      '🌺',
-      '🍄',
-      '🐬',
-      '🦊',
-      '🐱',
-      '🎃',
-      '🎄',
-      '🌻',
-      '🐸',
-      '🦄',
-      '🐝',
-      '🍉',
-      '🧩',
-    ];
-    final shuffledSymbols = symbols..shuffle(_random);
-
-    final cards = <MemoryCard>[];
-    for (int i = 0; i < pairCount; i++) {
-      cards.add(MemoryCard(id: i, content: shuffledSymbols[i]));
-      cards.add(MemoryCard(id: i, content: shuffledSymbols[i]));
-    }
-    cards.shuffle(_random);
+    final cards = _engine.createDeck(pairCount: pairCount, symbols: _symbols);
 
     return MemoryGameState(cards: cards);
   }
@@ -79,8 +72,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       _startTimer();
     }
 
-    final updatedCards = List<MemoryCard>.from(state.cards);
-    updatedCards[index] = updatedCards[index].copyWith(isFaceUp: true);
+    final updatedCards = _engine.flipCard(state.cards, index);
 
     if (state.firstSelectedCardIndex == null) {
       state = state.copyWith(
@@ -89,27 +81,21 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       );
     } else {
       final firstIndex = state.firstSelectedCardIndex!;
-      updatedCards[firstIndex] = updatedCards[firstIndex].copyWith(
-        isFaceUp: true,
-      );
+      final cardsWithFirstFlipped = _engine.flipCard(updatedCards, firstIndex);
 
       state = state.copyWith(
-        cards: updatedCards,
+        cards: cardsWithFirstFlipped,
         isProcessing: true,
         moveCount: state.moveCount + 1,
       );
 
-      final firstCard = updatedCards[firstIndex];
-      final secondCard = updatedCards[index];
+      final firstCard = cardsWithFirstFlipped[firstIndex];
+      final secondCard = cardsWithFirstFlipped[index];
 
-      if (firstCard.id == secondCard.id) {
-        final matchedCards = List<MemoryCard>.from(updatedCards);
-        matchedCards[firstIndex] = matchedCards[firstIndex].copyWith(
-          isMatched: true,
-        );
-        matchedCards[index] = matchedCards[index].copyWith(isMatched: true);
+      if (_engine.isMatch(firstCard, secondCard)) {
+        final matchedCards = _engine.markMatched(cardsWithFirstFlipped, firstIndex, index);
 
-        final isFinished = matchedCards.every((c) => c.isMatched);
+        final isFinished = _engine.isGameFinished(matchedCards);
 
         if (isFinished) {
           _timer?.cancel();
@@ -138,11 +124,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
         Future.delayed(const Duration(seconds: 1), () {
           if (!ref.mounted) return;
 
-          final currentCards = List<MemoryCard>.from(state.cards);
-          currentCards[firstIndex] = currentCards[firstIndex].copyWith(
-            isFaceUp: false,
-          );
-          currentCards[index] = currentCards[index].copyWith(isFaceUp: false);
+          final currentCards = _engine.flipAllDown(state.cards);
 
           state = state.copyWith(
             cards: currentCards,

@@ -2,7 +2,10 @@ import 'grid_size.dart';
 
 /// Immutable configuration for a memory game session.
 class GameConfig {
+  /// The grid layout configuration determining difficulty and card count.
   final GridSize gridSize;
+
+  /// Whether the game is in countdown timer mode.
   final bool isCountdownMode;
 
   const GameConfig({

@@ -8,6 +8,11 @@ import 'memory_card_widget.dart';
 
 /// Renders the memory game card grid with adaptive layout.
 class GameBoard extends ConsumerWidget {
+  static const _gridPadding = 8.0;
+  static const _gridSpacing = 8.0;
+  static const _minAspectRatio = 0.5;
+  static const _maxAspectRatio = 2.0;
+
   const GameBoard({super.key});
 
   @override
@@ -33,12 +38,12 @@ class GameBoard extends ConsumerWidget {
             );
 
             return GridView.builder(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(_gridPadding),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 childAspectRatio: childAspectRatio,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
+                crossAxisSpacing: _gridSpacing,
+                mainAxisSpacing: _gridSpacing,
               ),
               itemCount: cardsCount,
               itemBuilder: (context, index) {
@@ -67,20 +72,15 @@ class GameBoard extends ConsumerWidget {
     final maxWidth = constraints.maxWidth;
     final maxHeight = constraints.maxHeight;
 
-    final crossAxisSpacing = 8.0;
-    final mainAxisSpacing = 8.0;
-    final padding = 8.0;
-
-    final itemWidth = (maxWidth - (crossAxisSpacing * (crossAxisCount - 1)) - (2 * padding)) / crossAxisCount;
+    final itemWidth = (maxWidth - (_gridSpacing * (crossAxisCount - 1)) - (2 * _gridPadding)) / crossAxisCount;
 
     final totalCards = gridSize.totalCards;
     final effectiveRowCount = (orientation == Orientation.landscape)
         ? (totalCards / crossAxisCount).ceil()
         : (totalCards / crossAxisCount).ceil();
-    final itemHeight = (maxHeight - (mainAxisSpacing * (effectiveRowCount - 1)) - (2 * padding)) / effectiveRowCount;
+    final itemHeight = (maxHeight - (_gridSpacing * (effectiveRowCount - 1)) - (2 * _gridPadding)) / effectiveRowCount;
 
-    // Clamp to reasonable card shape ratios to prevent awkward strips
     final ratio = itemWidth / itemHeight;
-    return ratio.clamp(0.5, 2.0);
+    return ratio.clamp(_minAspectRatio, _maxAspectRatio);
   }
 }

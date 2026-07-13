@@ -4,11 +4,11 @@
 /// layout that keeps the total card count identical while adapting to screen
 /// orientation for better card aspect ratios.
 enum GridSize {
-  easy(totalCards: 16),
-  medium(totalCards: 24),
-  hard(totalCards: 36);
+  easy(16),
+  medium(24),
+  hard(36);
 
-  const GridSize({required this.totalCards});
+  const GridSize(this.totalCards);
 
   /// Total number of cards for this grid size.
   final int totalCards;

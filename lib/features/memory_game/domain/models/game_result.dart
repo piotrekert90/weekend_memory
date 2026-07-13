@@ -5,11 +5,19 @@ part 'game_result.g.dart';
 /// Stores a completed game result for history tracking.
 @collection
 class GameResult {
+  /// Auto-incrementing unique identifier for this result record.
   Id id = Isar.autoIncrement;
 
+  /// Total number of moves the player made to complete the game.
   final int moveCount;
+
+  /// Game duration in seconds.
   final int durationInSeconds;
+
+  /// Grid size index corresponding to the difficulty level played.
   final int gridSize;
+
+  /// Timestamp when the game was completed.
   final DateTime playedAt;
 
   GameResult({

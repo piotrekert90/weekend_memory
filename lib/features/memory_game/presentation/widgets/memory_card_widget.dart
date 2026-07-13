@@ -27,8 +27,13 @@ class MemoryCardWidget extends ConsumerWidget {
 
 /// Animates a card flip between front and back faces.
 class AnimatedFlipCard extends StatefulWidget {
+  /// Whether the card should display its face-up content.
   final bool isRevealed;
+
+  /// The card data to render.
   final MemoryCard card;
+
+  /// Callback invoked when the card is tapped.
   final VoidCallback onTap;
 
   const AnimatedFlipCard({
@@ -44,6 +49,15 @@ class AnimatedFlipCard extends StatefulWidget {
 
 class _AnimatedFlipCardState extends State<AnimatedFlipCard>
     with SingleTickerProviderStateMixin {
+  static const _flipDuration = Duration(milliseconds: 300);
+  static const _cardCornerRadius = 12.0;
+  static const _cardBorderWidth = 2.0;
+  static const _cardShadowBlur = 4.0;
+  static const _cardShadowOffset = 2.0;
+  static const _cardSymbolFontSize = 32.0;
+  static const _cardBackIconSize = 48.0;
+  static const _pi = 3.14159;
+
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -51,7 +65,7 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: _flipDuration,
       vsync: this,
     );
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
@@ -85,7 +99,7 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard>
       builder: (context, child) {
         final transform = Matrix4.identity()
           ..setEntry(3, 2, 0.001)
-          ..rotateY(_animation.value * 3.14159);
+          ..rotateY(_animation.value * _pi);
 
         return Transform(
           transform: transform,
@@ -112,26 +126,26 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard>
       onTap: widget.onTap,
       child: Transform(
         alignment: Alignment.center,
-        transform: Matrix4.identity()..rotateY(3.14159),
+        transform: Matrix4.identity()..rotateY(_pi),
         child: Container(
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: borderColor, width: 2),
+            borderRadius: BorderRadius.circular(_cardCornerRadius),
+            border: Border.all(color: borderColor, width: _cardBorderWidth),
             boxShadow: [
               BoxShadow(
                 color: theme.brightness == Brightness.dark
                     ? Colors.black45
                     : Colors.black12,
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+                blurRadius: _cardShadowBlur,
+                offset: const Offset(0, _cardShadowOffset),
               ),
             ],
           ),
           child: Center(
             child: Text(
               widget.card.content,
-              style: const TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: _cardSymbolFontSize),
             ),
           ),
         ),
@@ -148,18 +162,18 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard>
       child: Container(
         decoration: BoxDecoration(
           color: colorScheme.primary,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(_cardCornerRadius),
           boxShadow: [
             BoxShadow(
               color: theme.brightness == Brightness.dark
                   ? Colors.black45
                   : Colors.black12,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              blurRadius: _cardShadowBlur,
+              offset: const Offset(0, _cardShadowOffset),
             ),
           ],
         ),
-        child: Icon(Icons.help_outline, size: 48, color: colorScheme.onPrimary),
+        child: Icon(Icons.help_outline, size: _cardBackIconSize, color: colorScheme.onPrimary),
       ),
     );
   }
