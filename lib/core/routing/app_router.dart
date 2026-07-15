@@ -18,26 +18,22 @@ sealed class AppRoute {
   final String path;
 }
 
-/// Root route — launches the memory game screen.
+/// Route that launches the memory game screen.
 final class AppRouteGame extends AppRoute {
   const AppRouteGame() : super(AppRoutePath.game);
 }
 
-/// History route — launches the game history screen.
+/// Route that launches the game history screen.
 final class AppRouteHistory extends AppRoute {
   const AppRouteHistory() : super(AppRoutePath.history);
 }
 
-/// Home route — launches the game configuration screen.
+/// Route that launches the game configuration screen.
 final class AppRouteHome extends AppRoute {
   const AppRouteHome() : super(AppRoutePath.home);
 }
 
-/// Parses a [location] string into a concrete [AppRoute].
-///
-/// Returns [AppRouteHome] for the home path, [AppRouteGame] for the root
-/// path, and [AppRouteHistory] for the history path. Unknown paths default
-/// to the game route.
+/// Resolves a route [location] string to a concrete [AppRoute].
 AppRoute parseRoute(String location) {
   return switch (location) {
     AppRoutePath.home => const AppRouteHome(),
@@ -48,9 +44,6 @@ AppRoute parseRoute(String location) {
 }
 
 /// Builds a [PageRoute] for the given [route].
-///
-/// Maps each [AppRoute] subtype to its corresponding screen wrapped in a
-/// [MaterialPageRoute].
 PageRoute<void> buildRoute(AppRoute route) {
   return switch (route) {
     AppRouteHome() => MaterialPageRoute(
@@ -65,11 +58,7 @@ PageRoute<void> buildRoute(AppRoute route) {
   };
 }
 
-/// Riverpod provider that exposes the application's [NavigatorKey].
-///
-/// The key is created once and shared across the widget tree so that
-/// imperative navigation (`Navigator.of(key.currentContext!)`) works from
-/// anywhere — including from non-widget contexts like services or providers.
+/// Exposes the application's shared [NavigatorKey].
 final appRouterProvider = Provider<GlobalKey<NavigatorState>>(
   (ref) => GlobalKey<NavigatorState>(),
 );

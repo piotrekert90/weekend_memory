@@ -2,10 +2,7 @@ import 'grid_size.dart';
 
 /// Immutable configuration for a memory game session.
 class GameConfig {
-  /// The grid layout configuration determining difficulty and card count.
   final GridSize gridSize;
-
-  /// Whether the game is in countdown timer mode.
   final bool isCountdownMode;
 
   const GameConfig({
@@ -13,7 +10,6 @@ class GameConfig {
     this.isCountdownMode = false,
   });
 
-  /// Returns a new instance with the given fields overridden.
   GameConfig copyWith({
     GridSize? gridSize,
     bool? isCountdownMode,
@@ -27,12 +23,15 @@ class GameConfig {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is GameConfig && other.gridSize == gridSize && other.isCountdownMode == isCountdownMode;
+    return other is GameConfig &&
+        other.gridSize == gridSize &&
+        other.isCountdownMode == isCountdownMode;
   }
 
   @override
   int get hashCode => gridSize.hashCode ^ isCountdownMode.hashCode;
 
   @override
-  String toString() => 'GameConfig(gridSize: $gridSize, isCountdownMode: $isCountdownMode)';
+  String toString() =>
+      'GameConfig(gridSize: $gridSize, isCountdownMode: $isCountdownMode)';
 }

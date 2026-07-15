@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Provides light and dark [ThemeData] configurations for the application.
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(

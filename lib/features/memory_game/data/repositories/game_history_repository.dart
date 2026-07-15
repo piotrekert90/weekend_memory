@@ -7,11 +7,15 @@ import '../../domain/repositories/game_history_repository.dart';
 
 part 'game_history_repository.g.dart';
 
+/// Provides the shared Isar database instance.
+///
+/// Must be overridden in [ProviderScope] before the app starts.
 @riverpod
 Isar isar(Ref ref) {
   throw UnimplementedError('Isar provider must be overridden in ProviderScope');
 }
 
+/// Resolves the game history repository backed by the local Isar database.
 @riverpod
 GameHistoryRepository gameHistoryRepository(Ref ref) {
   final isarInstance = ref.watch(isarProvider);
@@ -20,11 +24,10 @@ GameHistoryRepository gameHistoryRepository(Ref ref) {
 
 /// Persists and retrieves game history results via Isar.
 class GameHistoryRepositoryImpl implements GameHistoryRepository {
-  final Isar isar;
-
   GameHistoryRepositoryImpl(this.isar);
 
-  /// Persists a completed game result to the local database.
+  final Isar isar;
+
   @override
   Future<void> saveResult(GameResult result) async {
     try {
@@ -36,7 +39,6 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
     }
   }
 
-  /// Retrieves all saved game results sorted by duration and move count.
   @override
   Future<List<GameResult>> fetchAllResults() async {
     try {
@@ -52,7 +54,6 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
     }
   }
 
-  /// Clears all saved game history from the local database.
   @override
   Future<void> clearHistory() async {
     try {
@@ -79,6 +80,7 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   }
 }
 
+/// Watches all saved game results from the local repository.
 @riverpod
 Future<List<GameResult>> gameHistory(Ref ref) async {
   final repository = ref.watch(gameHistoryRepositoryProvider);

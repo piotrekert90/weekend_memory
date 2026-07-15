@@ -45,7 +45,6 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     '🧩',
   ];
 
-  /// Initializes the game with a shuffled deck and default settings.
   @override
   MemoryGameState build() {
     final config = ref.watch(gameConfigProvider);
@@ -64,6 +63,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     return MemoryGameState(cards: cards);
   }
 
+  /// Handles a card tap at [index] and advances the game state.
   void flipCard(int index) {
     if (state.isProcessing) return;
     if (state.cards[index].isMatched || state.cards[index].isFaceUp) return;
@@ -94,7 +94,8 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       final secondCard = cardsWithFirstFlipped[index];
 
       if (_engine.isMatch(firstCard, secondCard)) {
-        final matchedCards = _engine.markMatched(cardsWithFirstFlipped, firstIndex, index);
+        final matchedCards =
+            _engine.markMatched(cardsWithFirstFlipped, firstIndex, index);
 
         final isFinished = _engine.isGameFinished(matchedCards);
 
@@ -103,7 +104,8 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
           _timer = null;
 
           final config = ref.read(gameConfigProvider);
-          final gameMode = config.isCountdownMode ? GameMode.countdown : GameMode.classic;
+          final gameMode =
+              config.isCountdownMode ? GameMode.countdown : GameMode.classic;
           final result = GameResult(
             moveCount: state.moveCount,
             durationInSeconds: state.durationInSeconds,

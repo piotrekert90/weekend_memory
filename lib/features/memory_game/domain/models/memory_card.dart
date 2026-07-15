@@ -1,15 +1,8 @@
 /// Represents a single card in the memory game with face state tracking.
 class MemoryCard {
-  /// Unique identifier shared by both cards in a matching pair.
   final int id;
-
-  /// The symbol or content displayed when the card is face up.
   final String content;
-
-  /// Whether the card is currently revealed to the player.
   final bool isFaceUp;
-
-  /// Whether this card has been successfully matched with its pair.
   final bool isMatched;
 
   const MemoryCard({
@@ -19,7 +12,6 @@ class MemoryCard {
     this.isMatched = false,
   });
 
-  /// Returns a new [MemoryCard] with the given fields overridden.
   MemoryCard copyWith({
     int? id,
     String? content,

@@ -24,6 +24,7 @@ void main() async {
   );
 }
 
+/// Root widget that configures theming, localization, and navigation.
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -44,8 +45,7 @@ class MyApp extends ConsumerWidget {
       initialRoute: AppRoutePath.home,
       onGenerateRoute: (RouteSettings settings) {
         final route = parseRoute(settings.name ?? AppRoutePath.game);
-        final pageRoute = buildRoute(route);
-        return pageRoute;
+        return buildRoute(route);
       },
     );
   }
