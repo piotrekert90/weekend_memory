@@ -17,7 +17,10 @@ For every public class/method, add a doc comment following the language's standa
 ### Scope Discipline
 - Only read, open, or modify files explicitly named in the task, or files directly imported/referenced by them.
 - Do NOT explore or edit files outside the stated scope without first asking for confirmation.
-- If the task seems to require touching files beyond the stated scope, STOP and report which additional files you believe are needed, and why — before making changes.
+- Exception — the following do NOT require asking first, as they are natural consequences of a task, not scope expansion:
+  - Regenerating/updating codegen output files (e.g. `.g.dart`) that correspond to a modified source file.
+  - Updating an existing test file that directly tests the modified code, when needed to keep the Mandatory Verification Pipeline passing.
+- If the task seems to require touching files beyond the stated scope AND beyond the exceptions above, STOP and report which additional files you believe are needed, and why — before making changes.
 
 ### Ambiguity Handling
 - If a requirement is ambiguous or underspecified, state your interpretation/assumption explicitly before proceeding, rather than silently guessing.
@@ -60,10 +63,11 @@ For every public class/method, add a doc comment following the language's standa
 ## Project Stack: weekend_memory
 
 ### Build & Generation Commands
-- **Code Generation:** `dart run build_runner build --delete-conflicting-outputs`
-- **Linter & Formatting:** `flutter format .` and `flutter analyze`
-- **Custom Lints:** `dart run custom_lint`
-- **Testing:** `flutter test`
+- Install dependencies: `flutter pub get`
+- Code Generation: `dart run build_runner build --delete-conflicting-outputs`
+- Code analysis: `flutter analyze`
+- Custom Lints: `dart run custom_lint`
+- Testing: `flutter test`
 
 ### Architecture & Layer Boundaries
 This is a Local-First, AI-Native mobile memory game utilizing Clean Architecture under the following strict layout:
@@ -85,4 +89,4 @@ After any modification within the `lib/**` directory, you MUST execute the follo
 3. `dart run custom_lint`
 4. `flutter test`
 
-A task is NOT considered complete until all steps pass with zero errors and zero failing tests (all core tests must always pass).
+A task is NOT considered complete until all steps pass with zero errors and zero failing tests, AND the Lifecycle & Resource Disposal Checklist above has been explicitly verified. Fix any arising issues autonomously, subject to the Guardrails above.
