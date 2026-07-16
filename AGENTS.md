@@ -61,19 +61,21 @@ For every public class/method, add a doc comment following the language's standa
 ---
 
 ## Project Stack: weekend_memory
+*(Replace this whole section when starting a new project with a different stack.)*
 
 ### Build & Generation Commands
 - Install dependencies: `flutter pub get`
-- Code Generation: `dart run build_runner build --delete-conflicting-outputs`
-- Code analysis: `flutter analyze`
-- Custom Lints: `dart run custom_lint`
-- Testing: `flutter test`
+- Run build runner: `dart run build_runner build --delete-conflicting-outputs`
+- Code analysis: `dart format .` and `flutter analyze`
+- Run tests: `flutter test`
 
 ### Architecture & Layer Boundaries
 This is a Local-First, AI-Native mobile memory game utilizing Clean Architecture under the following strict layout:
-- **Domain Layer (`lib/features/memory_game/domain/`)**: Pure Dart logic. Contains models (`MemoryCard`, `GameResult`, `GameConfig`), the core `GameEngine` service (handling card shuffling, matching rules, and win conditions), and repository interfaces. NO Flutter or Riverpod imports allowed here.
-- **Data Layer (`lib/features/memory_game/data/`)**: Repository implementations and local storage handlers utilizing `isar_community` (Isar Database).
-- **Presentation Layer (`lib/features/memory_game/presentation/`)**: Responsive UI components, state management via Riverpod 3.x generators (`@riverpod`), and configuration/theme states.
+- **Domain Layer** (`lib/features/memory_game/domain/`): Pure Dart logic. Contains models (`MemoryCard`, `GameResult`, `GameConfig`), the core `GameEngine` service (handling card shuffling, matching rules, and win conditions), and repository interfaces. NO Flutter or Riverpod imports allowed here.
+- **Data Layer** (`lib/features/memory_game/data/`): Repository implementations and local storage handlers utilizing `isar_community` (Isar Database).
+- **Presentation Layer** (`lib/features/memory_game/presentation/`): Responsive UI components, state management via Riverpod 3.x generators (`@riverpod`), and configuration/theme states.
+- **State Management:** Riverpod 3.x strictly.
+- **Data Flow:** UI (`ConsumerWidget`) -> Notifier (`@riverpod`) -> Repository Interface (domain) -> Repository Impl (data) -> Local DB (`isar_community`).
 - **Reactivity:** State Notifiers listen to game interactions and trigger synchronous state updates. Completed games are persisted asynchronously to Isar.
 
 ### Lifecycle & Resource Disposal Checklist
@@ -86,7 +88,6 @@ Before considering any game feature, animation, or timer complete, verify:
 After any modification within the `lib/**` directory, you MUST execute the following pipeline in strict order:
 1. `dart run build_runner build --delete-conflicting-outputs`
 2. `flutter analyze`
-3. `dart run custom_lint`
-4. `flutter test`
+3. `flutter test`
 
 A task is NOT considered complete until all steps pass with zero errors and zero failing tests, AND the Lifecycle & Resource Disposal Checklist above has been explicitly verified. Fix any arising issues autonomously, subject to the Guardrails above.
