@@ -9,21 +9,39 @@ part of 'game_config_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// Notifier that holds the current game configuration.
+///
+/// Kept alive deliberately: this stores the player's chosen difficulty and
+/// game mode, which should survive brief moments where no widget is
+/// watching it (e.g. mid-navigation transitions between Home and the game
+/// screen), not silently reset to defaults the way plain @riverpod
+/// (autoDispose) would.
 
 @ProviderFor(GameConfigNotifier)
 final gameConfigProvider = GameConfigNotifierProvider._();
 
 /// Notifier that holds the current game configuration.
+///
+/// Kept alive deliberately: this stores the player's chosen difficulty and
+/// game mode, which should survive brief moments where no widget is
+/// watching it (e.g. mid-navigation transitions between Home and the game
+/// screen), not silently reset to defaults the way plain @riverpod
+/// (autoDispose) would.
 final class GameConfigNotifierProvider
     extends $NotifierProvider<GameConfigNotifier, GameConfig> {
   /// Notifier that holds the current game configuration.
+  ///
+  /// Kept alive deliberately: this stores the player's chosen difficulty and
+  /// game mode, which should survive brief moments where no widget is
+  /// watching it (e.g. mid-navigation transitions between Home and the game
+  /// screen), not silently reset to defaults the way plain @riverpod
+  /// (autoDispose) would.
   GameConfigNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'gameConfigProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -45,9 +63,15 @@ final class GameConfigNotifierProvider
 }
 
 String _$gameConfigNotifierHash() =>
-    r'20acaec21ebbbb5cddd4ba949f390aa55edadb33';
+    r'4d216dd5036135dee93affdf76dfd578f2af1057';
 
 /// Notifier that holds the current game configuration.
+///
+/// Kept alive deliberately: this stores the player's chosen difficulty and
+/// game mode, which should survive brief moments where no widget is
+/// watching it (e.g. mid-navigation transitions between Home and the game
+/// screen), not silently reset to defaults the way plain @riverpod
+/// (autoDispose) would.
 
 abstract class _$GameConfigNotifier extends $Notifier<GameConfig> {
   GameConfig build();

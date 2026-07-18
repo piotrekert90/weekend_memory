@@ -6,7 +6,13 @@ import '../domain/models/grid_size.dart';
 part 'game_config_provider.g.dart';
 
 /// Notifier that holds the current game configuration.
-@riverpod
+///
+/// Kept alive deliberately: this stores the player's chosen difficulty and
+/// game mode, which should survive brief moments where no widget is
+/// watching it (e.g. mid-navigation transitions between Home and the game
+/// screen), not silently reset to defaults the way plain @riverpod
+/// (autoDispose) would.
+@Riverpod(keepAlive: true)
 class GameConfigNotifier extends _$GameConfigNotifier {
   @override
   GameConfig build() {
@@ -21,5 +27,10 @@ class GameConfigNotifier extends _$GameConfigNotifier {
   /// Toggles countdown timer mode on or off.
   void toggleCountdownMode() {
     state = state.copyWith(isCountdownMode: !state.isCountdownMode);
+  }
+
+  /// Updates the configured countdown duration, in seconds.
+  void setCountdownDuration(int seconds) {
+    state = state.copyWith(countdownDurationInSeconds: seconds);
   }
 }
