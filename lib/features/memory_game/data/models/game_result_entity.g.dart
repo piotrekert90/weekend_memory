@@ -46,7 +46,26 @@ const GameResultEntitySchema = CollectionSchema(
   deserialize: _gameResultEntityDeserialize,
   deserializeProp: _gameResultEntityDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'durationInSeconds_moveCount': IndexSchema(
+      id: -4841869170972988310,
+      name: r'durationInSeconds_moveCount',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'durationInSeconds',
+          type: IndexType.value,
+          caseSensitive: false,
+        ),
+        IndexPropertySchema(
+          name: r'moveCount',
+          type: IndexType.value,
+          caseSensitive: false,
+        ),
+      ],
+    ),
+  },
   links: {},
   embeddedSchemas: {},
 
@@ -154,6 +173,15 @@ extension GameResultEntityQueryWhereSort
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhere>
+  anyDurationInSecondsMoveCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'durationInSeconds_moveCount'),
+      );
+    });
+  }
 }
 
 extension GameResultEntityQueryWhere
@@ -219,6 +247,230 @@ extension GameResultEntityQueryWhere
           lower: lowerId,
           includeLower: includeLower,
           upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsEqualToAnyMoveCount(int durationInSeconds) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'durationInSeconds_moveCount',
+          value: [durationInSeconds],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsNotEqualToAnyMoveCount(int durationInSeconds) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [],
+                upper: [durationInSeconds],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [durationInSeconds],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [durationInSeconds],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [],
+                upper: [durationInSeconds],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsGreaterThanAnyMoveCount(
+    int durationInSeconds, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'durationInSeconds_moveCount',
+          lower: [durationInSeconds],
+          includeLower: include,
+          upper: [],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsLessThanAnyMoveCount(
+    int durationInSeconds, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'durationInSeconds_moveCount',
+          lower: [],
+          upper: [durationInSeconds],
+          includeUpper: include,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsBetweenAnyMoveCount(
+    int lowerDurationInSeconds,
+    int upperDurationInSeconds, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'durationInSeconds_moveCount',
+          lower: [lowerDurationInSeconds],
+          includeLower: includeLower,
+          upper: [upperDurationInSeconds],
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsMoveCountEqualTo(int durationInSeconds, int moveCount) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'durationInSeconds_moveCount',
+          value: [durationInSeconds, moveCount],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsEqualToMoveCountNotEqualTo(
+    int durationInSeconds,
+    int moveCount,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [durationInSeconds],
+                upper: [durationInSeconds, moveCount],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [durationInSeconds, moveCount],
+                includeLower: false,
+                upper: [durationInSeconds],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [durationInSeconds, moveCount],
+                includeLower: false,
+                upper: [durationInSeconds],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'durationInSeconds_moveCount',
+                lower: [durationInSeconds],
+                upper: [durationInSeconds, moveCount],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsEqualToMoveCountGreaterThan(
+    int durationInSeconds,
+    int moveCount, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'durationInSeconds_moveCount',
+          lower: [durationInSeconds, moveCount],
+          includeLower: include,
+          upper: [durationInSeconds],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsEqualToMoveCountLessThan(
+    int durationInSeconds,
+    int moveCount, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'durationInSeconds_moveCount',
+          lower: [durationInSeconds],
+          upper: [durationInSeconds, moveCount],
+          includeUpper: include,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  durationInSecondsEqualToMoveCountBetween(
+    int durationInSeconds,
+    int lowerMoveCount,
+    int upperMoveCount, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'durationInSeconds_moveCount',
+          lower: [durationInSeconds, lowerMoveCount],
+          includeLower: includeLower,
+          upper: [durationInSeconds, upperMoveCount],
           includeUpper: includeUpper,
         ),
       );

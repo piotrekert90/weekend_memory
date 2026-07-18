@@ -15,8 +15,10 @@ part 'game_result_entity.g.dart';
 class GameResultEntity {
   Id id = Isar.autoIncrement;
 
-  final int moveCount;
+  @Index(composite: [CompositeIndex('moveCount')])
   final int durationInSeconds;
+
+  final int moveCount;
   final int gridSize;
   final DateTime playedAt;
 

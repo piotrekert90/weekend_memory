@@ -50,10 +50,11 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
       final entities = await isar
           .collection<GameResultEntity>()
           .where()
-          .anyId()
+          .sortByDurationInSeconds()
+          .thenByMoveCount()
           .findAll();
 
-      return _sortResults(entities).map((e) => e.toDomain()).toList();
+      return entities.map((e) => e.toDomain()).toList();
     } catch (e) {
       throw DatabaseException(message: e.toString());
     }
@@ -68,20 +69,6 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
     } catch (e) {
       throw DatabaseException(message: e.toString());
     }
-  }
-
-  List<GameResultEntity> _sortResults(List<GameResultEntity> entities) {
-    entities.sort((a, b) {
-      final durationCompare = a.durationInSeconds.compareTo(
-        b.durationInSeconds,
-      );
-      if (durationCompare != 0) {
-        return durationCompare;
-      }
-      return a.moveCount.compareTo(b.moveCount);
-    });
-
-    return entities;
   }
 }
 
