@@ -88,6 +88,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeUpMessage => 'You ran out of time before finding all the pairs.';
 
   @override
+  String get classicModeShortLabel => 'Classic';
+
+  @override
+  String get countdownModeShortLabel => 'Countdown';
+
+  @override
   String get startGame => 'Start Game';
 
   @override

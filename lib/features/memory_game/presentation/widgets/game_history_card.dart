@@ -62,13 +62,13 @@ class GameHistoryCard extends StatelessWidget {
               const SizedBox(width: 16),
               _buildStatItem(
                 context,
-                label:       localization.movesLabel,
+                label: localization.movesLabel,
                 value: '${result.moveCount}',
               ),
               const SizedBox(width: 16),
               _buildStatItem(
                 context,
-                label:       localization.durationLabel,
+                label: localization.durationLabel,
                 value: _formatDuration(result.durationInSeconds),
               ),
             ],
@@ -101,6 +101,7 @@ class GameHistoryCard extends StatelessWidget {
 
   Widget _buildModeIndicator(BuildContext context, GameMode gameMode) {
     final theme = Theme.of(context);
+    final localization = AppLocalizations.of(context)!;
 
     return Column(
       children: [
@@ -111,7 +112,9 @@ class GameHistoryCard extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         Text(
-          gameMode == GameMode.classic ? 'Classic' : 'Countdown',
+          gameMode == GameMode.classic
+              ? localization.classicModeShortLabel
+              : localization.countdownModeShortLabel,
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),

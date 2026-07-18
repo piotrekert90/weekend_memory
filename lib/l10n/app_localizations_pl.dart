@@ -88,6 +88,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get timeUpMessage => 'Nie udało się odnaleźć wszystkich par przed upływem czasu.';
 
   @override
+  String get classicModeShortLabel => 'Klasyczny';
+
+  @override
+  String get countdownModeShortLabel => 'Odliczanie';
+
+  @override
   String get startGame => 'Rozpocznij grę';
 
   @override

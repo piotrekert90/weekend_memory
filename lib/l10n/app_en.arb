@@ -35,6 +35,8 @@
     "countdownModeDescription": "Timer counts down from a set duration",
     "timeUpTitle": "Time's Up!",
     "timeUpMessage": "You ran out of time before finding all the pairs.",
+    "classicModeShortLabel": "Classic",
+    "countdownModeShortLabel": "Countdown",
     "startGame": "Start Game",
     "gridSizeFilter": "Grid Size",
     "noGamesForGrid": "No games for this difficulty yet",

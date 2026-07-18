@@ -245,6 +245,18 @@ abstract class AppLocalizations {
   /// **'You ran out of time before finding all the pairs.'**
   String get timeUpMessage;
 
+  /// No description provided for @classicModeShortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get classicModeShortLabel;
+
+  /// No description provided for @countdownModeShortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown'**
+  String get countdownModeShortLabel;
+
   /// No description provided for @startGame.
   ///
   /// In en, this message translates to:
