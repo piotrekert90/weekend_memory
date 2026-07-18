@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'game_result.dart';
+part of 'game_result_entity.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,13 +9,13 @@ part of 'game_result.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetGameResultCollection on Isar {
-  IsarCollection<GameResult> get gameResults => this.collection();
+extension GetGameResultEntityCollection on Isar {
+  IsarCollection<GameResultEntity> get gameResultEntitys => this.collection();
 }
 
-const GameResultSchema = CollectionSchema(
-  name: r'GameResult',
-  id: 9132494934183461079,
+const GameResultEntitySchema = CollectionSchema(
+  name: r'GameResultEntity',
+  id: 2307060016069072233,
   properties: {
     r'durationInSeconds': PropertySchema(
       id: 0,
@@ -26,7 +26,7 @@ const GameResultSchema = CollectionSchema(
       id: 1,
       name: r'gameMode',
       type: IsarType.byte,
-      enumMap: _GameResultgameModeEnumValueMap,
+      enumMap: _GameResultEntitygameModeEnumValueMap,
     ),
     r'gridSize': PropertySchema(id: 2, name: r'gridSize', type: IsarType.long),
     r'moveCount': PropertySchema(
@@ -41,23 +41,23 @@ const GameResultSchema = CollectionSchema(
     ),
   },
 
-  estimateSize: _gameResultEstimateSize,
-  serialize: _gameResultSerialize,
-  deserialize: _gameResultDeserialize,
-  deserializeProp: _gameResultDeserializeProp,
+  estimateSize: _gameResultEntityEstimateSize,
+  serialize: _gameResultEntitySerialize,
+  deserialize: _gameResultEntityDeserialize,
+  deserializeProp: _gameResultEntityDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
 
-  getId: _gameResultGetId,
-  getLinks: _gameResultGetLinks,
-  attach: _gameResultAttach,
+  getId: _gameResultEntityGetId,
+  getLinks: _gameResultEntityGetLinks,
+  attach: _gameResultEntityAttach,
   version: '3.3.2',
 );
 
-int _gameResultEstimateSize(
-  GameResult object,
+int _gameResultEntityEstimateSize(
+  GameResultEntity object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -65,8 +65,8 @@ int _gameResultEstimateSize(
   return bytesCount;
 }
 
-void _gameResultSerialize(
-  GameResult object,
+void _gameResultEntitySerialize(
+  GameResultEntity object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -78,16 +78,18 @@ void _gameResultSerialize(
   writer.writeDateTime(offsets[4], object.playedAt);
 }
 
-GameResult _gameResultDeserialize(
+GameResultEntity _gameResultEntityDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = GameResult(
+  final object = GameResultEntity(
     durationInSeconds: reader.readLong(offsets[0]),
     gameMode:
-        _GameResultgameModeValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+        _GameResultEntitygameModeValueEnumMap[reader.readByteOrNull(
+          offsets[1],
+        )] ??
         GameMode.classic,
     gridSize: reader.readLong(offsets[2]),
     id: id,
@@ -97,7 +99,7 @@ GameResult _gameResultDeserialize(
   return object;
 }
 
-P _gameResultDeserializeProp<P>(
+P _gameResultEntityDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -107,7 +109,9 @@ P _gameResultDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (_GameResultgameModeValueEnumMap[reader.readByteOrNull(offset)] ??
+      return (_GameResultEntitygameModeValueEnumMap[reader.readByteOrNull(
+                offset,
+              )] ??
               GameMode.classic)
           as P;
     case 2:
@@ -121,42 +125,49 @@ P _gameResultDeserializeProp<P>(
   }
 }
 
-const _GameResultgameModeEnumValueMap = {'classic': 0, 'countdown': 1};
-const _GameResultgameModeValueEnumMap = {
+const _GameResultEntitygameModeEnumValueMap = {'classic': 0, 'countdown': 1};
+const _GameResultEntitygameModeValueEnumMap = {
   0: GameMode.classic,
   1: GameMode.countdown,
 };
 
-Id _gameResultGetId(GameResult object) {
+Id _gameResultEntityGetId(GameResultEntity object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _gameResultGetLinks(GameResult object) {
+List<IsarLinkBase<dynamic>> _gameResultEntityGetLinks(GameResultEntity object) {
   return [];
 }
 
-void _gameResultAttach(IsarCollection<dynamic> col, Id id, GameResult object) {
+void _gameResultEntityAttach(
+  IsarCollection<dynamic> col,
+  Id id,
+  GameResultEntity object,
+) {
   object.id = id;
 }
 
-extension GameResultQueryWhereSort
-    on QueryBuilder<GameResult, GameResult, QWhere> {
-  QueryBuilder<GameResult, GameResult, QAfterWhere> anyId() {
+extension GameResultEntityQueryWhereSort
+    on QueryBuilder<GameResultEntity, GameResultEntity, QWhere> {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension GameResultQueryWhere
-    on QueryBuilder<GameResult, GameResult, QWhereClause> {
-  QueryBuilder<GameResult, GameResult, QAfterWhereClause> idEqualTo(Id id) {
+extension GameResultEntityQueryWhere
+    on QueryBuilder<GameResultEntity, GameResultEntity, QWhereClause> {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause> idEqualTo(
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -178,10 +189,8 @@ extension GameResultQueryWhere
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterWhereClause> idGreaterThan(
-    Id id, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -189,10 +198,8 @@ extension GameResultQueryWhere
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterWhereClause> idLessThan(
-    Id id, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -200,7 +207,7 @@ extension GameResultQueryWhere
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterWhereClause> idBetween(
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -219,9 +226,9 @@ extension GameResultQueryWhere
   }
 }
 
-extension GameResultQueryFilter
-    on QueryBuilder<GameResult, GameResult, QFilterCondition> {
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+extension GameResultEntityQueryFilter
+    on QueryBuilder<GameResultEntity, GameResultEntity, QFilterCondition> {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   durationInSecondsEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -230,7 +237,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   durationInSecondsGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -243,7 +250,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   durationInSecondsLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -256,7 +263,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   durationInSecondsBetween(
     int lower,
     int upper, {
@@ -276,9 +283,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gameModeEqualTo(
-    GameMode value,
-  ) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  gameModeEqualTo(GameMode value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'gameMode', value: value),
@@ -286,7 +292,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   gameModeGreaterThan(GameMode value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -299,10 +305,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gameModeLessThan(
-    GameMode value, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  gameModeLessThan(GameMode value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.lessThan(
@@ -314,7 +318,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gameModeBetween(
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  gameModeBetween(
     GameMode lower,
     GameMode upper, {
     bool includeLower = true,
@@ -333,9 +338,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gridSizeEqualTo(
-    int value,
-  ) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  gridSizeEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'gridSize', value: value),
@@ -343,7 +347,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   gridSizeGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -356,10 +360,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gridSizeLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  gridSizeLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.lessThan(
@@ -371,7 +373,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> gridSizeBetween(
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  gridSizeBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -390,9 +393,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> idEqualTo(
-    Id value,
-  ) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'id', value: value),
@@ -400,10 +402,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(
@@ -415,10 +415,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.lessThan(
@@ -430,7 +428,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> idBetween(
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -449,9 +448,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> moveCountEqualTo(
-    int value,
-  ) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  moveCountEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'moveCount', value: value),
@@ -459,7 +457,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   moveCountGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -472,10 +470,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> moveCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  moveCountLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.lessThan(
@@ -487,7 +483,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> moveCountBetween(
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  moveCountBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -506,9 +503,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> playedAtEqualTo(
-    DateTime value,
-  ) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  playedAtEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'playedAt', value: value),
@@ -516,7 +512,7 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
   playedAtGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -529,10 +525,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> playedAtLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  playedAtLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.lessThan(
@@ -544,7 +538,8 @@ extension GameResultQueryFilter
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterFilterCondition> playedAtBetween(
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterFilterCondition>
+  playedAtBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -564,219 +559,245 @@ extension GameResultQueryFilter
   }
 }
 
-extension GameResultQueryObject
-    on QueryBuilder<GameResult, GameResult, QFilterCondition> {}
+extension GameResultEntityQueryObject
+    on QueryBuilder<GameResultEntity, GameResultEntity, QFilterCondition> {}
 
-extension GameResultQueryLinks
-    on QueryBuilder<GameResult, GameResult, QFilterCondition> {}
+extension GameResultEntityQueryLinks
+    on QueryBuilder<GameResultEntity, GameResultEntity, QFilterCondition> {}
 
-extension GameResultQuerySortBy
-    on QueryBuilder<GameResult, GameResult, QSortBy> {
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByDurationInSeconds() {
+extension GameResultEntityQuerySortBy
+    on QueryBuilder<GameResultEntity, GameResultEntity, QSortBy> {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByDurationInSeconds() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationInSeconds', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
   sortByDurationInSecondsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationInSeconds', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByGameMode() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByGameMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gameMode', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByGameModeDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByGameModeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gameMode', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByGridSize() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByGridSize() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gridSize', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByGridSizeDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByGridSizeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gridSize', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByMoveCount() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByMoveCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'moveCount', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByMoveCountDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByMoveCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'moveCount', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByPlayedAt() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByPlayedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> sortByPlayedAtDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  sortByPlayedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playedAt', Sort.desc);
     });
   }
 }
 
-extension GameResultQuerySortThenBy
-    on QueryBuilder<GameResult, GameResult, QSortThenBy> {
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByDurationInSeconds() {
+extension GameResultEntityQuerySortThenBy
+    on QueryBuilder<GameResultEntity, GameResultEntity, QSortThenBy> {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByDurationInSeconds() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationInSeconds', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy>
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
   thenByDurationInSecondsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationInSeconds', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByGameMode() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByGameMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gameMode', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByGameModeDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByGameModeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gameMode', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByGridSize() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByGridSize() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gridSize', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByGridSizeDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByGridSizeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gridSize', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenById() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByMoveCount() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByMoveCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'moveCount', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByMoveCountDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByMoveCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'moveCount', Sort.desc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByPlayedAt() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByPlayedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QAfterSortBy> thenByPlayedAtDesc() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterSortBy>
+  thenByPlayedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playedAt', Sort.desc);
     });
   }
 }
 
-extension GameResultQueryWhereDistinct
-    on QueryBuilder<GameResult, GameResult, QDistinct> {
-  QueryBuilder<GameResult, GameResult, QDistinct>
+extension GameResultEntityQueryWhereDistinct
+    on QueryBuilder<GameResultEntity, GameResultEntity, QDistinct> {
+  QueryBuilder<GameResultEntity, GameResultEntity, QDistinct>
   distinctByDurationInSeconds() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'durationInSeconds');
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QDistinct> distinctByGameMode() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QDistinct>
+  distinctByGameMode() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'gameMode');
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QDistinct> distinctByGridSize() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QDistinct>
+  distinctByGridSize() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'gridSize');
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QDistinct> distinctByMoveCount() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QDistinct>
+  distinctByMoveCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'moveCount');
     });
   }
 
-  QueryBuilder<GameResult, GameResult, QDistinct> distinctByPlayedAt() {
+  QueryBuilder<GameResultEntity, GameResultEntity, QDistinct>
+  distinctByPlayedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'playedAt');
     });
   }
 }
 
-extension GameResultQueryProperty
-    on QueryBuilder<GameResult, GameResult, QQueryProperty> {
-  QueryBuilder<GameResult, int, QQueryOperations> idProperty() {
+extension GameResultEntityQueryProperty
+    on QueryBuilder<GameResultEntity, GameResultEntity, QQueryProperty> {
+  QueryBuilder<GameResultEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<GameResult, int, QQueryOperations> durationInSecondsProperty() {
+  QueryBuilder<GameResultEntity, int, QQueryOperations>
+  durationInSecondsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'durationInSeconds');
     });
   }
 
-  QueryBuilder<GameResult, GameMode, QQueryOperations> gameModeProperty() {
+  QueryBuilder<GameResultEntity, GameMode, QQueryOperations>
+  gameModeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gameMode');
     });
   }
 
-  QueryBuilder<GameResult, int, QQueryOperations> gridSizeProperty() {
+  QueryBuilder<GameResultEntity, int, QQueryOperations> gridSizeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gridSize');
     });
   }
 
-  QueryBuilder<GameResult, int, QQueryOperations> moveCountProperty() {
+  QueryBuilder<GameResultEntity, int, QQueryOperations> moveCountProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'moveCount');
     });
   }
 
-  QueryBuilder<GameResult, DateTime, QQueryOperations> playedAtProperty() {
+  QueryBuilder<GameResultEntity, DateTime, QQueryOperations>
+  playedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'playedAt');
     });

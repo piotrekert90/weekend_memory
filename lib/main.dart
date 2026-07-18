@@ -6,15 +6,18 @@ import 'package:path_provider/path_provider.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
+import 'features/memory_game/data/models/game_result_entity.dart';
 import 'features/memory_game/data/repositories/game_history_repository.dart';
-import 'features/memory_game/domain/models/game_result.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final directory = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open([GameResultSchema], directory: directory.path);
+  final isar = await Isar.open(
+    [GameResultEntitySchema],
+    directory: directory.path,
+  );
 
   runApp(
     ProviderScope(

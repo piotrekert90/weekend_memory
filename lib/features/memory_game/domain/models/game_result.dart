@@ -1,23 +1,18 @@
-import 'package:isar_community/isar.dart';
-
 import 'game_mode.dart';
 
-part 'game_result.g.dart';
-
 /// Stores a completed game result for history tracking.
-@collection
+///
+/// This is a pure domain model — it has zero knowledge of the persistence
+/// mechanism. Mapping to/from the Isar-backed storage entity lives entirely
+/// in the data layer (see `data/models/game_result_entity.dart`).
 class GameResult {
-  Id id = Isar.autoIncrement;
   final int moveCount;
   final int durationInSeconds;
   final int gridSize;
   final DateTime playedAt;
-
-  @enumerated
   final GameMode gameMode;
 
-  GameResult({
-    this.id = Isar.autoIncrement,
+  const GameResult({
     required this.moveCount,
     required this.durationInSeconds,
     required this.gridSize,

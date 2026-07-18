@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/errors/exception.dart';
 import '../../domain/models/game_result.dart';
 import '../../domain/repositories/game_history_repository.dart';
+import '../models/game_result_entity.dart';
 
 part 'game_history_repository.g.dart';
 
@@ -23,6 +24,10 @@ GameHistoryRepository gameHistoryRepository(Ref ref) {
 }
 
 /// Persists and retrieves game history results via Isar.
+///
+/// Internally this class works exclusively with [GameResultEntity] (the
+/// Isar-annotated storage type); it only ever exposes the framework-agnostic
+/// [GameResult] domain model across the [GameHistoryRepository] boundary.
 class GameHistoryRepositoryImpl implements GameHistoryRepository {
   GameHistoryRepositoryImpl(this.isar);
 
@@ -32,7 +37,7 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   Future<void> saveResult(GameResult result) async {
     try {
       await isar.writeTxn(() async {
-        await isar.collection<GameResult>().put(result);
+        await isar.collection<GameResultEntity>().put(result.toEntity());
       });
     } catch (e) {
       throw DatabaseException(message: e.toString());
@@ -42,13 +47,13 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   @override
   Future<List<GameResult>> fetchAllResults() async {
     try {
-      final results = await isar
-          .collection<GameResult>()
+      final entities = await isar
+          .collection<GameResultEntity>()
           .where()
           .anyId()
           .findAll();
 
-      return _sortResults(results);
+      return _sortResults(entities).map((e) => e.toDomain()).toList();
     } catch (e) {
       throw DatabaseException(message: e.toString());
     }
@@ -58,15 +63,15 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   Future<void> clearHistory() async {
     try {
       await isar.writeTxn(() async {
-        await isar.collection<GameResult>().clear();
+        await isar.collection<GameResultEntity>().clear();
       });
     } catch (e) {
       throw DatabaseException(message: e.toString());
     }
   }
 
-  List<GameResult> _sortResults(List<GameResult> results) {
-    results.sort((a, b) {
+  List<GameResultEntity> _sortResults(List<GameResultEntity> entities) {
+    entities.sort((a, b) {
       final durationCompare = a.durationInSeconds.compareTo(
         b.durationInSeconds,
       );
@@ -76,7 +81,7 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
       return a.moveCount.compareTo(b.moveCount);
     });
 
-    return results;
+    return entities;
   }
 }
 

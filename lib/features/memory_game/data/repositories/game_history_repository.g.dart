@@ -8,12 +8,22 @@ part of 'game_history_repository.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Provides the shared Isar database instance.
+///
+/// Must be overridden in [ProviderScope] before the app starts.
 
 @ProviderFor(isar)
 final isarProvider = IsarProvider._();
 
+/// Provides the shared Isar database instance.
+///
+/// Must be overridden in [ProviderScope] before the app starts.
+
 final class IsarProvider extends $FunctionalProvider<Isar, Isar, Isar>
     with $Provider<Isar> {
+  /// Provides the shared Isar database instance.
+  ///
+  /// Must be overridden in [ProviderScope] before the app starts.
   IsarProvider._()
     : super(
         from: null,
@@ -49,8 +59,12 @@ final class IsarProvider extends $FunctionalProvider<Isar, Isar, Isar>
 
 String _$isarHash() => r'bdebcf349d40477ec3c69f5a42ec0d7324a95729';
 
+/// Resolves the game history repository backed by the local Isar database.
+
 @ProviderFor(gameHistoryRepository)
 final gameHistoryRepositoryProvider = GameHistoryRepositoryProvider._();
+
+/// Resolves the game history repository backed by the local Isar database.
 
 final class GameHistoryRepositoryProvider
     extends
@@ -60,6 +74,7 @@ final class GameHistoryRepositoryProvider
           GameHistoryRepository
         >
     with $Provider<GameHistoryRepository> {
+  /// Resolves the game history repository backed by the local Isar database.
   GameHistoryRepositoryProvider._()
     : super(
         from: null,
@@ -97,8 +112,12 @@ final class GameHistoryRepositoryProvider
 String _$gameHistoryRepositoryHash() =>
     r'2101c0e84d23d8d32f2a4adfa51aee6faefdc8d5';
 
+/// Watches all saved game results from the local repository.
+
 @ProviderFor(gameHistory)
 final gameHistoryProvider = GameHistoryProvider._();
+
+/// Watches all saved game results from the local repository.
 
 final class GameHistoryProvider
     extends
@@ -108,6 +127,7 @@ final class GameHistoryProvider
           FutureOr<List<GameResult>>
         >
     with $FutureModifier<List<GameResult>>, $FutureProvider<List<GameResult>> {
+  /// Watches all saved game results from the local repository.
   GameHistoryProvider._()
     : super(
         from: null,

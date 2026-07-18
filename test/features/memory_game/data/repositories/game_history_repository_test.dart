@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:isar_community/isar.dart';
+import 'package:weekend_memory/features/memory_game/data/models/game_result_entity.dart';
 import 'package:weekend_memory/features/memory_game/data/repositories/game_history_repository.dart';
 import 'package:weekend_memory/features/memory_game/domain/models/game_result.dart';
 
@@ -16,7 +17,7 @@ void main() {
       setUpAll(() async {
         tempDir = Directory.systemTemp.createTempSync('game_history_test_');
         isar = Isar.openSync(
-          [GameResultSchema],
+          [GameResultEntitySchema],
           directory: tempDir.path,
           name: 'test_game_history',
           inspector: false,
