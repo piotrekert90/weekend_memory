@@ -257,14 +257,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  equatable:
-    dependency: "direct main"
-    description:
-      name: equatable
-      sha256: "3bce007a596ff8b3119c45d68aaef631272537c03d30e5d4534dd24bf4c5eaa2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   fake_async:
     dependency: "direct dev"
     description:
@@ -536,14 +528,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.6.4"
-  mocktail:
-    dependency: "direct dev"
-    description:
-      name: mocktail
-      sha256: "5e1bf53cc7baa8062a33b84424deb61513858ea05c601b8509e683815b5914aa"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.5"
   node_preamble:
     dependency: transitive
     description:
