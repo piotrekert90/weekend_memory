@@ -82,6 +82,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get countdownModeDescription => 'Odliczanie czasu od ustawionej wartości';
 
   @override
+  String get timeUpTitle => 'Czas minął!';
+
+  @override
+  String get timeUpMessage => 'Nie udało się odnaleźć wszystkich par przed upływem czasu.';
+
+  @override
   String get startGame => 'Rozpocznij grę';
 
   @override

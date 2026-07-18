@@ -233,6 +233,18 @@ abstract class AppLocalizations {
   /// **'Timer counts down from a set duration'**
   String get countdownModeDescription;
 
+  /// No description provided for @timeUpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s Up!'**
+  String get timeUpTitle;
+
+  /// No description provided for @timeUpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You ran out of time before finding all the pairs.'**
+  String get timeUpMessage;
+
   /// No description provided for @startGame.
   ///
   /// In en, this message translates to:

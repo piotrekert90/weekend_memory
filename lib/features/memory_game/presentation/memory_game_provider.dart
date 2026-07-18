@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/repositories/game_history_repository.dart';
+import '../domain/models/game_config.dart';
 import '../domain/models/game_mode.dart';
 import '../domain/models/game_result.dart';
 import '../domain/models/memory_game_state.dart';
@@ -53,10 +54,10 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       _timer?.cancel();
       _flipBackTimer?.cancel();
     });
-    return _initializeGame(config.gridSize.pairCount);
+    return _initializeGame(config.gridSize.pairCount, config);
   }
 
-  MemoryGameState _initializeGame(int pairCount) {
+  MemoryGameState _initializeGame(int pairCount, GameConfig config) {
     _timer?.cancel();
     _timer = null;
     _flipBackTimer?.cancel();
@@ -64,12 +65,16 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
     final cards = _engine.createDeck(pairCount: pairCount, symbols: _symbols);
 
-    return MemoryGameState(cards: cards);
+    return MemoryGameState(
+      cards: cards,
+      durationInSeconds:
+          config.isCountdownMode ? config.countdownDurationInSeconds : 0,
+    );
   }
 
   /// Handles a card tap at [index] and advances the game state.
   void flipCard(int index) {
-    if (state.isProcessing) return;
+    if (state.isProcessing || state.isGameOver) return;
     if (state.cards[index].isMatched || state.cards[index].isFaceUp) return;
     if (state.firstSelectedCardIndex == index) return;
 
@@ -148,9 +153,24 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
   void _startTimer() {
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      state = state.copyWith(durationInSeconds: state.durationInSeconds + 1);
-    });
+    final config = ref.read(gameConfigProvider);
+
+    if (config.isCountdownMode) {
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        final remaining = state.durationInSeconds - 1;
+        if (remaining <= 0) {
+          timer.cancel();
+          _timer = null;
+          state = state.copyWith(durationInSeconds: 0, isGameOver: true);
+          return;
+        }
+        state = state.copyWith(durationInSeconds: remaining);
+      });
+    } else {
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        state = state.copyWith(durationInSeconds: state.durationInSeconds + 1);
+      });
+    }
   }
 
   /// Resets the game to its initial state.
@@ -160,6 +180,6 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     _flipBackTimer?.cancel();
     _flipBackTimer = null;
     final config = ref.read(gameConfigProvider);
-    state = _initializeGame(config.gridSize.pairCount);
+    state = _initializeGame(config.gridSize.pairCount, config);
   }
 }

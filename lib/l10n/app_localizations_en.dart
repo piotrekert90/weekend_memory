@@ -82,6 +82,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get countdownModeDescription => 'Timer counts down from a set duration';
 
   @override
+  String get timeUpTitle => 'Time\'s Up!';
+
+  @override
+  String get timeUpMessage => 'You ran out of time before finding all the pairs.';
+
+  @override
   String get startGame => 'Start Game';
 
   @override

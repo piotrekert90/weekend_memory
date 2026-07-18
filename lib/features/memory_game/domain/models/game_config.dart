@@ -4,19 +4,24 @@ import 'grid_size.dart';
 class GameConfig {
   final GridSize gridSize;
   final bool isCountdownMode;
+  final int countdownDurationInSeconds;
 
   const GameConfig({
     this.gridSize = GridSize.easy,
     this.isCountdownMode = false,
+    this.countdownDurationInSeconds = 60,
   });
 
   GameConfig copyWith({
     GridSize? gridSize,
     bool? isCountdownMode,
+    int? countdownDurationInSeconds,
   }) {
     return GameConfig(
       gridSize: gridSize ?? this.gridSize,
       isCountdownMode: isCountdownMode ?? this.isCountdownMode,
+      countdownDurationInSeconds:
+          countdownDurationInSeconds ?? this.countdownDurationInSeconds,
     );
   }
 
@@ -25,13 +30,18 @@ class GameConfig {
     if (identical(this, other)) return true;
     return other is GameConfig &&
         other.gridSize == gridSize &&
-        other.isCountdownMode == isCountdownMode;
+        other.isCountdownMode == isCountdownMode &&
+        other.countdownDurationInSeconds == countdownDurationInSeconds;
   }
 
   @override
-  int get hashCode => gridSize.hashCode ^ isCountdownMode.hashCode;
+  int get hashCode =>
+      gridSize.hashCode ^
+      isCountdownMode.hashCode ^
+      countdownDurationInSeconds.hashCode;
 
   @override
   String toString() =>
-      'GameConfig(gridSize: $gridSize, isCountdownMode: $isCountdownMode)';
+      'GameConfig(gridSize: $gridSize, isCountdownMode: $isCountdownMode, '
+      'countdownDurationInSeconds: $countdownDurationInSeconds)';
 }

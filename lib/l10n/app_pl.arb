@@ -33,6 +33,8 @@
     "gameModeLabel": "Tryb gry",
     "countdownModeLabel": "Tryb odliczania",
     "countdownModeDescription": "Odliczanie czasu od ustawionej wartości",
+    "timeUpTitle": "Czas minął!",
+    "timeUpMessage": "Nie udało się odnaleźć wszystkich par przed upływem czasu.",
     "startGame": "Rozpocznij grę",
     "gridSizeFilter": "Rozmiar siatki",
     "noGamesForGrid": "Brak gier dla tego poziomu trudności",

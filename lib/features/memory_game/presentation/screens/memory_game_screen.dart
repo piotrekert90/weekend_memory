@@ -29,6 +29,31 @@ class MemoryGameScreen extends ConsumerWidget {
       }
     });
 
+    ref.listen(memoryGameProvider.select((state) => state.isGameOver), (
+      previous,
+      next,
+    ) {
+      if (next && context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (dialogContext) => AlertDialog(
+            title: Text(localizations.timeUpTitle),
+            content: Text(localizations.timeUpMessage),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  ref.read(memoryGameProvider.notifier).resetGame();
+                },
+                child: Text(localizations.playAgain),
+              ),
+            ],
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const _GameAppBarTitle(),
