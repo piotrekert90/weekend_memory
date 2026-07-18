@@ -51,3 +51,9 @@ app.*.map.json
 **/generated_plugin_registrant.*
 **/generated_plugins.cmake
 **/generated_plugins.dart
+
+# Golden test failure diff artifacts (alchemist/golden_toolkit). These are
+# generated locally whenever a golden comparison fails and should never be
+# committed — they were previously checked in by accident under
+# test/**/failures/.
+**/failures/
