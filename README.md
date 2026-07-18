@@ -150,14 +150,12 @@ The codebase includes multiple layers of automated testing protecting against lo
 
 ### Verification Standards
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Linter warnings (`dart custom_lint`) | 0 | 0 |
-| Analyzer errors (`flutter analyze`) | 0 | 0 |
-| Active tests | — | 48 |
-| Test health | 100% | 100% |
-
-> **Stabilization Sprint Update (July 2025):** The project has achieved strict stability metrics with zero linter warnings across all layers and a robust test suite of 48 active core tests passing with 100% health. All domain logic, widget interactions, and golden visual regressions are fully covered.
+This project targets zero linter warnings (`dart custom_lint`, now actually
+wired into `analysis_options.yaml`) and zero analyzer errors
+(`flutter analyze`), enforced by `before_push.sh` before every push. Rather
+than quoting a specific test count here — a number that inevitably drifts
+out of sync with the codebase — run `flutter test` locally or check the CI
+pipeline's latest run for the current, authoritative figures.
 
 All code changes must pass the full verification pipeline before merging:
 
@@ -211,6 +209,11 @@ Run static analysis:
 flutter analyze
 ```
 
+Run Riverpod-specific lints:
+```bash
+dart run custom_lint
+```
+
 Run tests:
 ```bash
 flutter test
@@ -218,7 +221,7 @@ flutter test
 
 Run the local verification script (Recommended before pushing):
 ```bash
-./pre_push.sh
+./before_push.sh
 ```
 
 Launch the application:
