@@ -39,8 +39,11 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
       await isar.writeTxn(() async {
         await isar.collection<GameResultEntity>().put(result.toEntity());
       });
-    } catch (e) {
-      throw DatabaseException(message: e.toString());
+    } catch (e, s) {
+      Error.throwWithStackTrace(
+        DatabaseException(message: e.toString(), cause: e),
+        s,
+      );
     }
   }
 
@@ -55,8 +58,11 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
           .findAll();
 
       return entities.map((e) => e.toDomain()).toList();
-    } catch (e) {
-      throw DatabaseException(message: e.toString());
+    } catch (e, s) {
+      Error.throwWithStackTrace(
+        DatabaseException(message: e.toString(), cause: e),
+        s,
+      );
     }
   }
 
@@ -66,8 +72,11 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
       await isar.writeTxn(() async {
         await isar.collection<GameResultEntity>().clear();
       });
-    } catch (e) {
-      throw DatabaseException(message: e.toString());
+    } catch (e, s) {
+      Error.throwWithStackTrace(
+        DatabaseException(message: e.toString(), cause: e),
+        s,
+      );
     }
   }
 }
