@@ -3,10 +3,21 @@ import '../models/memory_card.dart';
 /// Encapsulates memory game rules without framework dependencies.
 class GameEngine {
   /// Creates and shuffles a deck of [pairCount] card pairs using [symbols].
+  ///
+  /// [symbols] must contain at least [pairCount] entries — each pair needs
+  /// a distinct symbol. Violating this throws a clear [ArgumentError] here
+  /// rather than a much harder to diagnose RangeError deep in the shuffle.
   List<MemoryCard> createDeck({
     required int pairCount,
     required List<String> symbols,
   }) {
+    if (pairCount > symbols.length) {
+      throw ArgumentError(
+        'Not enough symbols (${symbols.length} available) for the requested '
+        'pair count ($pairCount). Add more symbols or reduce the grid size.',
+      );
+    }
+
     final shuffledSymbols = List<String>.from(symbols)..shuffle();
 
     final cards = <MemoryCard>[];
