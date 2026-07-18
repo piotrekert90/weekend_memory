@@ -17,6 +17,7 @@ part 'memory_game_provider.g.dart';
 class MemoryGameNotifier extends _$MemoryGameNotifier {
   final _engine = GameEngine();
   Timer? _timer;
+  Timer? _flipBackTimer;
 
   static const _symbols = [
     '🌟',
@@ -50,6 +51,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     final config = ref.watch(gameConfigProvider);
     ref.onDispose(() {
       _timer?.cancel();
+      _flipBackTimer?.cancel();
     });
     return _initializeGame(config.gridSize.pairCount);
   }
@@ -57,6 +59,8 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   MemoryGameState _initializeGame(int pairCount) {
     _timer?.cancel();
     _timer = null;
+    _flipBackTimer?.cancel();
+    _flipBackTimer = null;
 
     final cards = _engine.createDeck(pairCount: pairCount, symbols: _symbols);
 
@@ -126,7 +130,8 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
           isGameFinished: isFinished,
         );
       } else {
-        Future.delayed(const Duration(seconds: 1), () {
+        _flipBackTimer?.cancel();
+        _flipBackTimer = Timer(const Duration(seconds: 1), () {
           if (!ref.mounted) return;
 
           final currentCards = _engine.flipAllDown(state.cards);
@@ -152,6 +157,8 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   void resetGame() {
     _timer?.cancel();
     _timer = null;
+    _flipBackTimer?.cancel();
+    _flipBackTimer = null;
     final config = ref.read(gameConfigProvider);
     state = _initializeGame(config.gridSize.pairCount);
   }
