@@ -8,19 +8,25 @@ part of 'theme_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Manages the application's active [ThemeMode], persisting the user's
+/// explicit choice across app restarts via [SharedPreferences].
 
 @ProviderFor(ThemeNotifier)
 final themeProvider = ThemeNotifierProvider._();
 
+/// Manages the application's active [ThemeMode], persisting the user's
+/// explicit choice across app restarts via [SharedPreferences].
 final class ThemeNotifierProvider
     extends $NotifierProvider<ThemeNotifier, ThemeMode> {
+  /// Manages the application's active [ThemeMode], persisting the user's
+  /// explicit choice across app restarts via [SharedPreferences].
   ThemeNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'themeProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -41,7 +47,10 @@ final class ThemeNotifierProvider
   }
 }
 
-String _$themeNotifierHash() => r'f90c10c3b51ce6ebf6bcdfeb8e70846c11d8172d';
+String _$themeNotifierHash() => r'fd3aa32847baeae33fc983236137f272cbe7939e';
+
+/// Manages the application's active [ThemeMode], persisting the user's
+/// explicit choice across app restarts via [SharedPreferences].
 
 abstract class _$ThemeNotifier extends $Notifier<ThemeMode> {
   ThemeMode build();

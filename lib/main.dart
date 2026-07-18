@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/shared_preferences_provider.dart';
 import 'core/theme/theme_provider.dart';
 import 'features/memory_game/data/models/game_result_entity.dart';
 import 'features/memory_game/data/repositories/game_history_repository.dart';
@@ -24,9 +26,14 @@ void main() async {
       return;
     }
 
+    final prefs = await SharedPreferences.getInstance();
+
     runApp(
       ProviderScope(
-        overrides: [isarProvider.overrideWithValue(isar)],
+        overrides: [
+          isarProvider.overrideWithValue(isar),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
         child: const MyApp(),
       ),
     );

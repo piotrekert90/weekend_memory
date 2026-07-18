@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weekend_memory/core/theme/shared_preferences_provider.dart';
 import 'package:weekend_memory/core/theme/theme_provider.dart';
 
 void main() {
@@ -8,8 +10,14 @@ void main() {
     late ProviderContainer container;
     late ThemeNotifier notifier;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+      );
       notifier = container.read(themeProvider.notifier);
     });
 
