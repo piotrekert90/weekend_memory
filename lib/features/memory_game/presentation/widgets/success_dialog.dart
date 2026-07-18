@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/routing/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../memory_game_provider.dart';
-import '../screens/game_history_screen.dart';
 
 /// Shows game completion stats with play again and history navigation options.
 class SuccessDialog extends ConsumerWidget {
@@ -85,11 +85,7 @@ class SuccessDialog extends ConsumerWidget {
         ElevatedButton(
           onPressed: () {
             final gameNotifier = ref.read(memoryGameProvider.notifier);
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const GameHistoryScreen(),
-              ),
-            );
+            Navigator.of(context).pushReplacementNamed(AppRoutePath.history);
             Future.microtask(() => gameNotifier.resetGame());
           },
           child: Text(localizations.viewHistoryButton),

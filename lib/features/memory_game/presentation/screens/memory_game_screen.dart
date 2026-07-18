@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/routing/app_router.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../memory_game_provider.dart';
 import '../widgets/game_board.dart';
 import '../widgets/reset_button.dart';
 import '../widgets/success_dialog.dart';
-import 'game_history_screen.dart';
 
 class MemoryGameScreen extends ConsumerWidget {
   const MemoryGameScreen({super.key});
@@ -62,11 +62,7 @@ class MemoryGameScreen extends ConsumerWidget {
             icon: const Icon(Icons.history),
             tooltip: localizations.viewHistory,
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const GameHistoryScreen(),
-                ),
-              );
+              Navigator.of(context).pushNamed(AppRoutePath.history);
             },
           ),
           const _ThemeToggleButton(),

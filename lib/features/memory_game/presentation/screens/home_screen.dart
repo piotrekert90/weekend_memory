@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/routing/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/models/grid_size.dart';
 import '../game_config_provider.dart';
@@ -26,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
             icon: const Icon(Icons.history),
             tooltip: localizations.viewHistory,
             onPressed: () {
-              Navigator.of(context).pushNamed('/history');
+              Navigator.of(context).pushNamed(AppRoutePath.history);
             },
           ),
         ],
@@ -82,7 +83,7 @@ class HomeScreen extends ConsumerWidget {
             height: 56,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/game');
+                Navigator.of(context).pushNamed(AppRoutePath.game);
               },
               child: Text(localizations.startGame),
             ),
@@ -141,7 +142,7 @@ class HomeScreen extends ConsumerWidget {
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/game');
+              Navigator.of(context).pushNamed(AppRoutePath.game);
             },
             child: Text(localizations.startGame),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:weekend_memory/core/routing/app_router.dart';
 import 'package:weekend_memory/l10n/app_localizations.dart';
 
 extension PumpApp on WidgetTester {
@@ -18,6 +19,10 @@ extension PumpApp on WidgetTester {
           supportedLocales: AppLocalizations.supportedLocales,
           locale: const Locale('en'),
           home: Scaffold(body: widget),
+          onGenerateRoute: (settings) {
+            final route = parseRoute(settings.name ?? AppRoutePath.home);
+            return buildRoute(route);
+          },
         ),
       ),
     );
