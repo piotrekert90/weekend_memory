@@ -13,8 +13,7 @@ abstract class AppException implements Exception {
   final Object? cause;
 
   @override
-  String toString() =>
-      cause == null ? message : '$message (cause: $cause)';
+  String toString() => cause == null ? message : '$message (cause: $cause)';
 }
 
 /// Exception thrown when a database operation fails.
@@ -27,12 +26,18 @@ class DatabaseException extends AppException {
 
 /// Exception thrown when a cache operation fails.
 class CacheException extends AppException {
-  const CacheException({super.message = 'A cache error occurred.', super.cause});
+  const CacheException({
+    super.message = 'A cache error occurred.',
+    super.cause,
+  });
 }
 
 /// Exception thrown when a network operation fails.
 class NetworkException extends AppException {
-  const NetworkException({super.message = 'A network error occurred.', super.cause});
+  const NetworkException({
+    super.message = 'A network error occurred.',
+    super.cause,
+  });
 }
 
 /// Exception thrown when a file operation fails.
@@ -42,5 +47,8 @@ class FileException extends AppException {
 
 /// Exception representing an unexpected or unclassified error.
 class UnknownException extends AppException {
-  const UnknownException({super.message = 'An unexpected error occurred.', super.cause});
+  const UnknownException({
+    super.message = 'An unexpected error occurred.',
+    super.cause,
+  });
 }

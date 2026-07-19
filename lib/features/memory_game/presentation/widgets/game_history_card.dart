@@ -83,9 +83,9 @@ class GameHistoryCard extends StatelessWidget {
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return       localization.todayLabel;
+      return localization.todayLabel;
     } else if (difference.inDays == 1) {
-      return       localization.yesterdayLabel;
+      return localization.yesterdayLabel;
     } else if (difference.inDays < 7) {
       return '${difference.inDays}d';
     } else {

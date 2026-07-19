@@ -72,13 +72,21 @@ class GameBoard extends ConsumerWidget {
     final maxWidth = constraints.maxWidth;
     final maxHeight = constraints.maxHeight;
 
-    final itemWidth = (maxWidth - (_gridSpacing * (crossAxisCount - 1)) - (2 * _gridPadding)) / crossAxisCount;
+    final itemWidth =
+        (maxWidth -
+            (_gridSpacing * (crossAxisCount - 1)) -
+            (2 * _gridPadding)) /
+        crossAxisCount;
 
     final totalCards = gridSize.totalCards;
     final effectiveRowCount = (orientation == Orientation.landscape)
         ? (totalCards / crossAxisCount).ceil()
         : (totalCards / crossAxisCount).ceil();
-    final itemHeight = (maxHeight - (_gridSpacing * (effectiveRowCount - 1)) - (2 * _gridPadding)) / effectiveRowCount;
+    final itemHeight =
+        (maxHeight -
+            (_gridSpacing * (effectiveRowCount - 1)) -
+            (2 * _gridPadding)) /
+        effectiveRowCount;
 
     final ratio = itemWidth / itemHeight;
     return ratio.clamp(_minAspectRatio, _maxAspectRatio);

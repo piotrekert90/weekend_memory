@@ -16,34 +16,37 @@ import 'features/memory_game/data/repositories/game_history_repository.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-    final isar = await _openIsarOrNull();
+      final isar = await _openIsarOrNull();
 
-    if (isar == null) {
-      runApp(const _StartupErrorApp());
-      return;
-    }
+      if (isar == null) {
+        runApp(const _StartupErrorApp());
+        return;
+      }
 
-    final prefs = await SharedPreferences.getInstance();
+      final prefs = await SharedPreferences.getInstance();
 
-    runApp(
-      ProviderScope(
-        overrides: [
-          isarProvider.overrideWithValue(isar),
-          sharedPreferencesProvider.overrideWithValue(prefs),
-        ],
-        child: const MyApp(),
-      ),
-    );
-  }, (error, stackTrace) {
-    // Last-resort catch-all so a failure outside the guarded block above
-    // (or in a later async gap) can never silently kill the app with no
-    // observable signal. Replace with real crash reporting (e.g. Sentry,
-    // Firebase Crashlytics) in production.
-    debugPrint('Unhandled zone error during startup: $error\n$stackTrace');
-  });
+      runApp(
+        ProviderScope(
+          overrides: [
+            isarProvider.overrideWithValue(isar),
+            sharedPreferencesProvider.overrideWithValue(prefs),
+          ],
+          child: const MyApp(),
+        ),
+      );
+    },
+    (error, stackTrace) {
+      // Last-resort catch-all so a failure outside the guarded block above
+      // (or in a later async gap) can never silently kill the app with no
+      // observable signal. Replace with real crash reporting (e.g. Sentry,
+      // Firebase Crashlytics) in production.
+      debugPrint('Unhandled zone error during startup: $error\n$stackTrace');
+    },
+  );
 }
 
 /// Attempts to open the local Isar database, tolerating a corrupted or
@@ -57,24 +60,24 @@ void main() async {
 Future<Isar?> _openIsarOrNull() async {
   try {
     final directory = await getApplicationDocumentsDirectory();
-    return await Isar.open(
-      [GameResultEntitySchema],
-      directory: directory.path,
-    );
+    return await Isar.open([GameResultEntitySchema], directory: directory.path);
   } catch (firstError, firstStackTrace) {
-    debugPrint('Isar.open failed, attempting recovery: $firstError\n$firstStackTrace');
+    debugPrint(
+      'Isar.open failed, attempting recovery: $firstError\n$firstStackTrace',
+    );
     try {
       final directory = await getApplicationDocumentsDirectory();
       final dbFile = File('${directory.path}/default.isar');
       if (dbFile.existsSync()) {
         dbFile.deleteSync();
       }
-      return await Isar.open(
-        [GameResultEntitySchema],
-        directory: directory.path,
-      );
+      return await Isar.open([
+        GameResultEntitySchema,
+      ], directory: directory.path);
     } catch (secondError, secondStackTrace) {
-      debugPrint('Isar recovery attempt also failed: $secondError\n$secondStackTrace');
+      debugPrint(
+        'Isar recovery attempt also failed: $secondError\n$secondStackTrace',
+      );
       return null;
     }
   }

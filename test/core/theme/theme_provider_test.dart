@@ -14,9 +14,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       container = ProviderContainer(
-        overrides: [
-          sharedPreferencesProvider.overrideWithValue(prefs),
-        ],
+        overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
       );
       notifier = container.read(themeProvider.notifier);
     });
@@ -61,22 +59,19 @@ void main() {
       expect(container.read(themeProvider), ThemeMode.dark);
     });
 
-    test(
-      'persists the choice so a fresh notifier reads it back '
-      '(regression test for WARNING finding #14)',
-      () async {
-        notifier.toggleTheme(Brightness.light); // -> dark
-        expect(container.read(themeProvider), ThemeMode.dark);
+    test('persists the choice so a fresh notifier reads it back '
+        '(regression test for WARNING finding #14)', () async {
+      notifier.toggleTheme(Brightness.light); // -> dark
+      expect(container.read(themeProvider), ThemeMode.dark);
 
-        // Simulate a cold restart: new container, same underlying prefs.
-        final prefs = container.read(sharedPreferencesProvider);
-        final freshContainer = ProviderContainer(
-          overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-        );
-        addTearDown(freshContainer.dispose);
+      // Simulate a cold restart: new container, same underlying prefs.
+      final prefs = container.read(sharedPreferencesProvider);
+      final freshContainer = ProviderContainer(
+        overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(freshContainer.dispose);
 
-        expect(freshContainer.read(themeProvider), ThemeMode.dark);
-      },
-    );
+      expect(freshContainer.read(themeProvider), ThemeMode.dark);
+    });
   });
 }

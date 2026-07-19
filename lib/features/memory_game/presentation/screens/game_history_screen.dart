@@ -65,16 +65,16 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
             child: SegmentedButton<int>(
               segments: GridSize.values
-                  .map((g) => ButtonSegment<int>(
-                        value: g.index,
-                        label: Text(
-                          switch (g) {
-                            GridSize.easy => l10n.easy,
-                            GridSize.medium => l10n.medium,
-                            GridSize.hard => l10n.hard,
-                          },
-                        ),
-                      ))
+                  .map(
+                    (g) => ButtonSegment<int>(
+                      value: g.index,
+                      label: Text(switch (g) {
+                        GridSize.easy => l10n.easy,
+                        GridSize.medium => l10n.medium,
+                        GridSize.hard => l10n.hard,
+                      }),
+                    ),
+                  )
                   .toList(),
               selected: {_selectedGridIndex},
               onSelectionChanged: (Set<int> newSelection) {

@@ -75,8 +75,9 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
     return MemoryGameState(
       cards: cards,
-      durationInSeconds:
-          config.isCountdownMode ? config.countdownDurationInSeconds : 0,
+      durationInSeconds: config.isCountdownMode
+          ? config.countdownDurationInSeconds
+          : 0,
     );
   }
 
@@ -111,8 +112,11 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       final secondCard = cardsWithFirstFlipped[index];
 
       if (_engine.isMatch(firstCard, secondCard)) {
-        final matchedCards =
-            _engine.markMatched(cardsWithFirstFlipped, firstIndex, index);
+        final matchedCards = _engine.markMatched(
+          cardsWithFirstFlipped,
+          firstIndex,
+          index,
+        );
 
         final isFinished = _engine.isGameFinished(matchedCards);
 
@@ -121,8 +125,9 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
           _timer = null;
 
           final config = ref.read(gameConfigProvider);
-          final gameMode =
-              config.isCountdownMode ? GameMode.countdown : GameMode.classic;
+          final gameMode = config.isCountdownMode
+              ? GameMode.countdown
+              : GameMode.classic;
           final result = GameResult(
             moveCount: state.moveCount,
             durationInSeconds: state.durationInSeconds,

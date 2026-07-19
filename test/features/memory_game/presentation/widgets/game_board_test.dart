@@ -88,7 +88,9 @@ void main() {
     await tester.pumpWidgetWithDependencies(
       const GameBoard(),
       overrides: [
-        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.easy)),
+        gameConfigProvider.overrideWithValue(
+          const GameConfig(gridSize: GridSize.easy),
+        ),
         memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
       ],
     );
@@ -100,25 +102,30 @@ void main() {
     expect(delegate.crossAxisCount, 4);
   });
 
-  testWidgets('uses configured landscape columns as crossAxisCount in landscape mode', (tester) async {
-    final binding = TestWidgetsFlutterBinding.ensureInitialized();
-    await binding.setSurfaceSize(const Size(800, 400));
-    addTearDown(() => binding.setSurfaceSize(null));
+  testWidgets(
+    'uses configured landscape columns as crossAxisCount in landscape mode',
+    (tester) async {
+      final binding = TestWidgetsFlutterBinding.ensureInitialized();
+      await binding.setSurfaceSize(const Size(800, 400));
+      addTearDown(() => binding.setSurfaceSize(null));
 
-    await tester.pumpWidgetWithDependencies(
-      const GameBoard(),
-      overrides: [
-        gameConfigProvider.overrideWithValue(const GameConfig(gridSize: GridSize.easy)),
-        memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
-      ],
-    );
+      await tester.pumpWidgetWithDependencies(
+        const GameBoard(),
+        overrides: [
+          gameConfigProvider.overrideWithValue(
+            const GameConfig(gridSize: GridSize.easy),
+          ),
+          memoryGameProvider.overrideWith(() => FakeMemoryGameNotifier()),
+        ],
+      );
 
-    final grid = tester.widget<GridView>(find.byType(GridView));
-    final delegate =
-        grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
+      final grid = tester.widget<GridView>(find.byType(GridView));
+      final delegate =
+          grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
 
-    expect(delegate.crossAxisCount, 8);
-  });
+      expect(delegate.crossAxisCount, 8);
+    },
+  );
 
   testWidgets('uses correct grid spacing and padding', (tester) async {
     await tester.pumpWidgetWithDependencies(
@@ -137,7 +144,9 @@ void main() {
     expect(grid.padding, const EdgeInsets.all(8));
   });
 
-  testWidgets('tapping a MemoryCardWidget invokes onCardTapped logic', (tester) async {
+  testWidgets('tapping a MemoryCardWidget invokes onCardTapped logic', (
+    tester,
+  ) async {
     await tester.pumpWidgetWithDependencies(
       const GameBoard(),
       overrides: [
@@ -145,10 +154,15 @@ void main() {
       ],
     );
 
-    final container = ProviderScope.containerOf(tester.element(find.byType(GameBoard)));
-    final notifier = container.read(memoryGameProvider.notifier) as FakeMemoryGameNotifier;
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(GameBoard)),
+    );
+    final notifier =
+        container.read(memoryGameProvider.notifier) as FakeMemoryGameNotifier;
 
-    final cardWidget = tester.widget<MemoryCardWidget>(find.byType(MemoryCardWidget).first);
+    final cardWidget = tester.widget<MemoryCardWidget>(
+      find.byType(MemoryCardWidget).first,
+    );
     final cardIndex = cardWidget.index;
 
     notifier.onCardTapped(cardIndex);

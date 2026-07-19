@@ -13,15 +13,13 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
 
-    final isPhoneLandscape = MediaQuery.of(context).orientation ==
-        Orientation.landscape &&
+    final isPhoneLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape &&
         MediaQuery.of(context).size.height < 550;
 
     return Scaffold(
       appBar: AppBar(
-        title: isPhoneLandscape
-            ? Text(localizations.appTitle)
-            : null,
+        title: isPhoneLandscape ? Text(localizations.appTitle) : null,
         actions: [
           IconButton(
             icon: const Icon(Icons.history),
@@ -157,9 +155,9 @@ class HomeScreen extends ConsumerWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 12),
         child,

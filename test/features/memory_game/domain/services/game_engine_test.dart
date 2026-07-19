@@ -5,10 +5,7 @@ void main() {
   group('GameEngine.createDeck', () {
     test('creates a deck with two cards per pair', () {
       final engine = GameEngine();
-      final cards = engine.createDeck(
-        pairCount: 3,
-        symbols: ['a', 'b', 'c'],
-      );
+      final cards = engine.createDeck(pairCount: 3, symbols: ['a', 'b', 'c']);
 
       expect(cards.length, 6);
       for (var i = 0; i < 3; i++) {
@@ -39,10 +36,7 @@ void main() {
 
     test('succeeds when pairCount exactly equals the symbol pool size', () {
       final engine = GameEngine();
-      final cards = engine.createDeck(
-        pairCount: 3,
-        symbols: ['a', 'b', 'c'],
-      );
+      final cards = engine.createDeck(pairCount: 3, symbols: ['a', 'b', 'c']);
       expect(cards.length, 6);
     });
   });

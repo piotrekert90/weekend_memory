@@ -46,15 +46,13 @@ AppRoute parseRoute(String location) {
 /// Builds a [PageRoute] for the given [route].
 PageRoute<void> buildRoute(AppRoute route) {
   return switch (route) {
-    AppRouteHome() => MaterialPageRoute(
-        builder: (_) => const HomeScreen(),
-      ),
+    AppRouteHome() => MaterialPageRoute(builder: (_) => const HomeScreen()),
     AppRouteGame() => MaterialPageRoute(
-        builder: (_) => const MemoryGameScreen(),
-      ),
+      builder: (_) => const MemoryGameScreen(),
+    ),
     AppRouteHistory() => MaterialPageRoute(
-        builder: (_) => const GameHistoryScreen(),
-      ),
+      builder: (_) => const GameHistoryScreen(),
+    ),
   };
 }
 

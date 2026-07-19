@@ -45,7 +45,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearHistoryTitle => 'Clear History';
 
   @override
-  String get clearHistoryConfirm => 'Are you sure you want to permanently delete all game results?';
+  String get clearHistoryConfirm =>
+      'Are you sure you want to permanently delete all game results?';
 
   @override
   String get cancelLabel => 'Cancel';
@@ -67,7 +68,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewHistoryButton => 'View History';
 
   @override
-  String get historyLoadError => 'Unable to load game history. Please try again later.';
+  String get historyLoadError =>
+      'Unable to load game history. Please try again later.';
 
   @override
   String get gridSizeLabel => 'Grid Size';
@@ -79,13 +81,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get countdownModeLabel => 'Countdown Mode';
 
   @override
-  String get countdownModeDescription => 'Timer counts down from a set duration';
+  String get countdownModeDescription =>
+      'Timer counts down from a set duration';
 
   @override
   String get timeUpTitle => 'Time\'s Up!';
 
   @override
-  String get timeUpMessage => 'You ran out of time before finding all the pairs.';
+  String get timeUpMessage =>
+      'You ran out of time before finding all the pairs.';
 
   @override
   String get classicModeShortLabel => 'Classic';

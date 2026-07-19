@@ -369,9 +369,7 @@ void main() {
 
           async.elapse(const Duration(seconds: 1));
 
-          final stateAfterOldWindowElapses = container.read(
-            memoryGameProvider,
-          );
+          final stateAfterOldWindowElapses = container.read(memoryGameProvider);
           expect(stateAfterOldWindowElapses.firstSelectedCardIndex, 0);
           expect(stateAfterOldWindowElapses.cards[0].isFaceUp, isTrue);
           expect(stateAfterOldWindowElapses.isProcessing, isFalse);

@@ -85,10 +85,7 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: _flipDuration,
-      vsync: this,
-    );
+    _controller = AnimationController(duration: _flipDuration, vsync: this);
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
     if (widget.isRevealed) {
       _controller.value = 1.0;
@@ -194,7 +191,11 @@ class _AnimatedFlipCardState extends State<AnimatedFlipCard>
             ),
           ],
         ),
-        child: Icon(Icons.help_outline, size: _cardBackIconSize, color: colorScheme.onPrimary),
+        child: Icon(
+          Icons.help_outline,
+          size: _cardBackIconSize,
+          color: colorScheme.onPrimary,
+        ),
       ),
     );
   }

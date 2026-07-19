@@ -45,7 +45,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get clearHistoryTitle => 'Wyczyszczenie historii';
 
   @override
-  String get clearHistoryConfirm => 'Czy na pewno chcesz bezpowrotnie usunąć wszystkie wyniki gier?';
+  String get clearHistoryConfirm =>
+      'Czy na pewno chcesz bezpowrotnie usunąć wszystkie wyniki gier?';
 
   @override
   String get cancelLabel => 'Anuluj';
@@ -67,7 +68,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get viewHistoryButton => 'Zobacz historię';
 
   @override
-  String get historyLoadError => 'Nie można załadować historii gier. Spróbuj ponownie później.';
+  String get historyLoadError =>
+      'Nie można załadować historii gier. Spróbuj ponownie później.';
 
   @override
   String get gridSizeLabel => 'Rozmiar siatki';
@@ -79,13 +81,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get countdownModeLabel => 'Tryb odliczania';
 
   @override
-  String get countdownModeDescription => 'Odliczanie czasu od ustawionej wartości';
+  String get countdownModeDescription =>
+      'Odliczanie czasu od ustawionej wartości';
 
   @override
   String get timeUpTitle => 'Czas minął!';
 
   @override
-  String get timeUpMessage => 'Nie udało się odnaleźć wszystkich par przed upływem czasu.';
+  String get timeUpMessage =>
+      'Nie udało się odnaleźć wszystkich par przed upływem czasu.';
 
   @override
   String get classicModeShortLabel => 'Klasyczny';

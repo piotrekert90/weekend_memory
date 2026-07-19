@@ -7,9 +7,9 @@ import 'package:weekend_memory/l10n/app_localizations.dart';
 
 extension PumpApp on WidgetTester {
   Future<void> pumpWidgetWithDependencies(
-      Widget widget, {
-        List<Override> overrides = const [],
-      }) async {
+    Widget widget, {
+    List<Override> overrides = const [],
+  }) async {
     await pumpWidget(
       ProviderScope(
         overrides: overrides,
