@@ -25,7 +25,7 @@ void main() {
       container.dispose();
     });
 
-    test('initial theme is system', () {
+    test('initial theme is system when nothing is persisted', () {
       expect(container.read(themeProvider), ThemeMode.system);
     });
 
@@ -60,5 +60,23 @@ void main() {
 
       expect(container.read(themeProvider), ThemeMode.dark);
     });
+
+    test(
+      'persists the choice so a fresh notifier reads it back '
+      '(regression test for WARNING finding #14)',
+      () async {
+        notifier.toggleTheme(Brightness.light); // -> dark
+        expect(container.read(themeProvider), ThemeMode.dark);
+
+        // Simulate a cold restart: new container, same underlying prefs.
+        final prefs = container.read(sharedPreferencesProvider);
+        final freshContainer = ProviderContainer(
+          overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+        );
+        addTearDown(freshContainer.dispose);
+
+        expect(freshContainer.read(themeProvider), ThemeMode.dark);
+      },
+    );
   });
 }
