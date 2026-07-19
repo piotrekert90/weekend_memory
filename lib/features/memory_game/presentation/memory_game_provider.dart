@@ -49,6 +49,14 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
   @override
   MemoryGameState build() {
+    // Watches the FULL GameConfig deliberately: gridSize.pairCount,
+    // isCountdownMode, and countdownDurationInSeconds are all needed to
+    // correctly initialize a fresh game (see _initializeGame below), so a
+    // narrower `.select((c) => c.gridSize)` would silently skip
+    // re-initializing the countdown duration whenever only the mode/duration
+    // changed. GameConfig already implements value equality (`==`), so
+    // Riverpod skips this rebuild entirely when nothing actually changed —
+    // there is no redundant-rebuild cost to watching the whole object here.
     final config = ref.watch(gameConfigProvider);
     ref.onDispose(() {
       _timer?.cancel();
