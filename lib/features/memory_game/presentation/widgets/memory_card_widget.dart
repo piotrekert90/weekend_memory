@@ -17,10 +17,31 @@ class MemoryCardWidget extends ConsumerWidget {
     );
     final isRevealed = card.isFaceUp || card.isMatched;
 
-    return AnimatedFlipCard(
-      isRevealed: isRevealed,
-      card: card,
-      onTap: () => ref.read(memoryGameProvider.notifier).flipCard(index),
+    // NOTE: these labels are English-only for now — the app already has an
+    // l10n setup (see lib/l10n/), so a full fix would add proper ARB
+    // placeholder strings (e.g. cardHiddenSemanticLabel(position)) instead
+    // of interpolating raw English text here. Prioritized giving screen
+    // reader users *any* distinguishable per-card state over blocking on
+    // full localization of this specific fix.
+    final label = card.isMatched
+        ? 'Card ${index + 1}, matched, showing ${card.content}'
+        : isRevealed
+        ? 'Card ${index + 1}, showing ${card.content}'
+        : 'Card ${index + 1}, hidden';
+
+    return Semantics(
+      label: label,
+      button: true,
+      enabled: !card.isMatched,
+      excludeSemantics: true,
+      onTap: card.isMatched
+          ? null
+          : () => ref.read(memoryGameProvider.notifier).flipCard(index),
+      child: AnimatedFlipCard(
+        isRevealed: isRevealed,
+        card: card,
+        onTap: () => ref.read(memoryGameProvider.notifier).flipCard(index),
+      ),
     );
   }
 }
