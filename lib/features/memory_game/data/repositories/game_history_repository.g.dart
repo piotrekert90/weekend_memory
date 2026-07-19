@@ -155,3 +155,93 @@ final class GameHistoryProvider
 }
 
 String _$gameHistoryHash() => r'f5d90d5d0ac478de4bc7db1b12144e6b30a5f3d8';
+
+/// Watches only the results for a single grid size, queried directly at the
+/// Isar level instead of fetching everything and filtering it in Dart.
+
+@ProviderFor(gameHistoryByGridSize)
+final gameHistoryByGridSizeProvider = GameHistoryByGridSizeFamily._();
+
+/// Watches only the results for a single grid size, queried directly at the
+/// Isar level instead of fetching everything and filtering it in Dart.
+
+final class GameHistoryByGridSizeProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<GameResult>>,
+          List<GameResult>,
+          FutureOr<List<GameResult>>
+        >
+    with $FutureModifier<List<GameResult>>, $FutureProvider<List<GameResult>> {
+  /// Watches only the results for a single grid size, queried directly at the
+  /// Isar level instead of fetching everything and filtering it in Dart.
+  GameHistoryByGridSizeProvider._({
+    required GameHistoryByGridSizeFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'gameHistoryByGridSizeProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$gameHistoryByGridSizeHash();
+
+  @override
+  String toString() {
+    return r'gameHistoryByGridSizeProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<GameResult>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<GameResult>> create(Ref ref) {
+    final argument = this.argument as int;
+    return gameHistoryByGridSize(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GameHistoryByGridSizeProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$gameHistoryByGridSizeHash() =>
+    r'9b7114e131bdbaa89af1c1a1ea047487a398de21';
+
+/// Watches only the results for a single grid size, queried directly at the
+/// Isar level instead of fetching everything and filtering it in Dart.
+
+final class GameHistoryByGridSizeFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<GameResult>>, int> {
+  GameHistoryByGridSizeFamily._()
+    : super(
+        retry: null,
+        name: r'gameHistoryByGridSizeProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Watches only the results for a single grid size, queried directly at the
+  /// Isar level instead of fetching everything and filtering it in Dart.
+
+  GameHistoryByGridSizeProvider call(int gridSizeIndex) =>
+      GameHistoryByGridSizeProvider._(argument: gridSizeIndex, from: this);
+
+  @override
+  String toString() => r'gameHistoryByGridSizeProvider';
+}

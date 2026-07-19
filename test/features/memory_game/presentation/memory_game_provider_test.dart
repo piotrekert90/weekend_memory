@@ -23,6 +23,11 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
   }
 
   @override
+  Future<List<GameResult>> fetchResultsByGridSize(int gridSizeIndex) async {
+    return [];
+  }
+
+  @override
   Future<void> clearHistory() async {
     clearCallCount++;
   }

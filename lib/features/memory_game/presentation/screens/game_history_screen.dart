@@ -41,7 +41,6 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final resultsAsync = ref.watch(gameHistoryProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,93 +58,48 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
           ),
         ],
       ),
-      body: resultsAsync.when(
-        data: (results) {
-          return Column(
-            children: [
-              // SegmentedButton filter row
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                child: SegmentedButton<int>(
-                  segments: GridSize.values
-                      .map((g) => ButtonSegment<int>(
-                            value: g.index,
-                            label: Text(
-                              switch (g) {
-                                GridSize.easy => l10n.easy,
-                                GridSize.medium => l10n.medium,
-                                GridSize.hard => l10n.hard,
-                              },
-                            ),
-                          ))
-                      .toList(),
-                  selected: {_selectedGridIndex},
-                  onSelectionChanged: (Set<int> newSelection) {
-                    if (newSelection.isNotEmpty) {
-                      _onGridSelected(newSelection.first);
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _selectedGridIndex = index;
-                    });
-                  },
-                  itemCount: _gridSizes.length,
-                  itemBuilder: (context, pageIndex) {
-                    final gridSize = _gridSizes[pageIndex];
-                    final gridResults = results
-                        .where((result) => result.gridSize == gridSize.index)
-                        .toList();
-
-                    if (gridResults.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.grid_on_outlined,
-                              size: 64,
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              l10n.noGamesForGrid,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.outline,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
+      body: Column(
+        children: [
+          // SegmentedButton filter row
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: SegmentedButton<int>(
+              segments: GridSize.values
+                  .map((g) => ButtonSegment<int>(
+                        value: g.index,
+                        label: Text(
+                          switch (g) {
+                            GridSize.easy => l10n.easy,
+                            GridSize.medium => l10n.medium,
+                            GridSize.hard => l10n.hard,
+                          },
                         ),
-                      );
-                    }
-
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: gridResults.length,
-                      itemBuilder: (context, index) {
-                        return GameHistoryCard(result: gridResults[index]);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Text(
-            AppLocalizations.of(context)!.historyLoadError,
-            style: const TextStyle(color: Colors.red),
+                      ))
+                  .toList(),
+              selected: {_selectedGridIndex},
+              onSelectionChanged: (Set<int> newSelection) {
+                if (newSelection.isNotEmpty) {
+                  _onGridSelected(newSelection.first);
+                }
+              },
+            ),
           ),
-        ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedGridIndex = index;
+                });
+              },
+              itemCount: _gridSizes.length,
+              itemBuilder: (context, pageIndex) {
+                return _GridHistoryPage(gridSize: _gridSizes[pageIndex]);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -167,6 +121,9 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
             onPressed: () {
               ref.read(gameHistoryRepositoryProvider).clearHistory();
               ref.invalidate(gameHistoryProvider);
+              for (final gridSize in GridSize.values) {
+                ref.invalidate(gameHistoryByGridSizeProvider(gridSize.index));
+              }
               Navigator.of(context).pop();
             },
             child: Text(
@@ -175,6 +132,65 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Renders a single grid-size tab's results, fetched directly via the
+/// indexed [gameHistoryByGridSizeProvider] query rather than filtering the
+/// full history list in memory.
+class _GridHistoryPage extends ConsumerWidget {
+  const _GridHistoryPage({required this.gridSize});
+
+  final GridSize gridSize;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final resultsAsync = ref.watch(
+      gameHistoryByGridSizeProvider(gridSize.index),
+    );
+
+    return resultsAsync.when(
+      data: (gridResults) {
+        if (gridResults.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.grid_on_outlined,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.noGamesForGrid,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.outline,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: gridResults.length,
+          itemBuilder: (context, index) {
+            return GameHistoryCard(result: gridResults[index]);
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(
+        child: Text(
+          l10n.historyLoadError,
+          style: const TextStyle(color: Colors.red),
+        ),
       ),
     );
   }

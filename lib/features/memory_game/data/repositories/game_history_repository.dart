@@ -67,6 +67,26 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   }
 
   @override
+  Future<List<GameResult>> fetchResultsByGridSize(int gridSizeIndex) async {
+    try {
+      final entities = await isar
+          .collection<GameResultEntity>()
+          .filter()
+          .gridSizeEqualTo(gridSizeIndex)
+          .sortByDurationInSeconds()
+          .thenByMoveCount()
+          .findAll();
+
+      return entities.map((e) => e.toDomain()).toList();
+    } catch (e, s) {
+      Error.throwWithStackTrace(
+        DatabaseException(message: e.toString(), cause: e),
+        s,
+      );
+    }
+  }
+
+  @override
   Future<void> clearHistory() async {
     try {
       await isar.writeTxn(() async {
@@ -86,4 +106,15 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
 Future<List<GameResult>> gameHistory(Ref ref) async {
   final repository = ref.watch(gameHistoryRepositoryProvider);
   return repository.fetchAllResults();
+}
+
+/// Watches only the results for a single grid size, queried directly at the
+/// Isar level instead of fetching everything and filtering it in Dart.
+@riverpod
+Future<List<GameResult>> gameHistoryByGridSize(
+  Ref ref,
+  int gridSizeIndex,
+) async {
+  final repository = ref.watch(gameHistoryRepositoryProvider);
+  return repository.fetchResultsByGridSize(gridSizeIndex);
 }

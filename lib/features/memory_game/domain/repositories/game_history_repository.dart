@@ -8,6 +8,10 @@ abstract class GameHistoryRepository {
   /// Fetches all saved game results.
   Future<List<GameResult>> fetchAllResults();
 
+  /// Fetches only the results for the given [gridSizeIndex]
+  /// (`GridSize.index`), sorted the same way as [fetchAllResults].
+  Future<List<GameResult>> fetchResultsByGridSize(int gridSizeIndex);
+
   /// Clears all saved game history.
   Future<void> clearHistory();
 }
