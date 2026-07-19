@@ -327,6 +327,62 @@ void main() {
       });
     });
 
+    test(
+      'reset during a pending mismatch flip-back does not corrupt the new game '
+      '(regression test for CRITICAL finding #1)',
+      () {
+        runWithContainer((container, repo, async) {
+          final notifier = container.read(memoryGameProvider.notifier);
+
+          final initialCards = container.read(memoryGameProvider).cards;
+          const firstIndex = 0;
+          final nonMatchingIndex = initialCards.indexWhere(
+            (c) => c.id != initialCards[firstIndex].id,
+          );
+
+          // Trigger a mismatch: this schedules the 1-second flip-back timer.
+          notifier.flipCard(firstIndex);
+          async.flushMicrotasks();
+          notifier.flipCard(nonMatchingIndex);
+          async.flushMicrotasks();
+
+          expect(container.read(memoryGameProvider).isProcessing, isTrue);
+
+          // Reset BEFORE the flip-back timer fires — this is exactly the
+          // window in which the old, untracked Future.delayed would still
+          // go on to fire later and stomp on the freshly reset game state.
+          notifier.resetGame();
+          async.flushMicrotasks();
+
+          final stateRightAfterReset = container.read(memoryGameProvider);
+          expect(stateRightAfterReset.isProcessing, isFalse);
+          expect(stateRightAfterReset.firstSelectedCardIndex, isNull);
+
+          // Flip one card in the NEW game, then let the old timer's
+          // original 1-second window elapse. If the stale callback still
+          // fired, it would incorrectly clear firstSelectedCardIndex/
+          // isProcessing for a card flip that is still legitimately
+          // pending in the new game.
+          final newCards = stateRightAfterReset.cards;
+          notifier.flipCard(0);
+          async.flushMicrotasks();
+
+          async.elapse(const Duration(seconds: 1));
+
+          final stateAfterOldWindowElapses = container.read(
+            memoryGameProvider,
+          );
+          expect(stateAfterOldWindowElapses.firstSelectedCardIndex, 0);
+          expect(stateAfterOldWindowElapses.cards[0].isFaceUp, isTrue);
+          expect(stateAfterOldWindowElapses.isProcessing, isFalse);
+          expect(
+            stateAfterOldWindowElapses.cards.map((c) => c.content).toList(),
+            newCards.map((c) => c.content).toList(),
+          );
+        });
+      },
+    );
+
     test('reset cancels running timer', () {
       runWithContainer((container, repo, async) {
         final notifier = container.read(memoryGameProvider.notifier);
