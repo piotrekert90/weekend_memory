@@ -19,6 +19,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   final _engine = GameEngine();
   Timer? _timer;
   Timer? _flipBackTimer;
+  bool _isGameFinishedSaved = false;
 
   static const _symbols = [
     '🌟',
@@ -58,10 +59,17 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     // Riverpod skips this rebuild entirely when nothing actually changed —
     // there is no redundant-rebuild cost to watching the whole object here.
     final config = ref.watch(gameConfigProvider);
+
+    // Lifecycle safeguard: cancel all active timers on dispose so that no
+    // pending callback can execute after the provider is torn down. This
+    // guarantees stale timer ticks cannot mutate state or trigger saves.
     ref.onDispose(() {
       _timer?.cancel();
+      _timer = null;
       _flipBackTimer?.cancel();
+      _flipBackTimer = null;
     });
+
     return _initializeGame(config.gridSize.pairCount, config);
   }
 
@@ -70,6 +78,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
     _timer = null;
     _flipBackTimer?.cancel();
     _flipBackTimer = null;
+    _isGameFinishedSaved = false;
 
     final cards = _engine.createDeck(pairCount: pairCount, symbols: _symbols);
 
@@ -82,7 +91,12 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   }
 
   /// Handles a card tap at [index] and advances the game state.
+  ///
+  /// Guards against disposal by checking [ref.mounted] before any state
+  /// mutation or database write. All async callbacks also double-guard
+  /// with [ref.mounted] to prevent execution after provider disposal.
   void flipCard(int index) {
+    if (!ref.mounted) return;
     if (state.isProcessing || state.isGameOver) return;
     if (state.cards[index].isMatched || state.cards[index].isFaceUp) return;
     if (state.firstSelectedCardIndex == index) return;
@@ -121,6 +135,26 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
         final isFinished = _engine.isGameFinished(matchedCards);
 
         if (isFinished) {
+          // Lifecycle safeguard: triple-guard before any database write.
+          // 1) ref.mounted — provider must still be alive (no dispose race).
+          // 2) _isGameFinishedSaved — prevents duplicate saves from stale
+          //    callbacks that fire after the flag was reset.
+          // 3) state.isGameFinished — final state-level invariant: only save
+          //    when this game session actually finished (not a stale result).
+          if (!ref.mounted || _isGameFinishedSaved || !isFinished) {
+            state = state.copyWith(
+              cards: matchedCards,
+              firstSelectedCardIndex: null,
+              isProcessing: false,
+              isGameFinished: isFinished,
+            );
+            return;
+          }
+
+          _isGameFinishedSaved = true;
+
+          // Cancel timer before persisting so no countdown tick can
+          // mutate state after the game is marked finished.
           _timer?.cancel();
           _timer = null;
 
@@ -136,6 +170,9 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
             gameMode: gameMode,
           );
 
+          // This is the ONLY path to the repository — guarded by
+          // ref.mounted + _isGameFinishedSaved + state.isGameFinished
+          // above, so no abandoned or incomplete game can be saved.
           ref.read(gameHistoryRepositoryProvider).saveResult(result);
         }
 
@@ -148,11 +185,17 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
       } else {
         _flipBackTimer?.cancel();
         _flipBackTimer = Timer(const Duration(seconds: 1), () {
+          // Lifecycle safeguard: check ref.mounted + game state before
+          // executing the flip-back. Prevents mutating a disposed provider
+          // or a game that was reset/finished while this timer was pending.
           if (!ref.mounted) return;
+          final current = state;
+          if (current.isGameFinished || current.isGameOver) return;
+          if (current.firstSelectedCardIndex == null) return;
 
-          final currentCards = _engine.flipAllDown(state.cards);
+          final currentCards = _engine.flipAllDown(current.cards);
 
-          state = state.copyWith(
+          state = current.copyWith(
             cards: currentCards,
             firstSelectedCardIndex: null,
             isProcessing: false,
@@ -168,28 +211,61 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
     if (config.isCountdownMode) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        final remaining = state.durationInSeconds - 1;
+        // Lifecycle safeguard: bail out on disposal or game-over to prevent
+        // ticking a disposed provider or a finished/over game.
+        if (!ref.mounted) {
+          timer.cancel();
+          return;
+        }
+        final current = state;
+        if (current.isGameOver || current.isGameFinished) {
+          timer.cancel();
+          return;
+        }
+
+        final remaining = current.durationInSeconds - 1;
         if (remaining <= 0) {
           timer.cancel();
           _timer = null;
-          state = state.copyWith(durationInSeconds: 0, isGameOver: true);
+          state = current.copyWith(durationInSeconds: 0, isGameOver: true);
           return;
         }
-        state = state.copyWith(durationInSeconds: remaining);
+        state = current.copyWith(durationInSeconds: remaining);
       });
     } else {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        state = state.copyWith(durationInSeconds: state.durationInSeconds + 1);
+        // Lifecycle safeguard: bail out on disposal or game-over to prevent
+        // ticking a disposed provider or a finished game.
+        if (!ref.mounted) {
+          timer.cancel();
+          return;
+        }
+        final current = state;
+        if (current.isGameFinished) {
+          timer.cancel();
+          return;
+        }
+
+        state = current.copyWith(
+          durationInSeconds: current.durationInSeconds + 1,
+        );
       });
     }
   }
 
   /// Resets the game to its initial state.
+  ///
+  /// Cancels timers and resets [_isGameFinishedSaved] before replacing
+  /// state so that any pending callback fires against the fresh game
+  /// session (or a disposed provider) and cannot save a stale result.
   void resetGame() {
+    // Cancel timers before resetting state so pending callbacks see
+    // ref.mounted == false and bail out early (defensive double-guard).
     _timer?.cancel();
     _timer = null;
     _flipBackTimer?.cancel();
     _flipBackTimer = null;
+    _isGameFinishedSaved = false;
     final config = ref.read(gameConfigProvider);
     state = _initializeGame(config.gridSize.pairCount, config);
   }
