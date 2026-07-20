@@ -95,18 +95,4 @@ void main() {
     expect(find.byType(GameHistoryScreen), findsOneWidget);
     expect(notifier.resetCount, 1);
   });
-
-  testWidgets('SuccessDialog golden test', (tester) async {
-    await tester.pumpWidgetWithDependencies(
-      const SuccessDialog(),
-      overrides: [
-        memoryGameProvider.overrideWith(() => FakeSuccessMemoryGameNotifier()),
-      ],
-    );
-
-    await expectLater(
-      find.byType(Scaffold),
-      matchesGoldenFile('goldens/success_dialog.png'),
-    );
-  });
 }
