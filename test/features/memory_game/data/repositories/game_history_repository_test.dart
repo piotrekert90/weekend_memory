@@ -42,22 +42,25 @@ void main() {
       tempDir.deleteSync(recursive: true);
     });
 
-    test('fetchAllResults returns empty list when no data exists', () async {
+    test('watchAllResults returns empty list when no data exists', () async {
       if (skipReason != null) {
         markTestSkipped(skipReason!);
         return;
       }
       final repository = GameHistoryRepositoryImpl(isar);
-      final results = await repository.fetchAllResults();
+      final stream = repository.watchAllResults();
+      await isar.writeTxn(() async {});
+      final results = await stream.first;
       expect(results, isEmpty);
     });
 
-    test('fetchAllResults sorts results by duration', () async {
+    test('watchAllResults sorts results by duration', () async {
       if (skipReason != null) {
         markTestSkipped(skipReason!);
         return;
       }
       final repository = GameHistoryRepositoryImpl(isar);
+      final stream = repository.watchAllResults();
       await repository.saveResult(
         GameResult(
           moveCount: 20,
@@ -82,18 +85,19 @@ void main() {
           playedAt: DateTime.now(),
         ),
       );
-      final sorted = await repository.fetchAllResults();
+      final sorted = await stream.first;
       expect(sorted[0].durationInSeconds, 10);
       expect(sorted[1].durationInSeconds, 20);
       expect(sorted[2].durationInSeconds, 30);
     });
 
-    test('fetchAllResults sorts equal durations by move count', () async {
+    test('watchAllResults sorts equal durations by move count', () async {
       if (skipReason != null) {
         markTestSkipped(skipReason!);
         return;
       }
       final repository = GameHistoryRepositoryImpl(isar);
+      final stream = repository.watchAllResults();
       await repository.saveResult(
         GameResult(
           moveCount: 30,
@@ -118,18 +122,19 @@ void main() {
           playedAt: DateTime.now(),
         ),
       );
-      final sorted = await repository.fetchAllResults();
+      final sorted = await stream.first;
       expect(sorted[0].moveCount, 10);
       expect(sorted[1].moveCount, 20);
       expect(sorted[2].moveCount, 30);
     });
 
-    test('fetchAllResults keeps already sorted list unchanged', () async {
+    test('watchAllResults keeps already sorted list unchanged', () async {
       if (skipReason != null) {
         markTestSkipped(skipReason!);
         return;
       }
       final repository = GameHistoryRepositoryImpl(isar);
+      final stream = repository.watchAllResults();
       await repository.saveResult(
         GameResult(
           moveCount: 10,
@@ -154,7 +159,7 @@ void main() {
           playedAt: DateTime.now(),
         ),
       );
-      final sorted = await repository.fetchAllResults();
+      final sorted = await stream.first;
       expect(sorted[0].durationInSeconds, 10);
       expect(sorted[1].durationInSeconds, 20);
       expect(sorted[2].durationInSeconds, 30);

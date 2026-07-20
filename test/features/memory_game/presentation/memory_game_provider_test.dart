@@ -18,13 +18,13 @@ class FakeGameHistoryRepository implements GameHistoryRepository {
   }
 
   @override
-  Future<List<GameResult>> fetchAllResults() async {
-    return [];
+  Stream<List<GameResult>> watchAllResults() async* {
+    yield [];
   }
 
   @override
-  Future<List<GameResult>> fetchResultsByGridSize(int gridSizeIndex) async {
-    return [];
+  Stream<List<GameResult>> watchResultsByGridSize(int gridSizeIndex) async* {
+    yield [];
   }
 
   @override

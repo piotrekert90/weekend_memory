@@ -66,6 +66,7 @@ void main() {
       // surfacing as a native crash the first time the real app runs.
       final repository = container.read(gameHistoryRepositoryProvider);
 
+      final stream = repository.watchAllResults();
       await repository.saveResult(
         GameResult(
           moveCount: 12,
@@ -75,7 +76,7 @@ void main() {
         ),
       );
 
-      final results = await repository.fetchAllResults();
+      final results = await stream.first;
       expect(results, hasLength(1));
       expect(results.single.moveCount, 12);
     });

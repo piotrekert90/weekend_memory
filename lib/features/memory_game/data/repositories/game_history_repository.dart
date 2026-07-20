@@ -48,16 +48,16 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   }
 
   @override
-  Future<List<GameResult>> fetchAllResults() async {
+  Stream<List<GameResult>> watchAllResults() {
     try {
-      final entities = await isar
+      final query = isar
           .collection<GameResultEntity>()
           .where()
           .sortByDurationInSeconds()
-          .thenByMoveCount()
-          .findAll();
-
-      return entities.map((e) => e.toDomain()).toList();
+          .thenByMoveCount();
+      return query
+          .watch()
+          .map((entities) => entities.map((e) => e.toDomain()).toList());
     } catch (e, s) {
       Error.throwWithStackTrace(
         DatabaseException(message: e.toString(), cause: e),
@@ -67,17 +67,17 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
   }
 
   @override
-  Future<List<GameResult>> fetchResultsByGridSize(int gridSizeIndex) async {
+  Stream<List<GameResult>> watchResultsByGridSize(int gridSizeIndex) {
     try {
-      final entities = await isar
+      final query = isar
           .collection<GameResultEntity>()
           .filter()
           .gridSizeEqualTo(gridSizeIndex)
           .sortByDurationInSeconds()
-          .thenByMoveCount()
-          .findAll();
-
-      return entities.map((e) => e.toDomain()).toList();
+          .thenByMoveCount();
+      return query
+          .watch()
+          .map((entities) => entities.map((e) => e.toDomain()).toList());
     } catch (e, s) {
       Error.throwWithStackTrace(
         DatabaseException(message: e.toString(), cause: e),
@@ -103,18 +103,18 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
 
 /// Watches all saved game results from the local repository.
 @riverpod
-Future<List<GameResult>> gameHistory(Ref ref) async {
+Stream<List<GameResult>> gameHistory(Ref ref) {
   final repository = ref.watch(gameHistoryRepositoryProvider);
-  return repository.fetchAllResults();
+  return repository.watchAllResults();
 }
 
 /// Watches only the results for a single grid size, queried directly at the
 /// Isar level instead of fetching everything and filtering it in Dart.
 @riverpod
-Future<List<GameResult>> gameHistoryByGridSize(
+Stream<List<GameResult>> gameHistoryByGridSize(
   Ref ref,
   int gridSizeIndex,
-) async {
+) {
   final repository = ref.watch(gameHistoryRepositoryProvider);
-  return repository.fetchResultsByGridSize(gridSizeIndex);
+  return repository.watchResultsByGridSize(gridSizeIndex);
 }

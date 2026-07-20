@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../models/game_result.dart';
 
 /// Abstract repository for game history persistence operations.
@@ -5,12 +7,13 @@ abstract class GameHistoryRepository {
   /// Saves a completed game result.
   Future<void> saveResult(GameResult result);
 
-  /// Fetches all saved game results.
-  Future<List<GameResult>> fetchAllResults();
+  /// Watches all saved game results, emitting a new sorted list whenever the
+  /// underlying data changes.
+  Stream<List<GameResult>> watchAllResults();
 
-  /// Fetches only the results for the given [gridSizeIndex]
-  /// (`GridSize.index`), sorted the same way as [fetchAllResults].
-  Future<List<GameResult>> fetchResultsByGridSize(int gridSizeIndex);
+  /// Watches only the results for the given [gridSizeIndex]
+  /// (`GridSize.index`), sorted the same way as [watchAllResults].
+  Stream<List<GameResult>> watchResultsByGridSize(int gridSizeIndex);
 
   /// Clears all saved game history.
   Future<void> clearHistory();

@@ -124,9 +124,9 @@ final class GameHistoryProvider
         $FunctionalProvider<
           AsyncValue<List<GameResult>>,
           List<GameResult>,
-          FutureOr<List<GameResult>>
+          Stream<List<GameResult>>
         >
-    with $FutureModifier<List<GameResult>>, $FutureProvider<List<GameResult>> {
+    with $FutureModifier<List<GameResult>>, $StreamProvider<List<GameResult>> {
   /// Watches all saved game results from the local repository.
   GameHistoryProvider._()
     : super(
@@ -144,17 +144,17 @@ final class GameHistoryProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<GameResult>> $createElement(
+  $StreamProviderElement<List<GameResult>> $createElement(
     $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  ) => $StreamProviderElement(pointer);
 
   @override
-  FutureOr<List<GameResult>> create(Ref ref) {
+  Stream<List<GameResult>> create(Ref ref) {
     return gameHistory(ref);
   }
 }
 
-String _$gameHistoryHash() => r'f5d90d5d0ac478de4bc7db1b12144e6b30a5f3d8';
+String _$gameHistoryHash() => r'f4b6823d20d74b2f3061c780cfbf0684ee155908';
 
 /// Watches only the results for a single grid size, queried directly at the
 /// Isar level instead of fetching everything and filtering it in Dart.
@@ -170,9 +170,9 @@ final class GameHistoryByGridSizeProvider
         $FunctionalProvider<
           AsyncValue<List<GameResult>>,
           List<GameResult>,
-          FutureOr<List<GameResult>>
+          Stream<List<GameResult>>
         >
-    with $FutureModifier<List<GameResult>>, $FutureProvider<List<GameResult>> {
+    with $FutureModifier<List<GameResult>>, $StreamProvider<List<GameResult>> {
   /// Watches only the results for a single grid size, queried directly at the
   /// Isar level instead of fetching everything and filtering it in Dart.
   GameHistoryByGridSizeProvider._({
@@ -198,12 +198,12 @@ final class GameHistoryByGridSizeProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<GameResult>> $createElement(
+  $StreamProviderElement<List<GameResult>> $createElement(
     $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  ) => $StreamProviderElement(pointer);
 
   @override
-  FutureOr<List<GameResult>> create(Ref ref) {
+  Stream<List<GameResult>> create(Ref ref) {
     final argument = this.argument as int;
     return gameHistoryByGridSize(ref, argument);
   }
@@ -220,13 +220,13 @@ final class GameHistoryByGridSizeProvider
 }
 
 String _$gameHistoryByGridSizeHash() =>
-    r'9b7114e131bdbaa89af1c1a1ea047487a398de21';
+    r'6a3a93c427f6acbd38d3df9ae1a86015900bf12f';
 
 /// Watches only the results for a single grid size, queried directly at the
 /// Isar level instead of fetching everything and filtering it in Dart.
 
 final class GameHistoryByGridSizeFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<GameResult>>, int> {
+    with $FunctionalFamilyOverride<Stream<List<GameResult>>, int> {
   GameHistoryByGridSizeFamily._()
     : super(
         retry: null,
