@@ -1,7 +1,30 @@
+import '../models/game_config.dart';
 import '../models/memory_card.dart';
 
 /// Encapsulates memory game rules without framework dependencies.
 class GameEngine {
+  /// Validates that a countdown duration is structurally viable for gameplay.
+  ///
+  /// A countdown must be long enough to accommodate at least one card flip
+  /// (the minimum tick interval) and short enough to remain a meaningful
+  /// challenge. Throws [ArgumentError] if the duration falls outside acceptable
+  /// bounds.
+  void validateDuration(int seconds) {
+    assert(
+      seconds >= CountdownDurationBounds.min,
+      'Countdown duration ($seconds s) is below the minimum of '
+      '${CountdownDurationBounds.min} s. '
+      'A countdown must be at least one full tick interval '
+      '(${CountdownDurationBounds.min} s).',
+    );
+    assert(
+      seconds <= CountdownDurationBounds.max,
+      'Countdown duration ($seconds s) exceeds the maximum of '
+      '${CountdownDurationBounds.max} s. '
+      'Practical gameplay requires countdowns within this range.',
+    );
+  }
+
   /// Creates and shuffles a deck of [pairCount] card pairs using [symbols].
   ///
   /// [symbols] must contain at least [pairCount] entries — each pair needs
