@@ -182,8 +182,13 @@ void main() {
           cardToIndices.putIfAbsent(initialCards[i].id, () => []).add(i);
         }
 
+        var firstFlip = true;
         for (final pair in cardToIndices.values) {
           notifier.flipCard(pair[0]);
+          if (firstFlip) {
+            async.elapse(const Duration(seconds: 1));
+            firstFlip = false;
+          }
           async.flushMicrotasks();
 
           notifier.flipCard(pair[1]);
@@ -340,7 +345,6 @@ void main() {
             (c) => c.id != initialCards[firstIndex].id,
           );
 
-          // Trigger a mismatch: this schedules the 1-second flip-back timer.
           notifier.flipCard(firstIndex);
           async.flushMicrotasks();
           notifier.flipCard(nonMatchingIndex);
@@ -348,9 +352,6 @@ void main() {
 
           expect(container.read(memoryGameProvider).isProcessing, isTrue);
 
-          // Reset BEFORE the flip-back timer fires — this is exactly the
-          // window in which the old, untracked Future.delayed would still
-          // go on to fire later and stomp on the freshly reset game state.
           notifier.resetGame();
           async.flushMicrotasks();
 
@@ -358,11 +359,6 @@ void main() {
           expect(stateRightAfterReset.isProcessing, isFalse);
           expect(stateRightAfterReset.firstSelectedCardIndex, isNull);
 
-          // Flip one card in the NEW game, then let the old timer's
-          // original 1-second window elapse. If the stale callback still
-          // fired, it would incorrectly clear firstSelectedCardIndex/
-          // isProcessing for a card flip that is still legitimately
-          // pending in the new game.
           final newCards = stateRightAfterReset.cards;
           notifier.flipCard(0);
           async.flushMicrotasks();
@@ -508,8 +504,13 @@ void main() {
 
         final allPairs = pairs.values.toList();
 
+        var firstFlip = true;
         for (final pair in allPairs.take(allPairs.length - 1)) {
           notifier.flipCard(pair[0]);
+          if (firstFlip) {
+            async.elapse(const Duration(seconds: 1));
+            firstFlip = false;
+          }
           notifier.flipCard(pair[1]);
           async.flushMicrotasks();
 
@@ -537,8 +538,13 @@ void main() {
           pairs.putIfAbsent(cards[i].id, () => []).add(i);
         }
 
+        var firstFlip = true;
         for (final pair in pairs.values) {
           notifier.flipCard(pair[0]);
+          if (firstFlip) {
+            async.elapse(const Duration(seconds: 1));
+            firstFlip = false;
+          }
           notifier.flipCard(pair[1]);
           async.flushMicrotasks();
         }

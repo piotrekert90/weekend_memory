@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/repositories/game_history_repository.dart';
@@ -96,23 +95,18 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
   void _handleDomainEvent(GameEvent event) {
     if (!ref.mounted) return;
 
-    // Process asynchronous domain ticks safely outside active layout/paint phases
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      if (!ref.mounted) return;
+    switch (event) {
+      case GameTickEvent(:final durationInSeconds):
+        if (state.isGameFinished || state.isGameOver) return;
+        state = state.copyWith(durationInSeconds: durationInSeconds);
 
-      switch (event) {
-        case GameTickEvent(:final durationInSeconds):
-          if (state.isGameFinished || state.isGameOver) return;
-          state = state.copyWith(durationInSeconds: durationInSeconds);
+      case GameTimeoutEvent():
+        if (state.isGameFinished || state.isGameOver) return;
+        state = state.copyWith(durationInSeconds: 0, isGameOver: true);
 
-        case GameTimeoutEvent():
-          if (state.isGameFinished || state.isGameOver) return;
-          state = state.copyWith(durationInSeconds: 0, isGameOver: true);
-
-        case GameFinishedEvent(:final moveCount, :final durationInSeconds):
-          _persistGameResult(moveCount, durationInSeconds);
-      }
-    });
+      case GameFinishedEvent(:final moveCount, :final durationInSeconds):
+        _persistGameResult(moveCount, durationInSeconds);
+    }
   }
 
   /// Handles a card tap at [index] and advances the game state.
