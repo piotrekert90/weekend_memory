@@ -1,5 +1,4 @@
 import 'package:isar_community/isar.dart';
-
 import '../../domain/models/game_mode.dart';
 import '../../domain/models/game_result.dart';
 
@@ -20,6 +19,9 @@ class GameResultEntity {
 
   final int moveCount;
   final int gridSize;
+
+  // High-performance query index for descending history timelines
+  @Index()
   final DateTime playedAt;
 
   @enumerated

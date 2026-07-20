@@ -65,6 +65,19 @@ const GameResultEntitySchema = CollectionSchema(
         ),
       ],
     ),
+    r'playedAt': IndexSchema(
+      id: -3711549563919110219,
+      name: r'playedAt',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'playedAt',
+          type: IndexType.value,
+          caseSensitive: false,
+        ),
+      ],
+    ),
   },
   links: {},
   embeddedSchemas: {},
@@ -179,6 +192,14 @@ extension GameResultEntityQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'durationInSeconds_moveCount'),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhere> anyPlayedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'playedAt'),
       );
     });
   }
@@ -471,6 +492,106 @@ extension GameResultEntityQueryWhere
           lower: [durationInSeconds, lowerMoveCount],
           includeLower: includeLower,
           upper: [durationInSeconds, upperMoveCount],
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  playedAtEqualTo(DateTime playedAt) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'playedAt', value: [playedAt]),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  playedAtNotEqualTo(DateTime playedAt) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'playedAt',
+                lower: [],
+                upper: [playedAt],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'playedAt',
+                lower: [playedAt],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'playedAt',
+                lower: [playedAt],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'playedAt',
+                lower: [],
+                upper: [playedAt],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  playedAtGreaterThan(DateTime playedAt, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'playedAt',
+          lower: [playedAt],
+          includeLower: include,
+          upper: [],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  playedAtLessThan(DateTime playedAt, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'playedAt',
+          lower: [],
+          upper: [playedAt],
+          includeUpper: include,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<GameResultEntity, GameResultEntity, QAfterWhereClause>
+  playedAtBetween(
+    DateTime lowerPlayedAt,
+    DateTime upperPlayedAt, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'playedAt',
+          lower: [lowerPlayedAt],
+          includeLower: includeLower,
+          upper: [upperPlayedAt],
           includeUpper: includeUpper,
         ),
       );
