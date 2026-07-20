@@ -135,18 +135,21 @@ void main() {
       expect(updated.every((c) => !c.isFaceUp), isTrue);
     });
 
-    test('isGameFinished returns true if and only if all cards are matched', () {
-      const finishedCards = [
-        MemoryCard(id: 1, content: 'A', isMatched: true),
-        MemoryCard(id: 1, content: 'A', isMatched: true),
-      ];
-      const unfinishedCards = [
-        MemoryCard(id: 1, content: 'A', isMatched: true),
-        MemoryCard(id: 1, content: 'A', isMatched: false),
-      ];
+    test(
+      'isGameFinished returns true if and only if all cards are matched',
+      () {
+        const finishedCards = [
+          MemoryCard(id: 1, content: 'A', isMatched: true),
+          MemoryCard(id: 1, content: 'A', isMatched: true),
+        ];
+        const unfinishedCards = [
+          MemoryCard(id: 1, content: 'A', isMatched: true),
+          MemoryCard(id: 1, content: 'A', isMatched: false),
+        ];
 
-      expect(engine.isGameFinished(finishedCards), isTrue);
-      expect(engine.isGameFinished(unfinishedCards), isFalse);
-    });
+        expect(engine.isGameFinished(finishedCards), isTrue);
+        expect(engine.isGameFinished(unfinishedCards), isFalse);
+      },
+    );
   });
 }

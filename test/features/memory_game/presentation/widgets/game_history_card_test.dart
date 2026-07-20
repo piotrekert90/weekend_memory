@@ -18,9 +18,7 @@ void main() {
         gameMode: GameMode.classic,
       );
 
-      await tester.pumpWidgetWithDependencies(
-        GameHistoryCard(result: result),
-      );
+      await tester.pumpWidgetWithDependencies(GameHistoryCard(result: result));
 
       expect(find.text('12'), findsOneWidget);
       expect(find.text('1:15'), findsOneWidget);
@@ -37,9 +35,7 @@ void main() {
         gameMode: GameMode.countdown,
       );
 
-      await tester.pumpWidgetWithDependencies(
-        GameHistoryCard(result: result),
-      );
+      await tester.pumpWidgetWithDependencies(GameHistoryCard(result: result));
 
       expect(find.text('20'), findsOneWidget);
       expect(find.text('1:00'), findsOneWidget);
@@ -77,9 +73,7 @@ void main() {
         playedAt: today,
       );
 
-      await tester.pumpWidgetWithDependencies(
-        GameHistoryCard(result: result),
-      );
+      await tester.pumpWidgetWithDependencies(GameHistoryCard(result: result));
 
       expect(find.text('Today'), findsOneWidget);
     });
@@ -93,14 +87,14 @@ void main() {
         playedAt: yesterday,
       );
 
-      await tester.pumpWidgetWithDependencies(
-        GameHistoryCard(result: result),
-      );
+      await tester.pumpWidgetWithDependencies(GameHistoryCard(result: result));
 
       expect(find.text('Yesterday'), findsOneWidget);
     });
 
-    testWidgets('formats duration correctly for various values', (tester) async {
+    testWidgets('formats duration correctly for various values', (
+      tester,
+    ) async {
       for (final entry in [
         (seconds: 5, expected: '0:05'),
         (seconds: 59, expected: '0:59'),

@@ -12,7 +12,12 @@ void main() {
     });
 
     test('copyWith copies properties and allows overrides', () {
-      const card = MemoryCard(id: 1, content: 'A', isFaceUp: true, isMatched: false);
+      const card = MemoryCard(
+        id: 1,
+        content: 'A',
+        isFaceUp: true,
+        isMatched: false,
+      );
 
       final updated = card.copyWith(
         id: 2,

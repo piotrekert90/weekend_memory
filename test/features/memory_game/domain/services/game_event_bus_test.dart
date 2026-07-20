@@ -29,11 +29,21 @@ void main() {
       await Future.delayed(Duration.zero);
 
       expect(events.length, 3);
-      expect(events[0], isA<GameTickEvent>().having((e) => e.durationInSeconds, 'durationInSeconds', 5));
+      expect(
+        events[0],
+        isA<GameTickEvent>().having(
+          (e) => e.durationInSeconds,
+          'durationInSeconds',
+          5,
+        ),
+      );
       expect(events[1], isA<GameTimeoutEvent>());
-      expect(events[2], isA<GameFinishedEvent>()
-          .having((e) => e.moveCount, 'moveCount', 10)
-          .having((e) => e.durationInSeconds, 'durationInSeconds', 12));
+      expect(
+        events[2],
+        isA<GameFinishedEvent>()
+            .having((e) => e.moveCount, 'moveCount', 10)
+            .having((e) => e.durationInSeconds, 'durationInSeconds', 12),
+      );
 
       await subscription.cancel();
     });

@@ -9,7 +9,10 @@ void main() {
       const config = GameConfig();
       expect(config.gridSize, GridSize.easy);
       expect(config.isCountdownMode, isFalse);
-      expect(config.countdownDurationInSeconds, GameConstants.defaultCountdownDuration);
+      expect(
+        config.countdownDurationInSeconds,
+        GameConstants.defaultCountdownDuration,
+      );
     });
 
     test('accepts valid custom values', () {
@@ -23,32 +26,35 @@ void main() {
       expect(config.countdownDurationInSeconds, 120);
     });
 
-    test('asserts when countdown duration is below minimum in countdown mode', () {
-      expect(
-        () => GameConfig(
-          isCountdownMode: true,
-          countdownDurationInSeconds: GameConstants.minCountdownDuration - 1,
-        ),
-        throwsA(isA<AssertionError>()),
-      );
-    });
+    test(
+      'asserts when countdown duration is below minimum in countdown mode',
+      () {
+        expect(
+          () => GameConfig(
+            isCountdownMode: true,
+            countdownDurationInSeconds: GameConstants.minCountdownDuration - 1,
+          ),
+          throwsA(isA<AssertionError>()),
+        );
+      },
+    );
 
-    test('asserts when countdown duration is above maximum in countdown mode', () {
-      expect(
-        () => GameConfig(
-          isCountdownMode: true,
-          countdownDurationInSeconds: GameConstants.maxCountdownDuration + 1,
-        ),
-        throwsA(isA<AssertionError>()),
-      );
-    });
+    test(
+      'asserts when countdown duration is above maximum in countdown mode',
+      () {
+        expect(
+          () => GameConfig(
+            isCountdownMode: true,
+            countdownDurationInSeconds: GameConstants.maxCountdownDuration + 1,
+          ),
+          throwsA(isA<AssertionError>()),
+        );
+      },
+    );
 
     test('asserts when countdown duration is non-positive', () {
       expect(
-        () => GameConfig(
-          isCountdownMode: false,
-          countdownDurationInSeconds: 0,
-        ),
+        () => GameConfig(isCountdownMode: false, countdownDurationInSeconds: 0),
         throwsA(isA<AssertionError>()),
       );
     });

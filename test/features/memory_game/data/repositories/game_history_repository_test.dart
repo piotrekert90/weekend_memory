@@ -173,26 +173,29 @@ void main() {
       expect(results24[0].gridSize, 24);
     });
 
-    test('watchResultsByGridSize returns empty when no matching data', () async {
-      if (skipReason != null) {
-        markTestSkipped(skipReason!);
-        return;
-      }
-      final repository = GameHistoryRepositoryImpl(isar);
-      await repository.saveResult(
-        GameResult(
-          moveCount: 10,
-          durationInSeconds: 10,
-          gridSize: 16,
-          playedAt: DateTime.now(),
-        ),
-      );
-      await isar.writeTxn(() async {});
+    test(
+      'watchResultsByGridSize returns empty when no matching data',
+      () async {
+        if (skipReason != null) {
+          markTestSkipped(skipReason!);
+          return;
+        }
+        final repository = GameHistoryRepositoryImpl(isar);
+        await repository.saveResult(
+          GameResult(
+            moveCount: 10,
+            durationInSeconds: 10,
+            gridSize: 16,
+            playedAt: DateTime.now(),
+          ),
+        );
+        await isar.writeTxn(() async {});
 
-      final stream = repository.watchResultsByGridSize(36);
-      final results = await stream.first;
-      expect(results, isEmpty);
-    });
+        final stream = repository.watchResultsByGridSize(36);
+        final results = await stream.first;
+        expect(results, isEmpty);
+      },
+    );
 
     test('clearHistory removes all results', () async {
       if (skipReason != null) {

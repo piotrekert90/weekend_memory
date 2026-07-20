@@ -31,15 +31,27 @@ void main() {
         expect(emittedEvents.length, 3);
         expect(
           emittedEvents[0],
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 1),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            1,
+          ),
         );
         expect(
           emittedEvents[1],
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 2),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            2,
+          ),
         );
         expect(
           emittedEvents[2],
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 3),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            3,
+          ),
         );
       });
     });
@@ -53,7 +65,11 @@ void main() {
         expect(emittedEvents.length, 1);
         expect(
           emittedEvents.last,
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 2),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            2,
+          ),
         );
 
         // Elapse another second -> ticks with 1
@@ -61,7 +77,11 @@ void main() {
         expect(emittedEvents.length, 2);
         expect(
           emittedEvents.last,
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 1),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            1,
+          ),
         );
 
         // Elapse one more second -> hits 0, stops and publishes GameTimeoutEvent
@@ -97,7 +117,11 @@ void main() {
         expect(emittedEvents.length, 1);
         expect(
           emittedEvents.last,
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 11),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            11,
+          ),
         );
 
         // Restart timer with countdown mode
@@ -106,7 +130,11 @@ void main() {
         expect(emittedEvents.length, 2);
         expect(
           emittedEvents.last,
-          isA<GameTickEvent>().having((e) => e.durationInSeconds, 'duration', 4),
+          isA<GameTickEvent>().having(
+            (e) => e.durationInSeconds,
+            'duration',
+            4,
+          ),
         );
       });
     });

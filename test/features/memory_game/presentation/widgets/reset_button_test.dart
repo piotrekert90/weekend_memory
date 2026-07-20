@@ -22,9 +22,7 @@ void main() {
   testWidgets('renders Reset Game button', (tester) async {
     await tester.pumpWidgetWithDependencies(
       const ResetButton(),
-      overrides: [
-        memoryGameProvider.overrideWith(() => FakeResetNotifier()),
-      ],
+      overrides: [memoryGameProvider.overrideWith(() => FakeResetNotifier())],
     );
 
     expect(find.text('Reset Game'), findsOneWidget);
@@ -35,9 +33,7 @@ void main() {
   testWidgets('tapping button triggers resetGame', (tester) async {
     await tester.pumpWidgetWithDependencies(
       const ResetButton(),
-      overrides: [
-        memoryGameProvider.overrideWith(() => FakeResetNotifier()),
-      ],
+      overrides: [memoryGameProvider.overrideWith(() => FakeResetNotifier())],
     );
 
     final container = ProviderScope.containerOf(

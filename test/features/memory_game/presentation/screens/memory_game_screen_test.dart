@@ -104,7 +104,9 @@ void main() {
       expect(find.text('Memory'), findsOneWidget);
     });
 
-    testWidgets('history button navigates to GameHistoryScreen', (tester) async {
+    testWidgets('history button navigates to GameHistoryScreen', (
+      tester,
+    ) async {
       await tester.pumpWidgetWithDependencies(
         const MemoryGameScreen(),
         overrides: [

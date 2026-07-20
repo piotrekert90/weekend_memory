@@ -22,7 +22,9 @@ void main() {
       expect(find.text('Start Game'), findsOneWidget);
     });
 
-    testWidgets('renders grid size selector with three choices', (tester) async {
+    testWidgets('renders grid size selector with three choices', (
+      tester,
+    ) async {
       await tester.pumpWidgetWithDependencies(const HomeScreen());
 
       expect(find.text('Grid Size'), findsOneWidget);
@@ -31,14 +33,18 @@ void main() {
       expect(find.text('Hard (36 cards)'), findsOneWidget);
     });
 
-    testWidgets('renders game mode section with countdown toggle', (tester) async {
+    testWidgets('renders game mode section with countdown toggle', (
+      tester,
+    ) async {
       await tester.pumpWidgetWithDependencies(const HomeScreen());
 
       expect(find.text('Game Mode'), findsOneWidget);
       expect(find.text('Countdown Mode'), findsOneWidget);
     });
 
-    testWidgets('start game button navigates to MemoryGameScreen', (tester) async {
+    testWidgets('start game button navigates to MemoryGameScreen', (
+      tester,
+    ) async {
       final prefs = await SharedPreferences.getInstance();
       await tester.pumpWidgetWithDependencies(
         const HomeScreen(),
@@ -57,18 +63,12 @@ void main() {
       final container = ProviderScope.containerOf(
         tester.element(find.byType(HomeScreen)),
       );
-      expect(
-        container.read(gameConfigProvider).gridSize.index,
-        0,
-      );
+      expect(container.read(gameConfigProvider).gridSize.index, 0);
 
       await tester.tap(find.text('Medium (24 cards)'));
       await tester.pumpAndSettle();
 
-      expect(
-        container.read(gameConfigProvider).gridSize.index,
-        1,
-      );
+      expect(container.read(gameConfigProvider).gridSize.index, 1);
     });
 
     testWidgets('toggling countdown mode updates the provider', (tester) async {
@@ -77,21 +77,17 @@ void main() {
       final container = ProviderScope.containerOf(
         tester.element(find.byType(HomeScreen)),
       );
-      expect(
-        container.read(gameConfigProvider).isCountdownMode,
-        isFalse,
-      );
+      expect(container.read(gameConfigProvider).isCountdownMode, isFalse);
 
       await tester.tap(find.byType(SwitchListTile));
       await tester.pumpAndSettle();
 
-      expect(
-        container.read(gameConfigProvider).isCountdownMode,
-        isTrue,
-      );
+      expect(container.read(gameConfigProvider).isCountdownMode, isTrue);
     });
 
-    testWidgets('history button navigates to GameHistoryScreen', (tester) async {
+    testWidgets('history button navigates to GameHistoryScreen', (
+      tester,
+    ) async {
       await tester.pumpWidgetWithDependencies(const HomeScreen());
 
       await tester.tap(find.byIcon(Icons.history));

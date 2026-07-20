@@ -18,12 +18,18 @@ void main() {
       container.dispose();
     });
 
-    test('default config uses GridSize.easy, classic mode, default duration', () {
-      final config = container.read(gameConfigProvider);
-      expect(config.gridSize, GridSize.easy);
-      expect(config.isCountdownMode, isFalse);
-      expect(config.countdownDurationInSeconds, GameConstants.defaultCountdownDuration);
-    });
+    test(
+      'default config uses GridSize.easy, classic mode, default duration',
+      () {
+        final config = container.read(gameConfigProvider);
+        expect(config.gridSize, GridSize.easy);
+        expect(config.isCountdownMode, isFalse);
+        expect(
+          config.countdownDurationInSeconds,
+          GameConstants.defaultCountdownDuration,
+        );
+      },
+    );
 
     test('setGridSize updates grid size', () {
       notifier.setGridSize(GridSize.hard);
@@ -40,7 +46,10 @@ void main() {
 
     test('setCountdownDuration updates duration', () {
       notifier.setCountdownDuration(120);
-      expect(container.read(gameConfigProvider).countdownDurationInSeconds, 120);
+      expect(
+        container.read(gameConfigProvider).countdownDurationInSeconds,
+        120,
+      );
     });
 
     test('keeps state alive across multiple reads', () {

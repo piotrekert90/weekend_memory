@@ -75,7 +75,9 @@ void main() {
       expect(find.text('No games for this difficulty yet'), findsOneWidget);
     });
 
-    testWidgets('renders game results for the selected grid size', (tester) async {
+    testWidgets('renders game results for the selected grid size', (
+      tester,
+    ) async {
       final now = DateTime.now();
       final fakeRepo = FakeGameHistoryRepository();
 
@@ -101,7 +103,9 @@ void main() {
       expect(find.text('0:30'), findsOneWidget);
     });
 
-    testWidgets('shows segmented filter with three difficulty levels', (tester) async {
+    testWidgets('shows segmented filter with three difficulty levels', (
+      tester,
+    ) async {
       final fakeRepo = FakeGameHistoryRepository();
 
       await tester.pumpWidget(
@@ -157,7 +161,9 @@ void main() {
 
       expect(find.text('Clear History'), findsOneWidget);
       expect(
-        find.text('Are you sure you want to permanently delete all game results?'),
+        find.text(
+          'Are you sure you want to permanently delete all game results?',
+        ),
         findsOneWidget,
       );
       expect(find.text('Cancel'), findsOneWidget);
@@ -187,7 +193,9 @@ void main() {
       expect(find.byType(AlertDialog), findsNothing);
     });
 
-    testWidgets('cancelling clear dialog does not call clearHistory', (tester) async {
+    testWidgets('cancelling clear dialog does not call clearHistory', (
+      tester,
+    ) async {
       final fakeRepo = FakeGameHistoryRepository();
 
       await tester.pumpWidget(
