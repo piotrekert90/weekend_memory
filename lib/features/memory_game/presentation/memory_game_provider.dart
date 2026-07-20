@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/repositories/game_history_repository.dart';
@@ -211,44 +212,56 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
 
     if (config.isCountdownMode) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        // Lifecycle safeguard: bail out on disposal or game-over to prevent
-        // ticking a disposed provider or a finished/over game.
         if (!ref.mounted) {
           timer.cancel();
           return;
         }
-        final current = state;
-        if (current.isGameOver || current.isGameFinished) {
-          timer.cancel();
-          return;
-        }
 
-        final remaining = current.durationInSeconds - 1;
-        if (remaining <= 0) {
-          timer.cancel();
-          _timer = null;
-          state = current.copyWith(durationInSeconds: 0, isGameOver: true);
-          return;
-        }
-        state = current.copyWith(durationInSeconds: remaining);
+        // Defer state mutation to the post-frame phase to completely eliminate UI jank.
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          // Verify provider life and ensure this specific timer instance is still active
+          // to prevent an out-of-sync scheduled callback from corrupting a reset game state.
+          if (!ref.mounted || _timer != timer) return;
+
+          final current = state;
+          if (current.isGameOver || current.isGameFinished) {
+            timer.cancel();
+            return;
+          }
+
+          final remaining = current.durationInSeconds - 1;
+          if (remaining <= 0) {
+            timer.cancel();
+            _timer = null;
+            state = current.copyWith(durationInSeconds: 0, isGameOver: true);
+            return;
+          }
+          state = current.copyWith(durationInSeconds: remaining);
+        });
       });
     } else {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        // Lifecycle safeguard: bail out on disposal or game-over to prevent
-        // ticking a disposed provider or a finished game.
         if (!ref.mounted) {
           timer.cancel();
           return;
         }
-        final current = state;
-        if (current.isGameFinished) {
-          timer.cancel();
-          return;
-        }
 
-        state = current.copyWith(
-          durationInSeconds: current.durationInSeconds + 1,
-        );
+        // Defer state mutation to the post-frame phase to completely eliminate UI jank.
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          // Verify provider life and ensure this specific timer instance is still active
+          // to prevent an out-of-sync scheduled callback from corrupting a reset game state.
+          if (!ref.mounted || _timer != timer) return;
+
+          final current = state;
+          if (current.isGameFinished) {
+            timer.cancel();
+            return;
+          }
+
+          state = current.copyWith(
+            durationInSeconds: current.durationInSeconds + 1,
+          );
+        });
       });
     }
   }
