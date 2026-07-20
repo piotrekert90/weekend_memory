@@ -10,7 +10,7 @@ class ResetButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),

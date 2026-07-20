@@ -14,7 +14,7 @@ class MemoryGameScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     ref.listen(memoryGameProvider.select((state) => state.isGameFinished), (
       previous,
@@ -83,7 +83,7 @@ class _GameAppBarTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
     final duration = ref.watch(
       memoryGameProvider.select((state) => state.durationInSeconds),
     );

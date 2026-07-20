@@ -40,7 +40,7 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,7 +105,7 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
   }
 
   void _showClearHistoryDialog(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     showDialog(
       context: context,
@@ -143,7 +143,7 @@ class _GridHistoryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final resultsAsync = ref.watch(
       gameHistoryByGridSizeProvider(gridSize.index),
     );

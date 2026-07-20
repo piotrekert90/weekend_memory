@@ -14,7 +14,7 @@ class GameHistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final gridSize = GridSize.values[result.gridSize];
     final theme = Theme.of(context);
-    final localization = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context);
 
     return Container(
       margin: const EdgeInsets.only(right: 12),
@@ -101,7 +101,7 @@ class GameHistoryCard extends StatelessWidget {
 
   Widget _buildModeIndicator(BuildContext context, GameMode gameMode) {
     final theme = Theme.of(context);
-    final localization = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context);
 
     return Column(
       children: [

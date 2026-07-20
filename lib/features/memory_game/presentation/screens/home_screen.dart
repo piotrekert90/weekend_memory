@@ -11,7 +11,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     final isPhoneLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape &&
@@ -169,7 +169,7 @@ class HomeScreen extends ConsumerWidget {
     final currentGridSize = ref.watch(
       gameConfigProvider.select((config) => config.gridSize),
     );
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Wrap(
       spacing: 12,

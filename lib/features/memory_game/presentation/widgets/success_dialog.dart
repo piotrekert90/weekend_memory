@@ -11,7 +11,7 @@ class SuccessDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
     final theme = Theme.of(context);
 
     final duration = ref.read(
