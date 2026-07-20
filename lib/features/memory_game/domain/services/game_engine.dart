@@ -1,5 +1,5 @@
-import '../models/game_config.dart';
 import '../models/memory_card.dart';
+import '../../../../core/constants/game_constants.dart';
 
 /// Encapsulates memory game rules without framework dependencies.
 class GameEngine {
@@ -10,16 +10,16 @@ class GameEngine {
   /// challenge. Throws [ArgumentError] if the duration falls outside acceptable
   /// bounds.
   void validateDuration(int seconds) {
-    if (seconds < CountdownDurationBounds.min) {
+    if (seconds < GameConstants.minCountdownDuration) {
       throw ArgumentError(
         'Countdown duration ($seconds s) is below the minimum of '
-        '${CountdownDurationBounds.min} s.',
+        '${GameConstants.minCountdownDuration} s.',
       );
     }
-    if (seconds > CountdownDurationBounds.max) {
+    if (seconds > GameConstants.maxCountdownDuration) {
       throw ArgumentError(
         'Countdown duration ($seconds s) exceeds the maximum of '
-        '${CountdownDurationBounds.max} s.',
+        '${GameConstants.maxCountdownDuration} s.',
       );
     }
   }

@@ -55,7 +55,7 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
         .where()
         .sortByDurationInSeconds()
         .thenByMoveCount()
-        .watch(lazy: false) // Added lazy: false to force object data emission
+        .watch()
         .map((entities) => entities.map((e) => e.toDomain()).toList())
         .handleError((Object e, StackTrace s) {
           Error.throwWithStackTrace(
@@ -74,7 +74,7 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
         .gridSizeEqualTo(gridSizeIndex)
         .sortByDurationInSeconds()
         .thenByMoveCount()
-        .watch(lazy: false) // Added lazy: false to force object data emission
+        .watch()
         .map((entities) => entities.map((e) => e.toDomain()).toList())
         .handleError((Object e, StackTrace s) {
           Error.throwWithStackTrace(

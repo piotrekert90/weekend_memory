@@ -168,7 +168,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp(
       // Dynamic localization title parsing at system context bootstrap boundary
       onGenerateTitle: (BuildContext context) =>
-          AppLocalizations.of(context).appTitle,
+          AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
