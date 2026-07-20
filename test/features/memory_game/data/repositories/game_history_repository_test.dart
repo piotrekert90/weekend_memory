@@ -128,6 +128,119 @@ void main() {
       expect(sorted[2].moveCount, 30);
     });
 
+    test('watchResultsByGridSize filters by grid size', () async {
+      if (skipReason != null) {
+        markTestSkipped(skipReason!);
+        return;
+      }
+      final repository = GameHistoryRepositoryImpl(isar);
+      await repository.saveResult(
+        GameResult(
+          moveCount: 10,
+          durationInSeconds: 10,
+          gridSize: 16,
+          playedAt: DateTime.now(),
+        ),
+      );
+      await repository.saveResult(
+        GameResult(
+          moveCount: 20,
+          durationInSeconds: 20,
+          gridSize: 24,
+          playedAt: DateTime.now(),
+        ),
+      );
+      await repository.saveResult(
+        GameResult(
+          moveCount: 30,
+          durationInSeconds: 30,
+          gridSize: 16,
+          playedAt: DateTime.now(),
+        ),
+      );
+      await isar.writeTxn(() async {});
+
+      final stream16 = repository.watchResultsByGridSize(16);
+      final results16 = await stream16.first;
+      expect(results16.length, 2);
+      expect(results16.every((r) => r.gridSize == 16), isTrue);
+      expect(results16[0].durationInSeconds, 10);
+      expect(results16[1].durationInSeconds, 30);
+
+      final stream24 = repository.watchResultsByGridSize(24);
+      final results24 = await stream24.first;
+      expect(results24.length, 1);
+      expect(results24[0].gridSize, 24);
+    });
+
+    test('watchResultsByGridSize returns empty when no matching data', () async {
+      if (skipReason != null) {
+        markTestSkipped(skipReason!);
+        return;
+      }
+      final repository = GameHistoryRepositoryImpl(isar);
+      await repository.saveResult(
+        GameResult(
+          moveCount: 10,
+          durationInSeconds: 10,
+          gridSize: 16,
+          playedAt: DateTime.now(),
+        ),
+      );
+      await isar.writeTxn(() async {});
+
+      final stream = repository.watchResultsByGridSize(36);
+      final results = await stream.first;
+      expect(results, isEmpty);
+    });
+
+    test('clearHistory removes all results', () async {
+      if (skipReason != null) {
+        markTestSkipped(skipReason!);
+        return;
+      }
+      final repository = GameHistoryRepositoryImpl(isar);
+      await repository.saveResult(
+        GameResult(
+          moveCount: 10,
+          durationInSeconds: 10,
+          gridSize: 16,
+          playedAt: DateTime.now(),
+        ),
+      );
+      await repository.saveResult(
+        GameResult(
+          moveCount: 20,
+          durationInSeconds: 20,
+          gridSize: 16,
+          playedAt: DateTime.now(),
+        ),
+      );
+      await isar.writeTxn(() async {});
+
+      var allResults = await repository.watchAllResults().first;
+      expect(allResults.length, 2);
+
+      await repository.clearHistory();
+      await isar.writeTxn(() async {});
+
+      allResults = await repository.watchAllResults().first;
+      expect(allResults, isEmpty);
+    });
+
+    test('clearHistory on empty database does not throw', () async {
+      if (skipReason != null) {
+        markTestSkipped(skipReason!);
+        return;
+      }
+      final repository = GameHistoryRepositoryImpl(isar);
+      await repository.clearHistory();
+      await isar.writeTxn(() async {});
+
+      final results = await repository.watchAllResults().first;
+      expect(results, isEmpty);
+    });
+
     test('watchAllResults keeps already sorted list unchanged', () async {
       if (skipReason != null) {
         markTestSkipped(skipReason!);
