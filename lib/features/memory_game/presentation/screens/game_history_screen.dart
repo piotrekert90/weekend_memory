@@ -120,10 +120,6 @@ class _GameHistoryScreenState extends ConsumerState<GameHistoryScreen> {
           TextButton(
             onPressed: () {
               ref.read(gameHistoryRepositoryProvider).clearHistory();
-              ref.invalidate(gameHistoryProvider);
-              for (final gridSize in GridSize.values) {
-                ref.invalidate(gameHistoryByGridSizeProvider(gridSize.index));
-              }
               Navigator.of(context).pop();
             },
             child: Text(

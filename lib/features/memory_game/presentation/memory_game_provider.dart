@@ -136,9 +136,7 @@ class MemoryGameNotifier extends _$MemoryGameNotifier {
             gameMode: gameMode,
           );
 
-          ref.read(gameHistoryRepositoryProvider).saveResult(result).then((_) {
-            ref.invalidate(gameHistoryProvider);
-          });
+          ref.read(gameHistoryRepositoryProvider).saveResult(result);
         }
 
         state = state.copyWith(
