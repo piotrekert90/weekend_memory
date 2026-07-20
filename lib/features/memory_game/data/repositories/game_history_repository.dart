@@ -49,41 +49,38 @@ class GameHistoryRepositoryImpl implements GameHistoryRepository {
 
   @override
   Stream<List<GameResult>> watchAllResults() {
-    try {
-      final query = isar
-          .collection<GameResultEntity>()
-          .where()
-          .sortByDurationInSeconds()
-          .thenByMoveCount();
-      return query
-          .watch()
-          .map((entities) => entities.map((e) => e.toDomain()).toList());
-    } catch (e, s) {
-      Error.throwWithStackTrace(
-        DatabaseException(message: e.toString(), cause: e),
-        s,
-      );
-    }
+    // Intercept stream-level database exceptions asynchronously via .handleError
+    return isar
+        .collection<GameResultEntity>()
+        .where()
+        .sortByDurationInSeconds()
+        .thenByMoveCount()
+        .watch(lazy: false)
+        .map((entities) => entities.map((e) => e.toDomain()).toList())
+        .handleError((Object e, StackTrace s) {
+          Error.throwWithStackTrace(
+            DatabaseException(message: e.toString(), cause: e),
+            s,
+          );
+        });
   }
 
   @override
   Stream<List<GameResult>> watchResultsByGridSize(int gridSizeIndex) {
-    try {
-      final query = isar
-          .collection<GameResultEntity>()
-          .filter()
-          .gridSizeEqualTo(gridSizeIndex)
-          .sortByDurationInSeconds()
-          .thenByMoveCount();
-      return query
-          .watch()
-          .map((entities) => entities.map((e) => e.toDomain()).toList());
-    } catch (e, s) {
-      Error.throwWithStackTrace(
-        DatabaseException(message: e.toString(), cause: e),
-        s,
-      );
-    }
+    // Intercept stream-level database exceptions asynchronously via .handleError
+    return isar
+        .collection<GameResultEntity>()
+        .filter()
+        .gridSizeEqualTo(gridSizeIndex)
+        .sortByDurationInSeconds()
+        .thenByMoveCount()
+        .watch(lazy: false)
+        .map((entities) => entities.map((e) => e.toDomain()).toList())
+        .handleError((Object e, StackTrace s) {
+          Error.throwWithStackTrace(
+            DatabaseException(message: e.toString(), cause: e),
+          );
+        });
   }
 
   @override
@@ -111,10 +108,7 @@ Stream<List<GameResult>> gameHistory(Ref ref) {
 /// Watches only the results for a single grid size, queried directly at the
 /// Isar level instead of fetching everything and filtering it in Dart.
 @riverpod
-Stream<List<GameResult>> gameHistoryByGridSize(
-  Ref ref,
-  int gridSizeIndex,
-) {
+Stream<List<GameResult>> gameHistoryByGridSize(Ref ref, int gridSizeIndex) {
   final repository = ref.watch(gameHistoryRepositoryProvider);
   return repository.watchResultsByGridSize(gridSizeIndex);
 }
