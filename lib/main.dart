@@ -162,7 +162,9 @@ class _MyAppState extends ConsumerState<MyApp> {
     final navigatorKey = ref.watch(appRouterProvider);
 
     return MaterialApp(
-      title: 'Memory Game',
+      // Dynamic localization title parsing at system context bootstrap boundary
+      onGenerateTitle: (BuildContext context) =>
+          AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
