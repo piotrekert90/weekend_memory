@@ -116,12 +116,48 @@ class _StartupErrorApp extends StatelessWidget {
   }
 }
 
-/// Root widget that configures theming, localization, and navigation.
-class MyApp extends ConsumerWidget {
+/// Root widget that configures theming, localization, navigation, and
+/// application lifecycle management.
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  AppLifecycleListener? _lifecycleListener;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycleListener = AppLifecycleListener(onDetach: _handleDatabaseCleanup);
+  }
+
+  @override
+  void dispose() {
+    _lifecycleListener?.dispose();
+    super.dispose();
+  }
+
+  void _handleDatabaseCleanup() {
+    final isar = ref.read(isarProvider);
+    if (isar.isOpen) {
+      isar
+          .close()
+          .then((_) {
+            debugPrint('Isar database closed successfully on detach.');
+          })
+          .catchError((Object error, StackTrace stack) {
+            debugPrint(
+              'Failed to close Isar database on detach: $error\n$stack',
+            );
+          });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeProvider);
     final navigatorKey = ref.watch(appRouterProvider);
 
