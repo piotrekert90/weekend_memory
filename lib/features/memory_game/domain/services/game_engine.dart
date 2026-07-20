@@ -10,26 +10,25 @@ class GameEngine {
   /// challenge. Throws [ArgumentError] if the duration falls outside acceptable
   /// bounds.
   void validateDuration(int seconds) {
-    assert(
-      seconds >= CountdownDurationBounds.min,
-      'Countdown duration ($seconds s) is below the minimum of '
-      '${CountdownDurationBounds.min} s. '
-      'A countdown must be at least one full tick interval '
-      '(${CountdownDurationBounds.min} s).',
-    );
-    assert(
-      seconds <= CountdownDurationBounds.max,
-      'Countdown duration ($seconds s) exceeds the maximum of '
-      '${CountdownDurationBounds.max} s. '
-      'Practical gameplay requires countdowns within this range.',
-    );
+    if (seconds < CountdownDurationBounds.min) {
+      throw ArgumentError(
+        'Countdown duration ($seconds s) is below the minimum of '
+        '${CountdownDurationBounds.min} s.',
+      );
+    }
+    if (seconds > CountdownDurationBounds.max) {
+      throw ArgumentError(
+        'Countdown duration ($seconds s) exceeds the maximum of '
+        '${CountdownDurationBounds.max} s.',
+      );
+    }
   }
 
   /// Creates and shuffles a deck of [pairCount] card pairs using [symbols].
   ///
   /// [symbols] must contain at least [pairCount] entries — each pair needs
   /// a distinct symbol. Violating this throws a clear [ArgumentError] here
-  /// rather than a much harder to diagnose RangeError deep in the shuffle.
+  /// rather than a much harder to diagnose RangeError deep in the shuffle[cite: 6].
   List<MemoryCard> createDeck({
     required int pairCount,
     required List<String> symbols,
@@ -37,25 +36,28 @@ class GameEngine {
     if (pairCount > symbols.length) {
       throw ArgumentError(
         'Not enough symbols (${symbols.length} available) for the requested '
-        'pair count ($pairCount). Add more symbols or reduce the grid size.',
+        'pair count ($pairCount). Add more symbols or reduce the grid size.[cite: 6]',
       );
     }
 
+    // Defensive copy: create a fresh local list from the provided symbols
+    // to strictly safeguard against mutating the source reference parameter[cite: 6].
     final shuffledSymbols = List<String>.from(symbols)..shuffle();
 
     final cards = <MemoryCard>[];
     for (int i = 0; i < pairCount; i++) {
-      cards.add(MemoryCard(id: i, content: shuffledSymbols[i]));
-      cards.add(MemoryCard(id: i, content: shuffledSymbols[i]));
+      cards.add(MemoryCard(id: i, content: shuffledSymbols[i])); //[cite: 6]
+      cards.add(MemoryCard(id: i, content: shuffledSymbols[i])); //[cite: 6]
     }
-    cards.shuffle();
 
-    return cards;
+    // Explicit cascade assignment ensuring we return a cleanly shuffled,
+    // brand new isolated list instance.
+    return cards..shuffle();
   }
 
   /// Returns whether [first] and [second] share the same pair id.
   bool isMatch(MemoryCard first, MemoryCard second) {
-    return first.id == second.id;
+    return first.id == second.id; //[cite: 6]
   }
 
   /// Marks the cards at [firstIndex] and [secondIndex] as matched.
@@ -64,26 +66,32 @@ class GameEngine {
     int firstIndex,
     int secondIndex,
   ) {
-    final updated = List<MemoryCard>.from(cards);
-    updated[firstIndex] = updated[firstIndex].copyWith(isMatched: true);
-    updated[secondIndex] = updated[secondIndex].copyWith(isMatched: true);
+    final updated = List<MemoryCard>.from(cards); //[cite: 6]
+    updated[firstIndex] = updated[firstIndex].copyWith(
+      isMatched: true,
+    ); //[cite: 6]
+    updated[secondIndex] = updated[secondIndex].copyWith(
+      isMatched: true,
+    ); //[cite: 6]
     return updated;
   }
 
   /// Flips the card at [index] face up.
   List<MemoryCard> flipCard(List<MemoryCard> cards, int index) {
-    final updated = List<MemoryCard>.from(cards);
-    updated[index] = updated[index].copyWith(isFaceUp: true);
+    final updated = List<MemoryCard>.from(cards); //[cite: 6]
+    updated[index] = updated[index].copyWith(isFaceUp: true); //[cite: 6]
     return updated;
   }
 
   /// Flips every card in [cards] face down.
   List<MemoryCard> flipAllDown(List<MemoryCard> cards) {
-    return cards.map((card) => card.copyWith(isFaceUp: false)).toList();
+    return cards
+        .map((card) => card.copyWith(isFaceUp: false))
+        .toList(); //[cite: 6]
   }
 
   /// Returns whether every card in [cards] has been matched.
   bool isGameFinished(List<MemoryCard> cards) {
-    return cards.every((card) => card.isMatched);
+    return cards.every((card) => card.isMatched); //[cite: 6]
   }
 }
