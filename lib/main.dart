@@ -128,9 +128,14 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   AppLifecycleListener? _lifecycleListener;
 
+  // Hold an immutable cached reference to safeguard the database instance
+  // against mid-tear-down provider container disposal races.
+  late final Isar _isar;
+
   @override
   void initState() {
     super.initState();
+    _isar = ref.read(isarProvider);
     _lifecycleListener = AppLifecycleListener(onDetach: _handleDatabaseCleanup);
   }
 
@@ -141,9 +146,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   void _handleDatabaseCleanup() {
-    final isar = ref.read(isarProvider);
-    if (isar.isOpen) {
-      isar
+    if (_isar.isOpen) {
+      _isar
           .close()
           .then((_) {
             debugPrint('Isar database closed successfully on detach.');
